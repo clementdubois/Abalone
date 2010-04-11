@@ -1,4 +1,6 @@
-class IA{
+
+
+public class IA{
 	
 	
 }

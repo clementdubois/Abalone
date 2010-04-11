@@ -1,3 +1,4 @@
-class Joueur{
+
+public class Joueur{
 	
 }

@@ -1,38 +1,57 @@
+
+
 /** 
 *	Gerer le plateau de jeu. 
-*
-* @attr plateau Plateau de jeu avec les positions des pions
+* Cette classe permet de mofifier le plateau de jeu en l'initialisant ou en faisant un deplacement.
 */
-
-class Plateau{
+public class Plateau{
 	//Le plateau de jeu
+	
+	/** 
+	* Plateau de jeu. 
+	* Ce plateau est defini comme plateau[62][8] :<br />
+	*   <li>
+	*   -plateau[0..61] => Les differentes case du plateau (0 => hors du plateau)
+	*   -plateau[TROU][X] = Hors du plateau (pour une bille capturee)
+	*   -plateau[x][ETAT] = BLANC ou NOIR ou VIDE
+	*   </li>
+	* Les cases adjacente a la cases courantes (utile pour la direction d'un mouvement) : 
+	*   -plateau[x][DH] = numero DH
+	*   -plateau[x][GB] = numero GB
+	*   -plateau[x][DD] = numero DD
+	*   -plateau[x][GG] = numero GG
+	*   -plateau[x][DB] = numero DB
+	*   -plateau[x][GH] = numero GH
+	*/
 	protected int plateau[][];
-	     /*
-						plateau[x][0] = BLANC ou NOIR ou VIDE
-						Les cases adjacente a la cases courantes : 
-						plateau[x][1] = numero DH
-						plateau[x][2] = numero GB
-						plateau[x][3] = numero DD
-						plateau[x][4] = numero GG
-						plateau[x][5] = numero DB
-						plateau[x][6] = numero GH
-						
-						plateau[0][X] = Hors du plateau (pour une bille capturée)
-				*/
-	// Que contient la case?
+	    
+	/** 
+	* Pour connaitre l'etat d'une case (BLANC, NOIR ou VIDE).
+	* ex : plateau[12][0] = NOIR   => la 12eme bille du plateau est une bille noir
+	*/
 	public static final int ETAT = 0;
+	/** Une bille blanche.*/
 	public static final int BLANC = 1;
+	/** Une bille noir.*/
 	public static final int NOIR = 2;
+	/** Une case vide.*/
 	public static final int VIDE = 0;
-	// En dehors du plateau de jeu
+	/** En dehors du plateau.
+	* Utile pour determiner si une bille a ete sortie du plateau
+	*/
 	public static final int TROU = 0;
-	// Liste des directions possibles
-	public static final int DH = 1; // Droite Haut
- 	public static final int GB = 2; // Gauche Bas
-	public static final int DD = 3; // Droite 
-	public static final int GG = 4; // Gauche 
-	public static final int DB = 5; // Droite Bas
-	public static final int GH = 6; // Gauche Haut
+	/** Direction droite haut.*/
+	public static final int DH = 1; 
+	/** Direction gauche bas.*/
+ 	public static final int GB = 2; 
+	/** Direction droite.*/
+	public static final int DD = 3; 
+	/** Direction gauche.*/
+	public static final int GG = 4; 
+	/** Direction droite bas.*/
+	public static final int DB = 5; 
+	/** Direction gauche haut.*/
+	public static final int GH = 6; 
 
 	/**
 	* Constructeur pour une nouvelle partie
@@ -43,7 +62,7 @@ class Plateau{
 	}
 	
 	/**
-	* Créeer le plateau de jeu avec les positions de départ
+	* Creeer le plateau de jeu avec les positions de depart
 	*
 	*/
 	public void initialiser(){
@@ -64,12 +83,12 @@ class Plateau{
 	}
 	
 	/**
-	* Effectuer un déplacement. 
-	* Les vérifications pour savoir si un coup est reglementaire ne sont pas effectuées dans cette fonction. 
-	* C'est ici qu'on determine si une boule est tombée.
+	* Effectuer un deplacement. 
+	* Les verifications pour savoir si un coup est reglementaire ne sont pas effectuees dans cette fonction. 
+	* C'est ici qu'on determine si une boule est tombee.
 	*
-	* @param direction La direction du coups joué
-	* @param bille La première bille déplacé
+	* @param direction La direction du coups joue
+	* @param bille La premiere bille deplace
 	*/
 	public void deplacer(int direction, int bille){
 		int caseActuel = bille;
@@ -78,7 +97,7 @@ class Plateau{
 		int contenuSuivant;
 		
 		/*On pousse toute la ligne d'une case*/
-		caseSuivante = plateau[caseActuel][direction]; //Il y a forcément au moins une case suivante sinon il s'agirai d'un suicide
+		caseSuivante = plateau[caseActuel][direction]; //Il y a forcement au moins une case suivante sinon il s'agirai d'un suicide
 		contenuSuivant = plateau[caseSuivante][ETAT];
 		plateau[bille][ETAT] = VIDE;
 		
@@ -94,7 +113,7 @@ class Plateau{
 	}
 	
 	/**
-	* Afficher le plateau de jeu à la console
+	* Afficher le plateau de jeu a la console
 	*
 	*/
 	public void afficher(){
@@ -133,8 +152,8 @@ class Plateau{
 	}
 	
 	/**
-	* Ajoute à chaque case du plateau ces 6 cases adjacentes.
-	* Cela sera pratique pour savoir les déplacements possibles ainsi que pour effectuer ces déplacements.
+	* Ajoute a chaque case du plateau ces 6 cases adjacentes.
+	* Cela sera pratique pour savoir les deplacements possibles ainsi que pour effectuer ces deplacements.
 	*/
 	protected void caseAdjacente(){
 		int i;

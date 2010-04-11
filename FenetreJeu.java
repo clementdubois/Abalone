@@ -1,3 +1,5 @@
-class FenetreJeu{
+
+
+public class FenetreJeu{
 	
 }
