@@ -4,9 +4,7 @@
 *	Gerer le plateau de jeu. 
 * Cette classe permet de mofifier le plateau de jeu en l'initialisant ou en faisant un deplacement.
 */
-public class Plateau{
-	//Le plateau de jeu
-	
+public class Plateau{	
 	/** 
 	* Plateau de jeu. 
 	* Ce plateau est defini comme plateau[62][8] :<br />
@@ -54,6 +52,10 @@ public class Plateau{
 	public static final int DB = 5; 
 	/** Direction gauche haut.*/
 	public static final int GH = 6; 
+	/** Indique un mouvement autorise */
+	public static final int VALIDE = 1;
+	/** Indique un mouvement interdit */
+	public static final int INVALIDE = 0;
 
 	/**
 	* Constructeur pour une nouvelle partie
@@ -136,6 +138,76 @@ public class Plateau{
 		
 	}
 	
+	/**
+	* Verifie qu'on mouvement est valide.
+	*
+	* @param direction La direction du coups joue.
+	* @param bille La premiere bille deplacee.
+	* @param bille2 La deuxieme bille deplacee.
+	* @param bille3 La troisieme bille deplacee.
+	* @return VALIDE si le mouvement est autorise, INVALIDE si le mouvement est interdit
+	*/
+	public int validerMouvement(int direction, int bille, int bille2, int bille3){
+		int derniereBille;
+		int contenuBille;
+		short cptBilleMoi = 0; //Compteur du nombre de bille que je déplace
+		short cptBilleLui = 0; //Compteur du nimbre de bille adverse qui vont être déplacées
+		
+		
+		//On regarde la dernière de nos billes poussee
+		if (bille3 != -1){
+			derniereBille = bille3;
+			cptBilleMoi = 3;
+		}else if(bille2 != -1){
+			derniereBille = bille2;
+			cptBilleMoi = 2;
+		}else{
+			derniereBille = bille;
+			cptBilleMoi = 1;
+		}
+		contenuBille = plateau[derniereBille][ETAT];
+		
+		//Si c'est une poussee
+		if((bille2 == -1) || (plateau[bille][direction] == bille2)){
+			System.out.println("Une poussee");
+			
+			//On teste la case juste après nos billes
+			if(plateau[derniereBille][direction] == TROU){//Si suivante trou PAS OK
+				System.out.println("Trou");
+				return INVALIDE;
+			}
+			else if (plateau[plateau[derniereBille][direction]][ETAT] == VIDE){//Si suivante vide OK
+				System.out.println("VIDE");
+				return VALIDE;
+			}
+			else if(plateau[plateau[derniereBille][direction]][ETAT] == contenuBille){//Si suivante meme couleur PAS OK
+				System.out.println("Identique");
+				return INVALIDE;
+			}
+			else{ // Si on fait face à une bille du camp adverse
+				//On calcule le nombre de billes adverse qui vont être déplacé
+				while(plateau[plateau[derniereBille][direction]][ETAT] != contenuBille){
+					cptBilleLui++;
+					derniereBille = plateau[derniereBille][direction];
+				}
+				
+				if(cptBilleMoi > cptBilleLui){// Si les billes adverses sont plus nombreuses ou égal, le mouvement est impossible
+					System.out.println("Inferiorité numérique");
+					return INVALIDE;
+				}
+				else{
+					System.out.println("Superiorité numérique");
+					return VALIDE;
+				}
+	
+			}
+			
+		}else{
+			System.out.println("Pas une poussee");
+			return INVALIDE;
+		}
+		
+	}
 	
 	/**
 	* Afficher le plateau de jeu a la console
