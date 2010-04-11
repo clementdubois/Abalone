@@ -10,23 +10,25 @@ public class Plateau{
 	/** 
 	* Plateau de jeu. 
 	* Ce plateau est defini comme plateau[62][8] :<br />
-	*   <li>
-	*   -plateau[0..61] => Les differentes case du plateau (0 => hors du plateau)
-	*   -plateau[TROU][X] = Hors du plateau (pour une bille capturee)
-	*   -plateau[x][ETAT] = BLANC ou NOIR ou VIDE
-	*   </li>
+	*   <ul>
+	*    <li>plateau[0..61] => Les differentes case du plateau (0 => hors du plateau)</li>
+	*    <li>plateau[TROU][X] = Hors du plateau (pour une bille capturee)</li>
+	*    <li>plateau[x][ETAT] = BLANC ou NOIR ou VIDE</li>
+	*   </ul>
 	* Les cases adjacente a la cases courantes (utile pour la direction d'un mouvement) : 
-	*   -plateau[x][DH] = numero DH
-	*   -plateau[x][GB] = numero GB
-	*   -plateau[x][DD] = numero DD
-	*   -plateau[x][GG] = numero GG
-	*   -plateau[x][DB] = numero DB
-	*   -plateau[x][GH] = numero GH
+	*   <ul>
+	*    	<li>plateau[x][DH] = numero DH</li>
+	*    	<li>plateau[x][GB] = numero GB</li>
+	*   	<li>plateau[x][DD] = numero DD</li>
+	*   	<li>plateau[x][GG] = numero GG</li>
+	*    	<li>plateau[x][DB] = numero DB</li>
+	*   	<li>plateau[x][GH] = numero GH</li>
+	*   </ul>
 	*/
 	protected int plateau[][];
 	    
 	/** 
-	* Pour connaitre l'etat d'une case (BLANC, NOIR ou VIDE).
+	* Pour connaitre l'etat d'une case (BLANC, NOIR ou VIDE).<br />
 	* ex : plateau[12][0] = NOIR   => la 12eme bille du plateau est une bille noir
 	*/
 	public static final int ETAT = 0;
@@ -83,34 +85,57 @@ public class Plateau{
 	}
 	
 	/**
-	* Effectuer un deplacement. 
-	* Les verifications pour savoir si un coup est reglementaire ne sont pas effectuees dans cette fonction. 
-	* C'est ici qu'on determine si une boule est tombee.
+	* Effectuer un deplacement. <br />
+	* C'est ici qu'on determine si une boule est tombee.<br />
+	* Les verifications pour savoir si un coup est reglementaire ne sont pas effectuees dans cette fonction. <br />
+	* S'il s'agit d'une poussee, il est simplement necessaire de connaitre la première bille car les autres seront poussees en même temps (comme en jeu reel);
+	* par contre s'il s'agit d'un mouvement lateral il est necessaire de connaitre les billes 2 et 3 si deux ou trois billes sont deplacees.
 	*
-	* @param direction La direction du coups joue
-	* @param bille La premiere bille deplace
+	* @param direction La direction du coups joue.
+	* @param bille La premiere bille deplacee.
+	* @param bille2 La deuxieme bille deplacee.
+	* @param bille3 La troisieme bille deplacee.
 	*/
-	public void deplacer(int direction, int bille){
+	public void deplacer(int direction, int bille, int bille2, int bille3){
 		int caseActuel = bille;
 		int caseSuivante;
 		int contenuActuel = plateau[bille][ETAT];
 		int contenuSuivant;
 		
-		/*On pousse toute la ligne d'une case*/
-		caseSuivante = plateau[caseActuel][direction]; //Il y a forcement au moins une case suivante sinon il s'agirai d'un suicide
-		contenuSuivant = plateau[caseSuivante][ETAT];
-		plateau[bille][ETAT] = VIDE;
-		
-		while(contenuActuel != VIDE && caseActuel != TROU){			
-			plateau[caseSuivante][ETAT] = contenuActuel;
-			
-			caseActuel = caseSuivante;
-			caseSuivante = plateau[caseActuel][direction];
-			contenuActuel = contenuSuivant;
+		// Si on ne pousse qu'une bille ou si la deuxieme bille est dans la direction du déplacement c'est qu'il s'agit d'une poussée 
+		if((bille2 == -1) || (plateau[bille][direction] == bille2)){
+			/*On POUSSE toute la ligne d'une case*/
+			caseSuivante = plateau[caseActuel][direction]; //Il y a forcement au moins une case suivante sinon il s'agirai d'un suicide
 			contenuSuivant = plateau[caseSuivante][ETAT];
+			plateau[bille][ETAT] = VIDE;
+		
+			while(contenuActuel != VIDE && caseActuel != TROU){			
+				plateau[caseSuivante][ETAT] = contenuActuel;
 			
+				caseActuel = caseSuivante;
+				caseSuivante = plateau[caseActuel][direction];
+				contenuActuel = contenuSuivant;
+				contenuSuivant = plateau[caseSuivante][ETAT];
+			}
+		}//Sinon, il ya a au moins deux billes et la direction du mouvement est différent de l'alignement des bille, c'est un mouvement lateral
+		else{
+			/* on prend la bille 1 et on la deplace sur la case vide,
+			 on fait pareil avec la deuxième et la troisième si elle existe.
+			 Les billes deplacées sont forcément de la même couleur, il est donc inutile de redefinir le contenu pour chaque bille
+			 Les cases destinations sont forcément vide.*/
+			
+			plateau[bille][0] = VIDE;
+		 	plateau[bille2][0] = VIDE;
+			plateau[plateau[bille][direction]][ETAT] = contenuActuel;
+			plateau[plateau[bille2][direction]][ETAT] = contenuActuel;
+			if (bille3 != -1){
+				plateau[bille3][0] = VIDE;
+				plateau[plateau[bille3][direction]][ETAT] = contenuActuel;
+			}
 		}
+		
 	}
+	
 	
 	/**
 	* Afficher le plateau de jeu a la console
@@ -152,7 +177,7 @@ public class Plateau{
 	}
 	
 	/**
-	* Ajoute a chaque case du plateau ces 6 cases adjacentes.
+	* Ajoute a chaque case du plateau ces 6 cases adjacentes.<br />
 	* Cela sera pratique pour savoir les deplacements possibles ainsi que pour effectuer ces deplacements.
 	*/
 	protected void caseAdjacente(){
