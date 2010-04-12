@@ -13,8 +13,25 @@ public class Jeu{
 			// Jeu de test du déplacement: 
 		 			Plateau plateau = new Plateau();
 					 plateau.afficher();
-					 
-					 plateau.deplacer(Plateau.DD, 14, 15, 16);
-					 plateau.afficher();
+					valide = plateau.validerMouvement(Plateau.DH, 14,-1,-1);
+					 plateau.deplacer(Plateau.DH, 14, -1, -1);
+					plateau.afficher();
+					 plateau.deplacer(Plateau.DB, 7, -1, -1);
+					plateau.afficher();
+					 plateau.deplacer(Plateau.GH, 55, -1, -1);
+					plateau.afficher();
+					 plateau.deplacer(Plateau.DH, 58, -1, -1);
+					plateau.afficher();
+					
+					 plateau.deplacer(Plateau.GH, 48, -1, -1);
+					plateau.afficher();
+					 plateau.deplacer(Plateau.DB, 1, -1, -1);
+					plateau.afficher();
+					
+					
+					if(valide == Plateau.VALIDE)
+						System.out.println("VALIDE");
+					else
+						System.out.println("INVALIDE");
 	}
 }

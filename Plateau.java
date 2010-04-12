@@ -2,7 +2,12 @@
 
 /** 
 *	Gerer le plateau de jeu. 
-* Cette classe permet de mofifier le plateau de jeu en l'initialisant ou en faisant un deplacement.
+* Cette classe permet de mofifier le plateau de jeu en l'initialisant ou en faisant un deplacement.<br />
+* Les deplacements sont geres de la même façon qu'une humain jouerai physiquement :
+* <ul>
+* 	<li>quand on fait une poussee on ne touche qu'une bille dans une direction, le mouvement se fera donc en indiquant seulement la direction et la première bille.</li>
+* 	<li>quand on fait un mouvement lateral il faut prendre toutes (deux ou trois) les billes, le mouvement se fera donc en indiquant la direction ainsi que toutes les billes deplacees.</li>
+* </ul>
 */
 public class Plateau{	
 	/** 
@@ -90,7 +95,7 @@ public class Plateau{
 	* Effectuer un deplacement. <br />
 	* C'est ici qu'on determine si une boule est tombee.<br />
 	* Les verifications pour savoir si un coup est reglementaire ne sont pas effectuees dans cette fonction. <br />
-	* S'il s'agit d'une poussee, il est simplement necessaire de connaitre la première bille car les autres seront poussees en même temps (comme en jeu reel);
+	* S'il s'agit d'une poussee, il faut simplement indiquer la première bille car les autres seront poussees en même temps (comme en jeu reel);
 	* par contre s'il s'agit d'un mouvement lateral il est necessaire de connaitre les billes 2 et 3 si deux ou trois billes sont deplacees.
 	*
 	* @param direction La direction du coups joue.
@@ -106,6 +111,7 @@ public class Plateau{
 		
 		// Si on ne pousse qu'une bille ou si la deuxieme bille est dans la direction du déplacement c'est qu'il s'agit d'une poussée 
 		if((bille2 == -1) || (plateau[bille][direction] == bille2)){
+			System.out.println("Poussee deplacement");
 			/*On POUSSE toute la ligne d'une case*/
 			caseSuivante = plateau[caseActuel][direction]; //Il y a forcement au moins une case suivante sinon il s'agirai d'un suicide
 			contenuSuivant = plateau[caseSuivante][ETAT];
@@ -121,6 +127,8 @@ public class Plateau{
 			}
 		}//Sinon, il ya a au moins deux billes et la direction du mouvement est différent de l'alignement des bille, c'est un mouvement lateral
 		else{
+			System.out.println("PAS poussee deplacement");
+			
 			/* on prend la bille 1 et on la deplace sur la case vide,
 			 on fait pareil avec la deuxième et la troisième si elle existe.
 			 Les billes deplacées sont forcément de la même couleur, il est donc inutile de redefinir le contenu pour chaque bille
@@ -148,27 +156,22 @@ public class Plateau{
 	* @return VALIDE si le mouvement est autorise, INVALIDE si le mouvement est interdit
 	*/
 	public int validerMouvement(int direction, int bille, int bille2, int bille3){
-		int derniereBille;
-		int contenuBille;
-		short cptBilleMoi = 0; //Compteur du nombre de bille que je déplace
+		int derniereBille = bille;
+		int contenuBille = plateau[bille][ETAT];
+		short cptBilleMoi = 1; //Compteur du nombre de bille que je déplace
 		short cptBilleLui = 0; //Compteur du nimbre de bille adverse qui vont être déplacées
 		
 		
-		//On regarde la dernière de nos billes poussee
-		if (bille3 != -1){
-			derniereBille = bille3;
-			cptBilleMoi = 3;
-		}else if(bille2 != -1){
-			derniereBille = bille2;
-			cptBilleMoi = 2;
-		}else{
-			derniereBille = bille;
-			cptBilleMoi = 1;
-		}
-		contenuBille = plateau[derniereBille][ETAT];
 		
-		//Si c'est une poussee
-		if((bille2 == -1) || (plateau[bille][direction] == bille2)){
+		//Si c'est une poussee (si on ne touche qu'une bille)
+		if(bille2 == -1){
+			//On regarde la dernière de nos billes poussee
+			System.out.println("BILLE : "+direction+" "+derniereBille+" "+plateau[derniereBille][direction]);
+			while(plateau[plateau[derniereBille][direction]][ETAT] == contenuBille){
+				cptBilleMoi++;
+				derniereBille = plateau[derniereBille][direction];
+			}
+			
 			System.out.println("Une poussee");
 			
 			//On teste la case juste après nos billes
@@ -176,35 +179,51 @@ public class Plateau{
 				System.out.println("Trou");
 				return INVALIDE;
 			}
-			else if (plateau[plateau[derniereBille][direction]][ETAT] == VIDE){//Si suivante vide OK
-				System.out.println("VIDE");
-				return VALIDE;
-			}
-			else if(plateau[plateau[derniereBille][direction]][ETAT] == contenuBille){//Si suivante meme couleur PAS OK
-				System.out.println("Identique");
+			else if(cptBilleMoi > 3){//Plus de trois bille poussees
+				System.out.println("Trop de bille poussee");
 				return INVALIDE;
+			}
+			else if (plateau[plateau[derniereBille][direction]][ETAT] == VIDE){//Si suivante vide OK
+				System.out.println("VIDE : "+derniereBille+" "+cptBilleMoi);
+				return VALIDE;
 			}
 			else{ // Si on fait face à une bille du camp adverse
 				//On calcule le nombre de billes adverse qui vont être déplacé
-				while(plateau[plateau[derniereBille][direction]][ETAT] != contenuBille){
+				while(plateau[plateau[derniereBille][direction]][ETAT] != contenuBille &&
+				      plateau[plateau[derniereBille][direction]][ETAT] != VIDE &&
+						  plateau[plateau[derniereBille][direction]][ETAT] != TROU){
 					cptBilleLui++;
 					derniereBille = plateau[derniereBille][direction];
 				}
 				
-				if(cptBilleMoi > cptBilleLui){// Si les billes adverses sont plus nombreuses ou égal, le mouvement est impossible
+				if(cptBilleMoi <= cptBilleLui){// Si les billes adverses sont plus nombreuses ou égal, le mouvement est impossible
 					System.out.println("Inferiorité numérique");
 					return INVALIDE;
 				}
 				else{
-					System.out.println("Superiorité numérique");
-					return VALIDE;
+					System.out.print("Superiorité numérique ");
+					//Si une de nos bille est juste derriere, elle bloque le mouvement
+					if(plateau[plateau[derniereBille][direction]][ETAT] == contenuBille){
+						System.out.println("mais une bille bloque le passage");
+						return INVALIDE;
+					}
+					else
+						return VALIDE;
 				}
 	
 			}
 			
-		}else{
+		}else{//Déplacement lateral
+			//Il suffit de vérifier que toutes les cases visées sont vides
 			System.out.println("Pas une poussee");
-			return INVALIDE;
+			if (plateau[plateau[bille][direction]][ETAT] != VIDE)
+				return INVALIDE;
+			else if (plateau[plateau[bille2][direction]][ETAT] != VIDE)
+				return INVALIDE;
+			else if (bille3 != -1 && plateau[plateau[bille3][direction]][ETAT] != VIDE)
+				return INVALIDE;
+			else
+				return VALIDE;
 		}
 		
 	}
