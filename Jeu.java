@@ -12,26 +12,16 @@ public class Jeu{
 			int valide;
 			// Jeu de test du déplacement: 
 		 			Plateau plateau = new Plateau();
-					 plateau.afficher();
-					valide = plateau.validerMouvement(Plateau.DH, 14,-1,-1);
-					 plateau.deplacer(Plateau.DH, 14, -1, -1);
+					Mouvement mouv = new Mouvement(Mouvement.GB, 1, 2, plateau);
+					
+					System.out.println("mouv : "+mouv.getDirection()+" "+mouv.getBille1()+" "+mouv.getBille2()+""+mouv.getBille3());
+							
 					plateau.afficher();
-					 plateau.deplacer(Plateau.DB, 7, -1, -1);
-					plateau.afficher();
-					 plateau.deplacer(Plateau.GH, 55, -1, -1);
-					plateau.afficher();
-					 plateau.deplacer(Plateau.DH, 58, -1, -1);
+					valide = mouv.valider(plateau);
+					mouv.effectuer(plateau);
 					plateau.afficher();
 					
-					 plateau.deplacer(Plateau.GH, 48, -1, -1);
-					plateau.afficher();
-					 plateau.deplacer(Plateau.DB, 1, -1, -1);
-					plateau.afficher();
-					
-					
-					if(valide == Plateau.VALIDE)
-						System.out.println("VALIDE");
-					else
-						System.out.println("INVALIDE");
+
+
 	}
 }
