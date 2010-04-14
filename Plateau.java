@@ -116,6 +116,7 @@ public class Plateau{
 			
 			System.out.println();
 		}
+		System.out.println("Bille Ejecte lors du mouvement : "+this.plateau[Plateau.TROU][Plateau.ETAT]);
 		
 		System.out.println();
 		System.out.println();
@@ -206,6 +207,15 @@ public class Plateau{
 	*/
 	public void setPlateau(int [][] p){
 		plateau = p;
+	}
+	
+	public int tomber(){
+		if (this.plateau[Plateau.TROU][Plateau.ETAT] == Plateau.BLANC)
+			return Plateau.BLANC;
+		else if (this.plateau[Plateau.TROU][Plateau.ETAT] == Plateau.NOIR)
+			return Plateau.NOIR;
+		else
+			return Plateau.VIDE;
 	}
 	
 	

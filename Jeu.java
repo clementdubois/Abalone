@@ -9,11 +9,8 @@
 
 public class Jeu{
 	public static void main(String argc[]){
-			int valide;
-			// Jeu de test du déplacement: 
-		 			Plateau plateau = new Plateau();
-					Mouvement mouv = new Mouvement(Mouvement.GB, 1, 2, plateau);
-					PartieLocale partie = new PartieLocale(2);
+			PartieConsole p = new PartieConsole();
+			p.lancerPartie();
 					
 
 	}

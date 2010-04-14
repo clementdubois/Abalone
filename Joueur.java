@@ -1,4 +1,7 @@
 
-public class Joueur{
+public class Joueur{	
+	public Joueur(){
+		
+	}
 	
 }

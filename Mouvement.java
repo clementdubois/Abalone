@@ -28,10 +28,7 @@ public class Mouvement{
 	public static final int DB = 5; 
 	/** Direction gauche haut.*/
 	public static final int GH = 6; 
-	/** Indique un mouvement autorise */
-	public static final int VALIDE = 1;
-	/** Indique un mouvement interdit */
-	public static final int INVALIDE = 0;
+
 	
 	/** Constructeur pour un mouvement de poussee.
 	* Une seule bille en parametre, les autres billes qui vont etre deplacees seront calculees automatiquement.
@@ -90,6 +87,9 @@ public class Mouvement{
 		int contenuActuel = plateau[bille1][Plateau.ETAT];
 		int contenuSuivant;
 		
+		//On vide le trou si une bille est dedans pour ne pas compter plusieurs fois la même bille
+		plateau[Plateau.TROU][Plateau.ETAT] = Plateau.VIDE;
+		 
 		// Si on ne pousse qu'une bille ou si la deuxieme bille est dans la direction du deplacement c'est qu'il s'agit d'une poussee 
 		if((bille2 == -1) || (plateau[bille1][dir] == bille2)){
 			System.out.println("Poussee deplacement");
@@ -98,7 +98,7 @@ public class Mouvement{
 			contenuSuivant = plateau[caseSuivante][Plateau.ETAT];
 			plateau[bille1][Plateau.ETAT] = Plateau.VIDE;
 		
-			while(contenuActuel !=Plateau.VIDE && caseActuel != Plateau.TROU){			
+			while(contenuActuel != Plateau.VIDE && caseActuel != Plateau.TROU){			
 				plateau[caseSuivante][Plateau.ETAT] = contenuActuel;
 			
 				caseActuel = caseSuivante;
@@ -135,17 +135,25 @@ public class Mouvement{
 	* Verifie qu'on mouvement est valide.
 	*
 	* @param p Le plateau de jeu sur lequel on vux verifier que le mouvement est possible.
-	* @return VALIDE si le mouvement est autorise, INVALIDE si le mouvement est interdit
+	* @param joueurActuel La couleur du joueur actuel (NOIR ou BLANC)
+	* @return true si le mouvement est autorise, false si le mouvement est interdit
 	*/
-	public int valider(Plateau p){
+	public boolean valider(Plateau p, short joueurActuel){
 		int[][] plateau = p.getPlateau();
-		int derniereBille = bille1;
+		int derniereBille = this.bille1;
 		int contenuBille = plateau[bille1][Plateau.ETAT];
 		short cptBilleMoi = 1; //Compteur du nombre de bille que je deplace
 		short cptBilleLui = 0; //Compteur du nimbre de bille adverse qui vont être deplacees
 		
+		//On commence par vérifié que les biles déplacé sont bien de la bonne couleur
+		if(plateau[this.bille1][Plateau.ETAT] != joueurActuel || 
+			 (bille2 != -1 && plateau[this.bille2][Plateau.ETAT] != joueurActuel) ||
+			 (bille3 != -1 && plateau[this.bille3][Plateau.ETAT] != joueurActuel)){
+				System.out.println("Au moins une des billes n'est pas de la couleur du joueur");
+				return false;
+		}
 		//Si c'est une poussee (si on ne touche qu'une bille)
-		if(bille2 == -1){
+		if(this.bille2 == -1){
 			//On regarde la derniere de nos billes poussee
 			System.out.println("BILLE : "+dir+" "+derniereBille+" "+plateau[derniereBille][dir]);
 			while(plateau[plateau[derniereBille][dir]][Plateau.ETAT] == contenuBille){
@@ -158,15 +166,15 @@ public class Mouvement{
 			//On teste la case juste apres nos billes
 			if(plateau[derniereBille][dir] == Plateau.TROU){//Si suivante trou PAS OK
 				System.out.println("Trou");
-				return INVALIDE;
+				return false;
 			}
 			else if(cptBilleMoi > 3){//Plus de trois bille poussees
 				System.out.println("Trop de bille poussee");
-				return INVALIDE;
+				return false;
 			}
 			else if (plateau[plateau[derniereBille][dir]][Plateau.ETAT] == Plateau.VIDE){//Si suivante vide OK
 				System.out.println("VIDE : "+derniereBille+" "+cptBilleMoi);
-				return VALIDE;
+				return true;
 			}
 			else{ // Si on fait face a une bille du camp adverse
 				//On calcule le nombre de billes adverse qui vont être deplace
@@ -179,17 +187,17 @@ public class Mouvement{
 				
 				if(cptBilleMoi <= cptBilleLui){// Si les billes adverses sont plus nombreuses ou egal, le mouvement est impossible
 					System.out.println("Inferiorité numérique");
-					return INVALIDE;
+					return false;
 				}
 				else{
 					System.out.print("Superiorité numérique ");
 					//Si une de nos bille est juste derriere, elle bloque le mouvement
 					if(plateau[plateau[derniereBille][dir]][Plateau.ETAT] == contenuBille){
 						System.out.println("mais une bille bloque le passage");
-						return INVALIDE;
+						return false;
 					}
 					else
-						return VALIDE;
+						return true;
 				}
 	
 			}
@@ -197,14 +205,14 @@ public class Mouvement{
 		}else{//Deplacement lateral
 			//Il suffit de verifier que toutes les cases visees sont vides
 			System.out.println("Pas une poussee");
-			if (plateau[plateau[bille1][dir]][Plateau.ETAT] != Plateau.VIDE)
-				return INVALIDE;
-			else if (plateau[plateau[bille2][dir]][Plateau.ETAT] != Plateau.VIDE)
-				return INVALIDE;
-			else if (bille3 != -1 && plateau[plateau[bille3][dir]][Plateau.ETAT] != Plateau.VIDE)
-				return INVALIDE;
+			if (plateau[plateau[this.bille1][dir]][Plateau.ETAT] != Plateau.VIDE)
+				return false;
+			else if (plateau[plateau[this.bille2][dir]][Plateau.ETAT] != Plateau.VIDE)
+				return false;
+			else if (this.bille3 != -1 && plateau[plateau[this.bille3][dir]][Plateau.ETAT] != Plateau.VIDE)
+				return false;
 			else
-				return VALIDE;
+				return true;
 		}
 		
 	}
@@ -214,28 +222,28 @@ public class Mouvement{
 	* @return bille1 la premiere bille deplacee du mouvement
 	*/
 	public int getBille1(){
-		return bille1;
+		return this.bille1;
 	}
 	/** Renvoie la bille2
 	*
 	* @return bille2 la deuxieme bille deplacee du mouvement
 	*/
 	public int getBille2(){
-		return bille2;
+		return this.bille2;
 	}
 	/** Renvoie la bille3
 	*
 	* @return bille1 la troisieme bille deplacee du mouvement
 	*/
 	public int getBille3(){
-		return bille3;
+		return this.bille3;
 	}
 	/** Renvoie la direction du mouvement
 	*
 	* @return dir la direction du mouvement.
 	*/
 	public int getDirection(){
-		return dir;
+		return this.dir;
 	}
 	
 }
