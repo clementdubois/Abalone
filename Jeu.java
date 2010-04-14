@@ -13,15 +13,8 @@ public class Jeu{
 			// Jeu de test du déplacement: 
 		 			Plateau plateau = new Plateau();
 					Mouvement mouv = new Mouvement(Mouvement.GB, 1, 2, plateau);
+					PartieLocale partie = new PartieLocale(2);
 					
-					System.out.println("mouv : "+mouv.getDirection()+" "+mouv.getBille1()+" "+mouv.getBille2()+""+mouv.getBille3());
-							
-					plateau.afficher();
-					valide = mouv.valider(plateau);
-					mouv.effectuer(plateau);
-					plateau.afficher();
-					
-
 
 	}
 }

@@ -1,14 +1,14 @@
 /** Classe gerant les mouvements (creation, validation, faire le mouvement).
 * Les deplacements sont geres de la meme façon qu'un humain jouerai physiquement :
 * <ul>
-* 	<li>quand on fait une poussee on ne touche qu'une bille dans une direction, le mouvement se fera donc en indiquant seulement la direction, la première bille et le plateau sur lequel le mouvement va etre effectue.</li>
+* 	<li>quand on fait une poussee on ne touche qu'une bille dans une direction, le mouvement se fera donc en indiquant seulement la direction, la premiere bille et le plateau sur lequel le mouvement va etre effectue.</li>
 * 	<li>quand on fait un mouvement lateral il faut prendre toutes (deux ou trois) les billes, le mouvement se fera donc en indiquant la direction ainsi que toutes les billes deplacees et le plateau.</li>
 * </ul>
 */
 public class Mouvement{
 	/** Contient la direction du mouvement*/
 	private int dir;
-	/** Première bille concernee par le deplacement*/
+	/** Premiere bille concernee par le deplacement*/
 	private int bille1;
 	/** Deuxieme bille concernee par le deplacement*/
 	private int bille2;
@@ -90,7 +90,7 @@ public class Mouvement{
 		int contenuActuel = plateau[bille1][Plateau.ETAT];
 		int contenuSuivant;
 		
-		// Si on ne pousse qu'une bille ou si la deuxieme bille est dans la direction du déplacement c'est qu'il s'agit d'une poussée 
+		// Si on ne pousse qu'une bille ou si la deuxieme bille est dans la direction du deplacement c'est qu'il s'agit d'une poussee 
 		if((bille2 == -1) || (plateau[bille1][dir] == bille2)){
 			System.out.println("Poussee deplacement");
 			/*On POUSSE toute la ligne d'une case*/
@@ -106,14 +106,14 @@ public class Mouvement{
 				contenuActuel = contenuSuivant;
 				contenuSuivant = plateau[caseSuivante][Plateau.ETAT];
 			}
-		}//Sinon, il ya a au moins deux billes et la dir du mouvement est différent de l'alignement des bille, c'est un mouvement lateral
+		}//Sinon, il ya a au moins deux billes et la dir du mouvement est different de l'alignement des bille, c'est un mouvement lateral
 		else{
 			System.out.println("PAS poussee deplacement");
 			
 			/* on prend la bille 1 et on la deplace sur la case vide,
-			 on fait pareil avec la deuxième et la troisième si elle existe.
-			 Les billes deplacées sont forcément de la même couleur, il est donc inutile de redefinir le contenu pour chaque bille
-			 Les cases destinations sont forcément vide.*/
+			 on fait pareil avec la deuxieme et la troisieme si elle existe.
+			 Les billes deplacees sont forcement de la même couleur, il est donc inutile de redefinir le contenu pour chaque bille
+			 Les cases destinations sont forcement vide.*/
 			
 			plateau[bille1][0] = Plateau.VIDE;
 		 	plateau[bille2][0] = Plateau.VIDE;
@@ -141,12 +141,12 @@ public class Mouvement{
 		int[][] plateau = p.getPlateau();
 		int derniereBille = bille1;
 		int contenuBille = plateau[bille1][Plateau.ETAT];
-		short cptBilleMoi = 1; //Compteur du nombre de bille que je déplace
-		short cptBilleLui = 0; //Compteur du nimbre de bille adverse qui vont être déplacées
+		short cptBilleMoi = 1; //Compteur du nombre de bille que je deplace
+		short cptBilleLui = 0; //Compteur du nimbre de bille adverse qui vont être deplacees
 		
 		//Si c'est une poussee (si on ne touche qu'une bille)
 		if(bille2 == -1){
-			//On regarde la dernière de nos billes poussee
+			//On regarde la derniere de nos billes poussee
 			System.out.println("BILLE : "+dir+" "+derniereBille+" "+plateau[derniereBille][dir]);
 			while(plateau[plateau[derniereBille][dir]][Plateau.ETAT] == contenuBille){
 				cptBilleMoi++;
@@ -155,7 +155,7 @@ public class Mouvement{
 			
 			System.out.println("Une poussee");
 			
-			//On teste la case juste après nos billes
+			//On teste la case juste apres nos billes
 			if(plateau[derniereBille][dir] == Plateau.TROU){//Si suivante trou PAS OK
 				System.out.println("Trou");
 				return INVALIDE;
@@ -168,8 +168,8 @@ public class Mouvement{
 				System.out.println("VIDE : "+derniereBille+" "+cptBilleMoi);
 				return VALIDE;
 			}
-			else{ // Si on fait face à une bille du camp adverse
-				//On calcule le nombre de billes adverse qui vont être déplacé
+			else{ // Si on fait face a une bille du camp adverse
+				//On calcule le nombre de billes adverse qui vont être deplace
 				while(plateau[plateau[derniereBille][dir]][Plateau.ETAT] != contenuBille &&
 				      plateau[plateau[derniereBille][dir]][Plateau.ETAT] != Plateau.VIDE &&
 						  plateau[plateau[derniereBille][dir]][Plateau.ETAT] != Plateau.TROU){
@@ -177,7 +177,7 @@ public class Mouvement{
 					derniereBille = plateau[derniereBille][dir];
 				}
 				
-				if(cptBilleMoi <= cptBilleLui){// Si les billes adverses sont plus nombreuses ou égal, le mouvement est impossible
+				if(cptBilleMoi <= cptBilleLui){// Si les billes adverses sont plus nombreuses ou egal, le mouvement est impossible
 					System.out.println("Inferiorité numérique");
 					return INVALIDE;
 				}
@@ -194,8 +194,8 @@ public class Mouvement{
 	
 			}
 			
-		}else{//Déplacement lateral
-			//Il suffit de vérifier que toutes les cases visées sont vides
+		}else{//Deplacement lateral
+			//Il suffit de verifier que toutes les cases visees sont vides
 			System.out.println("Pas une poussee");
 			if (plateau[plateau[bille1][dir]][Plateau.ETAT] != Plateau.VIDE)
 				return INVALIDE;

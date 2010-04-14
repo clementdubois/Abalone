@@ -2,8 +2,8 @@
 
 /** 
 *	Gerer le plateau de jeu. 
-* Cette classe sert à initialiser le plateau de jeu et a le modifier (via la méthode setPlateau(int [][] p) );
-* On ne peut modifier le plateau qu'a partir de cette methode; on peut récuperer le plateau via la methode int [][] getPlateau().
+* Cette classe sert à initialiser le plateau de jeu et a le modifier (via la methode setPlateau(int [][] p) );
+* On ne peut modifier le plateau qu'a partir de cette methode; on peut recuperer le plateau via la methode int [][] getPlateau().
 */
 public class Plateau{	
 	/** 
