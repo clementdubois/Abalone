@@ -1,0 +1,16 @@
+/*
+git pull <- récuperer last version
+
+
+
+git status <- voir si y'a eu des modifs
+
+
+git add . <- prepare la liste de ce qui va etre sauvegardé par le commit
+
+git commit -v -m "salope d'espace" <- nom donné à la sauvegarde. le push enverra tous les commits.
+
+git push <= pour le mettre sur le serveur
+
+commit plusieurs en local sans le mettre sur le serveur tout de suite => mettre sur le serveur que à la fin de la journée
+*/

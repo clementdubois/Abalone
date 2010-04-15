@@ -1,92 +1,26 @@
 
-
-/** 
-*	Gerer le plateau de jeu. 
-* Cette classe sert à initialiser le plateau de jeu et a le modifier (via la methode setPlateau(int [][] p) );
-* On ne peut modifier le plateau qu'a partir de cette methode; on peut recuperer le plateau via la methode int [][] getPlateau().
-*/
-public class Plateau{	
-	/** 
-	* Plateau de jeu. 
-	* Ce plateau est defini comme plateau[62][8] :<br />
-	*   <ul>
-	*    <li>plateau[0..61] => Les differentes case du plateau (0 => hors du plateau)</li>
-	*    <li>plateau[TROU][X] = Hors du plateau (pour une bille capturee)</li>
-	*    <li>plateau[x][ETAT] = BLANC ou NOIR ou VIDE</li>
-	*   </ul>
-	* Les cases adjacente a la cases courantes (utile pour la direction d'un mouvement) : 
-	*   <ul>
-	*    	<li>plateau[x][DH] = numero DH</li>
-	*    	<li>plateau[x][GB] = numero GB</li>
-	*   	<li>plateau[x][DD] = numero DD</li>
-	*   	<li>plateau[x][GG] = numero GG</li>
-	*    	<li>plateau[x][DB] = numero DB</li>
-	*   	<li>plateau[x][GH] = numero GH</li>
-	*   </ul>
-	*/
-	protected int plateau[][];
-	    
-	/** 
-	* Pour connaitre l'etat d'une case (BLANC, NOIR ou VIDE).<br />
-	* ex : plateau[12][0] = NOIR   => la 12eme bille du plateau est une bille noir
-	*/
-	public static final int ETAT = 0;
-	/** Une bille blanche.*/
-	public static final int BLANC = 1;
-	/** Une bille noir.*/
-	public static final int NOIR = 2;
-	/** Une case vide.*/
-	public static final int VIDE = 0;
-	/** En dehors du plateau.
-	* Utile pour determiner si une bille a ete sortie du plateau
-	*/
-	public static final int TROU = 0;
-	/** Case adjacente droite haut.*/
-	public static final int DH = 1; 
-	/** Case adjacente gauche bas.*/
- 	public static final int GB = 2; 
-	/** Case adjacente droite.*/
-	public static final int DD = 3; 
-	/** Case adjacente gauche.*/
-	public static final int GG = 4; 
-	/** Case adjacente droite bas.*/
-	public static final int DB = 5; 
-	/** Case adjacente gauche haut.*/
-	public static final int GH = 6; 
-
-	/**
-	* Constructeur pour une nouvelle partie
-	*
-	*/
-	public Plateau(){
-		initialiser();
-	}
+public class Plateau {
+	private Case[] cases; // dans Case on retrouvera les cases adjacentes
 	
-	/**
-	* Creeer le plateau de jeu avec les positions de depart
-	*
-	*/
-	public void initialiser(){
-		plateau = new int[62][8];
-		
-		//On place les 14 pions de chaques couleurs sur le plateau et on indique les cases vides
-		for (int i = 1; i <= 61; i++){
-       if (i < 17 && i != 12 && i != 13)
-          plateau[i][ETAT] = BLANC;
-       else if (i > 45 && i != 50 && i != 49)
-          plateau[i][ETAT] = NOIR;
-       else
-          plateau[i][ETAT] = VIDE;
+	public Plateau() {
+		// ici on utilisera mon algorithme pour initialiser les valeurs des cases[] adjacentes : cf schema
+	}
+	public boolean joue(Mouvement[] m) {
+		int i = 0;
+		while(i < m.length) { // on veut appliquer le mouvement a chaque bille.
+			cases[m[i].getCoordonneesArrivee()].contiensBille();
+			cases[m[i].getCoordonneesArrivee()].setBille(cases[m[i].getCoordonnesDepart()].getBille());
+			cases[m[i].getCoordonnesDepart()].contiensVide();
 		}
-		
-		//Pour chaque pion on enregistre ces points adjacents
-		caseAdjacente();
+// inutile : le traitement juste au-dessus gere tous les mouvements.
+// this.mettreAJour(); // permet de gerer n'importe quel type de deplacement : bille.appliquerCoordonnees() change le champ position de la bille et mettreAJour() va chercher les positions de chaque bille pour se mettre a jour.		
+		return true;
 	}
-	
 	/**
 	* Afficher le plateau de jeu a la console
-	*
+	* @deprecated
 	*/
+/*
 	public void afficher(){
 		int numCase = 1;
 		
@@ -122,12 +56,17 @@ public class Plateau{
 		System.out.println();
 		
 	}
-	
+*/	
 	/**
 	* Ajoute a chaque case du plateau ces 6 cases adjacentes.<br />
 	* Cela sera pratique pour savoir les deplacements possibles ainsi que pour effectuer ces deplacements.
 	*/
 	protected void caseAdjacente(){
+		
+/*
+ * Ce qui suit sera remplace par un algorithme plus performant et plus style !.
+ */
+/*		
 		int i;
 	   for (i = 1; i <= 61; i++) {
 			
@@ -193,30 +132,27 @@ public class Plateau{
         else
            plateau[i][GH] = TROU;
 	   }
+*/
 	}
-	/** Renvoi le plateau de jeu 
-	*
-	* @return plateau Le plateau de jeu de l'objet Plateau.
-	*/
-	public int[][] getPlateau(){
-		return plateau;
-	}
+	
 	/** Modifier Le plateau de jeu.
 	* 
 	* @param p Le plateau de jeu qui sera copie dans plateau
 	*/
-	public void setPlateau(int [][] p){
-		plateau = p;
+	public boolean setPlateau(Bille[] p){
+		int i = 0;
+		for(Bille courante : p) {
+			this.cases[courante.getCoordonnees()].setBille(courante);
+		}
+		return true;
 	}
-	
-	public int tomber(){
-		if (this.plateau[Plateau.TROU][Plateau.ETAT] == Plateau.BLANC)
-			return Plateau.BLANC;
-		else if (this.plateau[Plateau.TROU][Plateau.ETAT] == Plateau.NOIR)
-			return Plateau.NOIR;
-		else
-			return Plateau.VIDE;
+/*	
+	private void mettreAJour() {
+		for(Case courante : this.cases) {
+			if(!courante.contientBille()) {
+				courante = new Case(courante.getNumero(), false); // fausse bille.
+			}
+		}
 	}
-	
-	
+*/	
 }

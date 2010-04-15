@@ -1,7 +1,7 @@
 /** Gestion d'une partie en console (idem que locale mais pas de partie graphique). */
 public class PartieConsole extends Partie{
 	/** @param nbJ nombre de joueur */
-	public PartieConsole(){
+	public PartieConsole() {
 		super();
 	}
 	
@@ -18,10 +18,10 @@ public class PartieConsole extends Partie{
 			
 			mouv.effectuer(plateau); //On rend effectif le deplacement sur le plateau de jeu
 			this.numCoup++;
-			actualiserScore(plateau); //On regarde si une bille a été sortie du plateau et on actualise le score en conséquence
+			actualiserScore(plateau); //On regarde si une bille a etee sortie du plateau et on actualise le score en conséquence
 			changerJoueur();
 			
-		}while (!this.terminer()); //Tant que la partie n'est pas terminée
+		}while (!this.terminer()); //Tant que la partie n'est pas terminee
 		
 		plateau.afficher();
 	}

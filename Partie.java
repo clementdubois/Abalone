@@ -1,87 +1,47 @@
-/** Effectue la gestion d'une partie
-*
-*
+
+/**
+* Une partie est simplement un serveur qui attend des connexions puis attend les ordres de la part de joueurs et les redistribue a tous les clients (joueurs, ia, spectateurs) Le createur de la partie possede donc le serveur de la partie. Le serveur de partie possede son propre plateau de jeu sur lequel il effectue les modifications.
 */
-
-public class Partie{
-	/** Le joueur noir */
-	public static final short NOIR = 2;
-	/** Le joueur blanc */
-	public static final short BLANC = 1;
-	/** Le joueur qui doit jouer le prochain coup*/
-	protected short joueurActuel;
-	/** Le score en cours du joueur Noir*/
-	protected short scoreNoir;
-	/** Le score en cours du joueur Blanc*/
-	protected short scoreBlanc;
-	/** Numero du coup jouee.
-	* Le premier mouvement est le numero 0
-	*/
+public class Partie {
+	protected Joueur[] joueurs; // permet de gerer plus de 2 joueurs.
+	protected Plateau plateau; // 61 cases contenant soit une bille soit null (empty)
+	protected Mouvement[] coup;
+/**
+ * terminee est effectivement utile car on peut changer les conditions de victoire a l'interieur d'une partie.	
+ */
+	protected boolean terminee;
+	protected String variante;
 	protected int numCoup;
-	/** Tous les mouvements sont stockes dans ce tableau*/
-	protected Mouvement [] listeCoups;
-	/** Le plateau de jeu associe a la partie*/
-	protected Plateau plateau;
+
+	public Partie(/*...*/) {
+
+/**
+ * Le premier mouvement est le numero 0		
+ */
 
 
+		joueurs[1] = new Joueur("pseudo");
+		joueurs[2] = new Ia("parametre"); 
+/* le plateau crée un processus pour l'ia afin de répondre à ses requetes (liste des coups disponibles, par exemple). Tant que l'ia n'a pas reçu de réponse, elle peut peut-être utiliser une autre méthode de recherche par exemple ?...
+*/
+		plateau = new Plateau(); // initialise les valeurs des vecteurs
 		
-	/** Constructeur sans plateau, un nouveau plateau de jeu est initialisee au debut de la partie.
-	*
-	* @param nbJ Nombre de joueur dans la partie
-	*/
-	public Partie(){
-		this.scoreBlanc = 0;
-		this.scoreNoir = 0;
-		this.numCoup = 0;
-		this.plateau = new Plateau();
-		this.joueurActuel = NOIR;
+			while(!(terminee)) {
+				coup=lireCoup(); // on attend que le joueur envoie son coup. (cense etre bloquant)
+				// maintenant qu'on a bien recu le coup, il faut recuperer la liste des Billes et le vecteur (pas besoin de verifier la validite du coup)
+				plateau.joue(coup);
+				// il faut maintenant envoyer le coup a tous les clients pour qu'ils le traduisent et l'appliquent.
+			}
 	}
-	
-	/** Lance une partie */
-	public void lancerPartie(){
-		
+
+	private Mouvement[] lireCoup() {
+// ici il faut recuperer le string envoye par le client : listeBillesABouger;vecteur
+// comme chaque element de listeBillesABouger est code sur 2 caracteres, on doit diviser par 2 pour obtenir le nombre de billes, et donc la longueur du tableau
+// on utilise la correspondance de la Hashtable pour traduire en notation int l'emplacement de la bille, puis on applique le vecteur.
+		int nombreBilles = 5;
+		Mouvement[] m;
+		m = new Mouvement[nombreBilles];
+// on doit maintenant initialiser les proprietes du mouvement de cette bille pour que plateau.joue(coup) puisse fonctionner.
+		return m;
 	}
-	
-	/** Renvoyer le joueur actuel (BLANC ou NOIR)
-	*
-	* @return le joueur actuel
-	*/
-	public short getJoueurActuel(){
-		return this.joueurActuel;
-	}
-	
-	/** Met a jour le score si une bille a ete ejectee
-	*
-	* @param p le plateau de jeu sur lequel ou joue la partie
-	*/
-	public void actualiserScore(Plateau p){
-		if (p.tomber() == Plateau.NOIR)
-			scoreBlanc++;
-		else if (p.tomber() == Plateau.BLANC)
-			scoreNoir++;
-	}
-	
-	/** Change le joueurActuel*/
-	public void changerJoueur(){
-		if (joueurActuel == Partie.NOIR)
-			joueurActuel = Partie.BLANC;
-		else
-			joueurActuel = Partie.NOIR;
-	}
-	
-	/** A MODIFIER: affiche le résultat en console*/
-	public boolean terminer(){
-		if (scoreBlanc == 6){
-			System.out.println("Le blanc gagne");
-			return true;
-		}
-		else if (scoreNoir == 6){
-			System.out.println("Le noir gagne");
-			return true;
-		}
-		else
-			return false;
-			
-	}
-	
 }

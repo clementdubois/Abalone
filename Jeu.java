@@ -1,17 +1,21 @@
 /** 
-*  Classe principale.
-*  Comment faire des tests dans le main (commentaires à faire évoluer avec l'avancement du projet)
-*  Creer un nouveau plateau de jeu :   Plateau plateau = new Plateau();
-*  Afficher l'etat du plateau avant le deplacement : plateau.afficher();
-*  Tester un deplacement : plateau.deplacer(Plateau.DIRECTION, numBille1, numBille2, numBille3);   =>si moins de 3 billes concerné par le deplacement mettre les valeur de bille3 et bille2 a -1
-*  Afficher l'etat du plateau après le deplacement : plateau.afficher();
+ * 
 */
 
 public class Jeu{
-	public static void main(String argc[]){
-			PartieConsole p = new PartieConsole();
-			p.lancerPartie();
-					
-
+	static Partie p[];	// static ou pas ?
+	public static void main(String args[]){
+		
+		
+/**
+ * Cela va creer le serveur Partie qui ecoutera les joueurs chacun leur tour.
+ * D'ailleurs, ce systeme va surement permettre aux joueurs de definir un coup en fonction d'un autre.
+ * (Si le gars joue ca, alors jouer automatiquement ca...)		
+ */
+		p[1] = new Partie(/*"blitz", "2 joueurs", "pseudonymeJoueur", "ia", "marguerite belge"*/);
+/** 
+ * On remarquera que l'on a pas precise le nom du joueur puisque c'est gere avec un champ joueurCourant dans la classe Partie : permet le jeu a� + que 2. 
+ * Autre remarque : le vecteur s'applique a la 1ere bille mais s'appliquera ensuite a chacune des billes qu'il rencontrera. 
+ */
 	}
 }
