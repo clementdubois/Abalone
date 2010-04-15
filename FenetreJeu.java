@@ -15,7 +15,7 @@ public class FenetreJeu extends JFrame{
 
 
 
-    //			La déclaration pour le menu de la JMenuBar
+    //La déclaration pour le menu de la JMenuBar
     private JMenuBar menuBar = new JMenuBar();
 
     private JMenu partie = new JMenu("Partie"),
