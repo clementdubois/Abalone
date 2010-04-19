@@ -5,15 +5,17 @@ import javax.swing.*;
 
 public class FenetreJeu extends JFrame{
 
-	private Panneau pan = new Panneau();
+	private Panneau pan;
     private JPanel container = new JPanel();
-    private int compteur = 0;
-    private boolean animated = true;
-    private boolean backX, backY;
+    // private int compteur = 0;
+    // private boolean animated = true;
+    // private boolean backX, backY;
     private int x,y ;
-    private Thread t;
+    // private Thread t;
 
-
+	//Les deux variables de taille de fenetre
+	private final static int LARGEUR=558;
+	private final static int HAUTEUR=650;
 
     //La déclaration pour le menu de la JMenuBar
     private JMenuBar menuBar = new JMenuBar();
@@ -37,7 +39,7 @@ public class FenetreJeu extends JFrame{
     private ButtonGroup bg = new ButtonGroup();
 
 
-    //			La déclaration pour le menu contextuel 
+    //	La déclaration pour le menu contextuel 
     private JPopupMenu jpm   = new JPopupMenu();
 
     private JMenuItem launch = new JMenuItem("Lancer la partie");	            		
@@ -45,7 +47,7 @@ public class FenetreJeu extends JFrame{
 
 
 
-    //				ON CRÉE DES LISTENER GLOBAUX
+    //ON CRÉE DES LISTENER GLOBAUX
     private StopPartieListener  stopPartie  = new StopPartieListener();
     private StartPartieListener startPartie = new StartPartieListener();
 
@@ -71,14 +73,15 @@ public class FenetreJeu extends JFrame{
 	
 
     public FenetreJeu(){
-			super("Fenetre");
+			super();
             this.setTitle("Abalone");
-            this.setSize(800,600);
+            this.setSize(LARGEUR,HAUTEUR);
+			this.setResizable(false);
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             this.setLocationRelativeTo(null);
-			
-            container.setBackground(Color.white);
             container.setLayout(new BorderLayout());
+			this.pan = new Panneau();
+			pan.repaint();
 
             //On initialise le menu stop
             stop.setEnabled(false);
@@ -104,7 +107,7 @@ public class FenetreJeu extends JFrame{
             });
 
             container.add(pan, BorderLayout.CENTER);
-
+			this.getContentPane().add(container);
             this.setContentPane(container);
             this.initMenu();
             this.initToolBar();
@@ -144,7 +147,7 @@ public class FenetreJeu extends JFrame{
     private void initMenu(){
     	//Menu partie
     	//Ajout du listener pour lancer la partie
-    	//ATTENTION LE LISTENER EST GLOBAL ! ! ! ! 
+    	//Attention, le listener est global
     	lancer.addActionListener(startPartie);
     	//On attribue l'accélerateur c
     	lancer.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L,
@@ -152,11 +155,11 @@ public class FenetreJeu extends JFrame{
     	partie.add(lancer);
 
     	//Ajout du listener pour arrêter la partie
-    	//LISTENER À CHANGER ICI AUSSI
+    	//listener à changer ici aussi
     	arreter.addActionListener(stopPartie);
     	arreter.setEnabled(false);
     	arreter.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A,
-    												KeyEvent.CTRL_DOWN_MASK + KeyEvent.SHIFT_DOWN_MASK));
+    												  KeyEvent.CTRL_DOWN_MASK + KeyEvent.SHIFT_DOWN_MASK));
     	partie.add(arreter);
 
     	partie.addSeparator();
@@ -172,8 +175,8 @@ public class FenetreJeu extends JFrame{
     	bg.add(moyen);
     	bg.add(maitre);
 
-    	difficulte.add(moyen);
-    	difficulte.add(facile);    	
+    	difficulte.add(facile);
+    	difficulte.add(moyen);    	
     	difficulte.add(difficile);
     	difficulte.add(maitre);
     	
@@ -211,13 +214,12 @@ public class FenetreJeu extends JFrame{
     	this.setJMenuBar(menuBar);
     }
 
-	private void go(){
-		 
-	}
+	// private void go(){
+	// 	 
+	// }
 
-	/**
-	 * Écouteur du menu Lancer
-	 */
+
+	 // Écouteur du menu Lancer
 	public class StartPartieListener implements ActionListener{
 
 		public void actionPerformed(ActionEvent arg0) {
@@ -230,24 +232,22 @@ public class FenetreJeu extends JFrame{
 				lancer.setEnabled(false);
 				arreter.setEnabled(true);
 
-				//ON AJOUTE L'INSTRUCTION POUR LE MENU CONTEXTUEL
-				//************************************************
+				//instruction pour le menu contextuel
 				launch.setEnabled(false);
 				stop.setEnabled(true);
 
 				play.setEnabled(false);
 				cancel.setEnabled(true);
 
-				animated = true;
-				t = new Thread(new PlayPartie());
-				t.start();			
+				// animated = true;
+				// t = new Thread(new PlayPartie());
+				// t.start();			
 			}
 		}		
 	}
 
-	/**
-	 * Écouteur du menu Quitter
-	 */
+
+	 // Écouteur du menu Quitter
 	class StopPartieListener  implements ActionListener{
 
 		public void actionPerformed(ActionEvent e) {
@@ -258,13 +258,12 @@ public class FenetreJeu extends JFrame{
 
 			if(option != JOptionPane.NO_OPTION && option != JOptionPane.CANCEL_OPTION && option != JOptionPane.CLOSED_OPTION)
 			{
-				animated = false;
+				// animated = false;
 				//On remplace nos bouton par nous MenuItem
 				lancer.setEnabled(true);
 				arreter.setEnabled(false);
 
-				//ON AJOUTE L'INSTRUCTION POUR LE MENU CONTEXTUEL
-				//************************************************
+				//instruction pour le menu contextuel
 				launch.setEnabled(true);
 				stop.setEnabled(false);
 
@@ -275,14 +274,13 @@ public class FenetreJeu extends JFrame{
 		}		
 	}	
 
-	/**
-	 * Lance le thread.
-	 */
-	class PlayPartie implements Runnable{
-		public void run() {
-			go();			
-		}		
-	}	
+
+	 // Lance le thread.
+	// class PlayPartie implements Runnable{
+	// 	public void run() {
+	// 		go();			
+	// 	}		
+	// }	
 
 
 }
