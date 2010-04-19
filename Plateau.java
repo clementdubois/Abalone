@@ -3,9 +3,29 @@ public class Plateau {
 	private Case[] cases; // dans Case on retrouvera les cases adjacentes
 	
 	public Plateau() {
+		initialiser();
 		// ici on utilisera mon algorithme pour initialiser les valeurs des cases[] adjacentes : cf schema
 	}
-	public boolean joue(Mouvement[] m) {
+
+	
+	public void initialiser(){
+		 cases = new Case[62];
+
+		//On place les 14 pions de chaques couleurs sur le plateau et on indique les cases vides
+		for (int i = 1; i <= 61; i++){
+		       if (i < 17 && i != 12 && i != 13)
+		          cases[i].setBille(new Bille(Bille.BLANC))
+		       else if (i > 45 && i != 50 && i != 49)
+		          cases[i].setBille(new Bille(Bille.NOIR))
+		       else
+		          cases[i].setContient();//Met la case a Case.VIDE
+		}
+
+		//Pour chaque pion on enregistre ces points adjacents
+		//caseAdjacente();
+	}
+	
+	public boolean joue(Mouvement m) {
 		int i = 0;
 		while(i < m.length) { // on veut appliquer le mouvement a chaque bille.
 			cases[m[i].getCoordonneesArrivee()].contiensBille();
@@ -20,7 +40,9 @@ public class Plateau {
 	* Afficher le plateau de jeu a la console
 	* @deprecated
 	*/
-/*
+
+	
+	
 	public void afficher(){
 		int numCase = 1;
 		
@@ -36,27 +58,27 @@ public class Plateau {
 				
 			if(i%2 == 0 && i!= 4)
 				System.out.print("  ");
+				
 			for(int j=0; (j< (5+i) && i<5) || (j < (13-i) && i>=5 ) ; j++ ){
 				
-				if (plateau[numCase][0] == NOIR)
+				if (this.cases[numCase].getContient() == Bille.NOIR)
 					System.out.print("N   ");
-				else if (plateau[numCase][0] == BLANC)
+				else if (this.cases[numCase].getContient() == Bille.BLANC)
 					System.out.print("B   ");
 				else
 					System.out.print("V   ");
 				
 				numCase++;
-			}	
+			}
 			
+			System.out.println("Bille Ejecte lors du mouvement : "+this.cases[0]);
+
 			System.out.println();
-		}
-		System.out.println("Bille Ejecte lors du mouvement : "+this.plateau[Plateau.TROU][Plateau.ETAT]);
-		
-		System.out.println();
-		System.out.println();
-		
+			System.out.println();
+			
 	}
-*/	
+
+
 	/**
 	* Ajoute a chaque case du plateau ces 6 cases adjacentes.<br />
 	* Cela sera pratique pour savoir les deplacements possibles ainsi que pour effectuer ces deplacements.
