@@ -10,6 +10,9 @@ public static final int TAILLEIM = 62;
 
 Image neant,casevide,pionN,pionB,pionBS,pionNS;
 
+	/**
+	* Constructeur du panel.
+	*/
 	public Panneau(){
 	
 			Toolkit kit=Toolkit.getDefaultToolkit();
@@ -31,7 +34,9 @@ Image neant,casevide,pionN,pionB,pionBS,pionNS;
 
 	}
 	
-	
+	/**
+	* Methode pour afficher le plateau et les billes.
+	*/
 	public void paintComponent(Graphics g){
 		int i,j;
 		//Pour chaque ligne
