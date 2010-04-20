@@ -1,4 +1,4 @@
-public class Case {
+Stana Katicpublic class Case {
 /**
  * On va initialiser une bille sans aucune caracteristique sur chaque case, s'il n'est pas possible de faire autrement.
  * Ce seront de fausses billes, des billes qu'on utilisera pas.

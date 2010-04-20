@@ -30,6 +30,11 @@ public class Plateau {
 		//caseAdjacente();
 	}
 	
+	/** Rendre effectif un mouvement sur le plateau.
+	* 
+	* @param m le mouvement a effectuer
+	* 
+	 */
 	public boolean joue(Mouvement m) {
 		int i = 0;
 		while(i < m.length) { // on veut appliquer le mouvement a chaque bille.

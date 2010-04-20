@@ -1,5 +1,5 @@
 
-/*
+/**
 * une classe Bille est-elle vraiment utile finalement, dans le sens ou les vecteurs sont appliques a un tableau et non a des billes ?
 */
 public class Bille {
