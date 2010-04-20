@@ -26,6 +26,8 @@ Image neant,casevide,pionN,pionB,pionBS,pionNS;
 			tracker.addImage(pionN,0);
 			try {tracker.waitForID(0);}
 			catch(InterruptedException e){}
+			
+			this.setBackground(Color.red);
 
 	}
 	
@@ -33,42 +35,78 @@ Image neant,casevide,pionN,pionB,pionBS,pionNS;
 	public void paintComponent(Graphics g){
 		int i,j;
 		//Pour chaque ligne
-		for (i=0;i<NBCASES;i++){
+		for (i=1; i<=NBCASES; i++){
 			//pour chaque colonne
-			for (j=0;j<NBCASES;j++){
-				if (false){
+			for (j=1; j<=NBCASES; j++){
+				if ( i == 1 && j == 1 || i == 1 && j == 2 || i == 1 && j == 8 || i == 1 && j == 9 ){
+					g.drawImage(this.neant,j*TAILLEIM,i*TAILLEIM,null);
+				}
+				
+				else if ( i == 2 && j == 1 || i == 2 && j == 8 || i == 2 && j == 9){
+					g.drawImage(this.neant,j*TAILLEIM,i*TAILLEIM,null);
+				}
+				
+				else if ( i == 3 && j == 1 || i == 3 && j == 9 ){
+					g.drawImage(this.neant,j*TAILLEIM,i*TAILLEIM,null);
+				}
+				
+				else if ( i == 4 && j == 9 ){
+					g.drawImage(this.neant,j*TAILLEIM,i*TAILLEIM,null);
+				}
+				
+				else if ( i == 6 && j == 9 ){
 					g.drawImage(this.neant,j*TAILLEIM,i*TAILLEIM,null);
 				}
 
-				else if(i >= 3 && i < 6 && i%2 == 0){
-					g.drawImage(this.casevide,j*TAILLEIM,i*TAILLEIM,null);
+				else if ( i == 7 && j == 1 || i == 7 && j == 9){
+					g.drawImage(this.neant,j*TAILLEIM,i*TAILLEIM,null);
 				}
 				
-				else if(i >= 3 && i < 6 && i%2 == 1){
-					g.drawImage(this.casevide,j*TAILLEIM+(TAILLEIM/2),i*TAILLEIM,null);
-				}
-
-				else if(i < 3 && i%2 == 0){
-					g.drawImage(this.pionB,j*TAILLEIM,i*TAILLEIM,null);
-				}
-				else if(i < 3 && i%2 == 1){
-					g.drawImage(this.pionB,j*TAILLEIM+(TAILLEIM/2),i*TAILLEIM,null);
-				}
-
-				else if(i >= 6 && i%2 == 0){
-					g.drawImage(this.pionN,j*TAILLEIM,i*TAILLEIM,null);
+				else if ( i == 8 && j == 1 || i == 8 && j == 8 || i == 8 && j == 9){
+					g.drawImage(this.neant,j*TAILLEIM,i*TAILLEIM,null);
 				}
 				
-				else if(i >= 6 && i%2 == 1){
-					g.drawImage(this.pionN,j*TAILLEIM+(TAILLEIM/2),i*TAILLEIM,null);
+				else if ( i == 9 && j == 1 || i == 9 && j == 2 || i == 9 && j == 8 || i == 9 && j == 9 ){
+					g.drawImage(this.neant,j*TAILLEIM,i*TAILLEIM,null);
+				}
+
+				else if ( i == 3 && j == 2 || i == 3 && j == 3 || i == 3 && j == 7 || i == 3 && j == 8 ){	
+					g.drawImage(this.casevide,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
+				}
+				
+				else if ( i == 7 && j == 2 || i == 7 && j == 3 || i == 7 && j == 7 || i == 7 && j == 8 ){	
+					g.drawImage(this.casevide,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
+				}
+
+				else if(i >= 4 && i < 7 && i%2 == 1){
+					g.drawImage(this.casevide,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
+				}
+				
+				else if(i >= 4 && i < 7 && i%2 == 0){
+					g.drawImage(this.casevide,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
+				}
+
+				else if(i < 4 && i%2 == 1){
+					g.drawImage(this.pionB,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
+				}
+				else if(i < 4 && i%2 == 0){
+					g.drawImage(this.pionB,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
+				}
+
+				else if(i >= 7 && i%2 == 1){
+					g.drawImage(this.pionN,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
+				}
+				
+				else if(i >= 7 && i%2 == 0){
+					g.drawImage(this.pionN,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
 				}
 
 				else if(false){
-					g.drawImage(this.pionBS,j*TAILLEIM,i*TAILLEIM,null);
+					g.drawImage(this.pionBS,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
 				}
 
 				else if(false){
-					g.drawImage(this.pionNS,j*TAILLEIM,i*TAILLEIM,null);
+					g.drawImage(this.pionNS,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
 				}
 			}
 		}

@@ -64,7 +64,7 @@ public class FenetreJeu extends JFrame{
     					stat   = new JButton(new ImageIcon("images/stat.jpg"));
 
     private Color fondBouton = Color.white;
-
+	private Color couleurFond = new Color(63,92,106);
 
 	public static void main(String[] args){
 		FenetreJeu f = new FenetreJeu();
@@ -79,6 +79,7 @@ public class FenetreJeu extends JFrame{
 			this.setResizable(false);
             this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
             this.setLocationRelativeTo(null);
+			container.setBackground(couleurFond);
             container.setLayout(new BorderLayout());
 			this.pan = new Panneau();
 			pan.repaint();

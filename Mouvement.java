@@ -28,6 +28,7 @@ public class Mouvement {
 	/** Vecteur en haut a gauche*/
 	public final byte HG = 5;
 	
+	/** Est ce qu'il s'agit d'un vrai mouvement (ou d'une edition)*/
 	public boolean getEstMouvement(){
 		return estMouvement;
 	}
