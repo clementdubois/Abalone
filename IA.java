@@ -1,10 +1,10 @@
 
-public class Ia extends Joueur {
+public class IA extends Joueur {
 	private String nom;
-	public Ia() {
+	public IA() {
 		
 	}
-	public Ia(String nom) {
+	public IA(String nom) {
 		this.nom = nom;
 	}
 }

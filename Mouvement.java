@@ -1,7 +1,7 @@
 /** Code un mouvement
  * 
- * 
- * 
+ * La premiere bille deplace et la derniere (s'il s'agit d'une poussee la premiere bille = la deuxieme bille).
+ * La direction du mouvement.
  */
 
 public class Mouvement {
@@ -16,32 +16,110 @@ public class Mouvement {
 	private byte vecteur;
 	
 	/** Vecteur en haut a gauche*/
-	public final byte HD = 0;
+	public static final byte HD = 0;
 	/** Vecteur a droite*/
-	public final byte DD = 1;
+	public static final byte DD = 1;
 	/** Vecteur en bas a droite*/
-	public final byte BD = 2;
+	public static final byte BD = 2;
 	/** Vecteur en bas a gauche*/
-	public final byte BG = 3;
+	public static final byte BG = 3;
 	/** Vecteur a gauche*/
-	public final byte GG = 4;
+	public static final byte GG = 4;
 	/** Vecteur en haut a gauche*/
-	public final byte HG = 5;
+	public static final byte HG = 5;
 	
+	/** Renvoie vrai s'il s'agit d'un vrai deplacement et faux s'il s'agit d'une edition.
+	*
+	* @return true c'est un vrai deplacement
+	* @return false c'est une edition
+	*/
 	public boolean getEstMouvement(){
 		return estMouvement;
 	}
 	
+	/** Renvoie la premiere bille du deplacement.
+	*
+	* @return la premiere bille du deplacement
+	*/
 	public byte getPremiere(){
 		return premiere;
 	}
 	
+	/** Renvoie la derniere bille du deplacement.
+	*
+	* @return la derniere bille du deplacement
+	*/
 	public byte getDerniere(){
 		return derniere;
 	}
 	
+	/** Renvoie la direction du deplacement.
+	*
+	* @return la direction du deplacement
+	*/
 	public byte getVecteur(){
 		return vecteur;
 	}
 	
+	/**
+	* Verifie qu'on mouvement est valide.
+	* plateau.cases[x]  ==> la BILLE numero x du plateau.
+	* plateau.cases[x].vecteur ==> le NUMERO de la bille adjacente a la bille x et de direction vecteur.
+	* plateau.cases[plateau.cases[x].vecteur] ==> la BILLE adjacente a la bille x et de direction vecteur.
+	*
+	* <strong>ATTENTION!!!</strong> : reflechir au cas de plus de deux joueurs.
+	* @param p Le plateau de jeu sur lequel on veux verifier que le mouvement est possible.
+	* @param couleur La couleur du joueur actuel (NOIR ou BLANC)
+	* @return true si le mouvement est autorise, false si le mouvement est interdit
+	*/
+	public boolean valider(Plateau p){
+		Plateau plateau = p;
+		/* La derniere bille testé*/
+		byte derniereBille = this.premiere;
+		/* Le contenu de la derniere bille testé*/
+		byte contenuBille = plateau.cases[premiere].getContenu();
+		/* La couleur de la bille adverse adjacente qui va peut etre etre deplacee*/
+		byte couleurAdverse;
+		byte cptBilleMoi; //Compteur du nombre de bille que je deplace
+		byte cptBilleLui; //Compteur du nombre de bille adverse qui vont etre deplacees
+		
+		//On calcul le nombre de bille poussées et on regarde la derniere de nos billes poussee, derniereBille vaudra la derniere de nos billes poussée
+		for(cptBilleMoi = 1; plateau.cases[plateau.cases[derniereBille].getAdjacent(vecteur)].getContenu() == contenuBille; cptBilleMoi++)
+			derniereBille = plateau.cases[derniereBille].getAdjacent(vecteur);
+		
+		//Si c'est une poussee (si on ne touche qu'une bille)
+		if(this.derniere == this.premiere){	
+			//On teste la case juste apres nos billes
+			//Si suivante vide et je pousse maximum trois de mes billes : OK
+			if (plateau.cases[plateau.cases[derniereBille].getAdjacent(vecteur)].getContenu() == Case.VIDE &&
+			         cptBilleMoi <= 3)
+				return true;
+			// Si on fait face a une bille du camp adverse (suivante ni VIDE ni TROU)
+			else if(plateau.cases[plateau.cases[derniereBille].getAdjacent(vecteur)].getContenu() != Plateau.TROU &&
+			        cptBilleMoi <= 3 ){ 
+				//On regarde la couleur de la bille adverse a pousser
+				couleurAdverse = plateau.cases[plateau.cases[derniereBille].getAdjacent(vecteur)].getContenu();
+				//On calcule le nombre de billes adverse qui vont être deplacées
+				for(cptBilleLui = 0; plateau.cases[plateau.cases[derniereBille].getAdjacent(vecteur)].getContenu() == couleurAdverse; cptBilleLui++)
+					derniereBille = plateau.cases[derniereBille].getAdjacent(vecteur);
+				
+			  //Je dois etre en superiorite numerique pour valider le mouvement
+				if(cptBilleMoi > cptBilleLui)
+					//Aucune autre bille ne doit se trouver derriere les billes poussees car elle bloquerai le passage
+					if(plateau.cases[plateau.cases[derniereBille].getAdjacent(vecteur)].getContenu() == Case.VIDE ||
+					   plateau.cases[plateau.cases[derniereBille].getAdjacent(vecteur)].getContenu() == Plateau.TROU )
+						return true;
+			}
+		}else{//Deplacement lateral
+			//Il suffit de verifier que toutes les cases visees sont vides
+			System.out.println("Pas une poussee");
+			/* A FAIRE: calculer le numero de la bille du mileu si cptBilleMoi == 3 et tester comme les deux autres*/
+			if (plateau.cases[plateau.cases[this.premiere].getAdjacent(vecteur)].getContenu() == Case.VIDE &&
+			    plateau.cases[plateau.cases[this.derniere].getAdjacent(vecteur)].getContenu() == Case.VIDE)
+				return true;
+		}
+		//Si on arrive là c'est que c'est un mauvais mouvement
+		return false;
+	}
+
 }

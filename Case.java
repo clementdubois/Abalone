@@ -13,19 +13,22 @@ public class Case {
 /**
  * 	le numero de cette case
  */
-	private int numero;
+	private byte numero;
 	
-	private final static int VIDE = 0;
+	/** Si une case est vide (contenu de la case)*/
+	public final static byte VIDE = 0;
+	
+	
 /**
  *on garde en memoire les coordonnees des cases adjacentes	
  */
-	private int hg, gg, bg, hd, dd, bd;
+	private byte hd, dd, bd, bg, gg, hg;
 	
 /**
  * 	fausse bille : false
  */
 	
-	public Case(int numero, boolean placerBille) {
+	public Case(byte numero, boolean placerBille) {
 		this.numero = numero;
 		this.contientBille = placerBille;
 		if(placerBille) {
@@ -34,13 +37,13 @@ public class Case {
 		}
 		else {
 			contientBille = false;
-			bille = new Bille(); // fausse bille
+			bille = new Bille(this.numero); // fausse bille
 		}
 	}
 /**
  * Ce constructeur permet d'attribuer les cases adjacentes a une case lors de sa creation..	
  */
-	public Case(int numero, int HG, int GG, int BG, int HD, int DD, int BD) {
+	public Case(byte numero, byte HG, byte GG, byte BG, byte HD, byte DD, byte BD) {
 		this.numero = numero;
 		this.hg 	= HG;
 		this.gg 	= GG;
@@ -51,7 +54,7 @@ public class Case {
 	}
 	
 	/** Récupère le contenu d'une case (vide ou bille blanche ou bille noire)*/
-	public int getContient(){
+	public byte getContenu(){
 		if (!contientBille)
 			return this.VIDE;
 		else 
@@ -62,7 +65,7 @@ public class Case {
 	* Pas de parametre: on met une case vide
 	*/
 	public void setContient(){
-			this.contienBille = false;
+			this.contientBille = false;
 	}
 	
 	public void setBille(Bille b) {
@@ -74,7 +77,7 @@ public class Case {
 			return this.bille;
 	}
 	
-	public int getNumero() {
+	public byte getNumero() {
 		return this.numero;
 	}
 	
@@ -84,6 +87,26 @@ public class Case {
 	
 	public boolean getContientBille() {
 		return this.contientBille;
+	}
+	
+	/** Retourne le numero de la case qui est adjacente a this par le vecteur envoyee.
+	*
+	* @param vecteur de quelle case adjacente on veut savoir le numero
+	* @return le numero de la bonne case adjacente
+	*/
+	public byte getAdjacent(byte direction){
+		if(direction == Mouvement.HD)
+			return hd;
+		else if(direction == Mouvement.DD)
+			return dd;
+		else if(direction == Mouvement.BD)
+			return bd;
+		else if(direction == Mouvement.BG)
+			return bg;
+		else if(direction == Mouvement.GG)
+			return gg;
+		else
+			return hg;
 	}
 
 /*	
