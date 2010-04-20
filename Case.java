@@ -5,18 +5,17 @@ Stana Katicpublic class Case {
  * D'ou l'utilite de la propriete contientBille.
  */
 	private Bille bille;
-
 /**
  * contientBille permet de savoir si la case contient effectivement une bille jouable.
  * C'est lui qui doit etre mis à jour.	
  */
 	private boolean contientBille;
-
 /**
  * 	le numero de cette case
  */
 	private int numero;
 	
+	private final static int VIDE = 0;
 /**
  *on garde en memoire les coordonnees des cases adjacentes	
  */
@@ -51,29 +50,40 @@ Stana Katicpublic class Case {
 		this.bd 	= BD;
 	}
 	
-	public boolean setBille(Bille b) {
+	/** Récupère le contenu d'une case (vide ou bille blanche ou bille noire)*/
+	public int getContient(){
+		if (!contientBille)
+			return this.VIDE;
+		else 
+			return this.bille.getCouleur();
+	}
+	
+	/** Change le contenu d'une case (vide, bille blanche, bille noire)
+	* Pas de parametre: on met une case vide
+	*/
+	public void setContient(){
+			this.contienBille = false;
+	}
+	
+	public void setBille(Bille b) {
 		this.bille = b;
-		return true;
+		this.contientBille = true;
 	}
 	
 	public Bille getBille() {
-		return bille;
+			return this.bille;
 	}
 	
 	public int getNumero() {
 		return this.numero;
 	}
 	
-	public void contiensBille() {
-		contientBille = true;
+	public void setContientBille(boolean contient) {
+		this.contientBille = contient;
 	}
 	
-	public void contiensVide() {
-		contientBille = false;
-	}	
-	
-	public boolean contientBille() {
-		return contientBille;
+	public boolean getContientBille() {
+		return this.contientBille;
 	}
 
 /*	
