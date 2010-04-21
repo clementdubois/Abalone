@@ -71,13 +71,13 @@ public class FenetreJeu extends JFrame{
     private Color fondBouton = Color.white;
 	private Color couleurFond = new Color(63,92,106);
 
-	public static void main(String[] args){
-		FenetreJeu f = new FenetreJeu();
-		f.setVisible(true);	
-	}
+	// public static void main(String[] args){
+	// 	FenetreJeu f = new FenetreJeu();
+	// 	f.setVisible(true);	
+	// }
 	
 
-    public FenetreJeu(){
+    public FenetreJeu(Plateau plateau){
 			super();
             this.setTitle("Abalone");
             this.setSize(LARGEUR,HAUTEUR);
@@ -86,7 +86,7 @@ public class FenetreJeu extends JFrame{
             this.setLocationRelativeTo(null);
 			container.setBackground(couleurFond);
             container.setLayout(new BorderLayout());
-			this.pan = new Panneau();
+			this.pan = new Panneau(plateau);
 			pan.repaint();
 
             //On initialise le menu stop

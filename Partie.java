@@ -26,6 +26,8 @@ public class Partie {
 */
 		plateau = new Plateau(); // initialise les valeurs des vecteurs
 		
+		FenetreJeu f = new FenetreJeu(plateau);
+		
 			while(!(terminee)) {
 				coup=lireCoup(); // on attend que le joueur envoie son coup. (cense etre bloquant)
 				// maintenant qu'on a bien recu le coup, il faut recuperer la liste des Billes et le vecteur (pas besoin de verifier la validite du coup)

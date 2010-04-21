@@ -4,6 +4,12 @@ public class Plateau {
 	/** la case trou (0) dans la liste des cases, la numero 0 est celle reservee au trou */
 	public final static int TROU = 0;
 	
+	
+	public static void main(String args[]){
+		Plateau plateau = new Plateau();
+		FenetreJeu f = new FenetreJeu(plateau);
+	}	
+	
 	public Plateau() {
 		//On initialise le tableau de cases
 		this.cases = new Case[62];
