@@ -46,6 +46,19 @@ public class Plateau {
 		FenetreJeu f = new FenetreJeu(plateau);
 	}	
 	
+	/** Vecteur en haut a gauche*/
+	public static final byte HD = 0;
+	/** Vecteur a droite*/
+	public static final byte DD = 1;
+	/** Vecteur en bas a droite*/
+	public static final byte BD = 2;
+	/** Vecteur en bas a gauche*/
+	public static final byte BG = 3;
+	/** Vecteur a gauche*/
+	public static final byte GG = 4;
+	/** Vecteur en haut a gauche*/
+	public static final byte HG = 5;
+	
 	public Plateau() {
 		//On initialise le tableau de cases
 		this.cases = new Case[NB_CASES];
@@ -75,7 +88,7 @@ public class Plateau {
 						else if (i > 45 && i != 50 && i != 49)
 		          cases[i].setBille(new Bille(Bille.NOIR));
 		       else
-		          cases[i].setContient();//Met la case a Case.VIDE
+		          cases[i].setContenu(Case.VIDE);//Met la case a Case.VIDE
 		}
 	}
 	
@@ -96,6 +109,91 @@ public class Plateau {
 		return true;
 	}*/
 
+	/** Effectuer un mouvement */
+	public void effectuer(Mouvement m){
+		byte caseActuel = m.getPremiere();
+		byte caseSuivante;
+		byte contenuActuel = cases[caseActuel].getContenu();
+		byte contenuSuivant;
+
+		// Si on ne pousse qu'une bille c'est qu'il s'agit d'une poussée
+		if(m.getPremiere() == m.getDerniere()){
+			/*On POUSSE toute la ligne d'une case*/
+			caseSuivante = cases[caseActuel].getAdjacent(m.getVecteur()); //Il y a forcement au moins une case suivante sinon il s'agirai d'un suicide
+			contenuSuivant = cases[caseSuivante].getContenu();
+			cases[m.getPremiere()].setContenu(Case.VIDE);
+
+			while(contenuActuel != Case.VIDE && caseActuel != TROU){
+				cases[caseSuivante].setContenu(contenuActuel);
+
+				caseActuel = caseSuivante;
+				caseSuivante = cases[caseActuel].getAdjacent(m.getVecteur());
+				contenuActuel = contenuSuivant;
+				contenuSuivant = cases[caseSuivante].getContenu();
+			}
+		}//Sinon, il ya a au moins deux billes et la direction du mouvement est différent de l'alignement des bille, c'est un mouvement lateral
+		else{
+			/* on prend la bille 1 et on la deplace sur la case vide,
+				on fait pareil avec la deuxième et la troisième si elle existe.
+				Les billes deplacées sont forcément de la même couleur, il est donc inutile de redefinir le contenu pour chaque bille
+				Les cases destinations sont forcément vide.*/
+			
+			cases[m.getPremiere()].setContenu(Case.VIDE);	
+			cases[m.getDerniere()].setContenu(Case.VIDE);	
+			cases[cases[m.getPremiere()].getAdjacent(m.getVecteur())].setContenu(contenuActuel); 			
+			cases[cases[m.getDerniere()].getAdjacent(m.getVecteur())].setContenu(contenuActuel);
+			//A FAIRE : La case intermédiaire
+		}
+
+	}
+	
+	/** Renvoie le numero de la case intermediaire entre deux billes si cette case existe.
+	*
+	* @param premiere la premiere bille.
+	* @param derniere la derniere bille.
+	* @return le numero de la bille au milieu ou VIDE si il n'y a pas de case intermediaire
+	*/
+	private byte caseIntermediaire(byte premiere, byte derniere){
+		// Si c'est la meme bille, il n'y a pas d'intermediaire
+		if(premiere == derniere)
+			return 0;
+		//Si deuxieme est directement adjacent a deuxieme, il n'y a pas d'intermediaire
+		else if( cases[premiere].getAdjacent(HG) == derniere ||
+						 cases[premiere].getAdjacent(HD) == derniere ||
+						 cases[premiere].getAdjacent(DD) == derniere ||
+						 cases[premiere].getAdjacent(BD) == derniere ||
+						 cases[premiere].getAdjacent(BG) == derniere ||
+						 cases[premiere].getAdjacent(GG) == derniere
+						)
+			return 0;
+		//Il y a forcément une case intermédiaire
+		else{
+			if(cases[premiere].getAdjacent(HG) == cases[derniere].getAdjacent(BD) )
+				return cases[premiere].getAdjacent(HG);
+				
+			else if(cases[premiere].getAdjacent(HD) == cases[derniere].getAdjacent(BG) )
+				return cases[premiere].getAdjacent(HD);
+			
+			else if(cases[premiere].getAdjacent(DD) == cases[derniere].getAdjacent(GG) )
+				return cases[premiere].getAdjacent(DD);
+				
+			else if(cases[premiere].getAdjacent(BD) == cases[derniere].getAdjacent(HG) )
+				return cases[premiere].getAdjacent(BD);
+				
+			else if(cases[premiere].getAdjacent(BG) == cases[derniere].getAdjacent(HD) )
+				return cases[premiere].getAdjacent(BG);
+				
+			else if(cases[premiere].getAdjacent(GG) == cases[derniere].getAdjacent(DD) )
+				return cases[premiere].getAdjacent(GG);
+			
+			else{
+				System.out.println("Erreur de caseIntermediaire, elle ne devrait jamais entrer dans ce else");
+				return 0;
+			}
+			
+		}
+		
+	}
 	
 	/** Affiche l'etat du plateau en console*/
 	public void afficher(){

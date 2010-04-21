@@ -26,6 +26,8 @@ public class Jeu{
 			System.out.println(p.cases[1].getAdjacent(i));
 		Mouvement m = new Mouvement((byte)(1), (byte)(1), Mouvement.BG);
 		valide = m.valider(p);
+		p.effectuer(m);
+		p.afficher();
 		
 		
 		if(valide)
