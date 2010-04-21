@@ -8,13 +8,16 @@ public class Panneau extends JPanel {
 public static final int NBCASES  =  9;
 public static final int TAILLEIM = 62;
 
+Plateau plateau;
+
 Image neant,casevide,pionN,pionB,pionBS,pionNS;
 
 	/**
 	* Constructeur du panel.
 	*/
-	public Panneau(){
-	
+	public Panneau(Plateau plateau){
+		
+			this.plateau = plateau;
 			Toolkit kit=Toolkit.getDefaultToolkit();
 			MediaTracker tracker=new MediaTracker(this);
 			this.neant	  = kit.getImage("images/neant.jpg");
@@ -30,7 +33,6 @@ Image neant,casevide,pionN,pionB,pionBS,pionNS;
 			try {tracker.waitForID(0);}
 			catch(InterruptedException e){}
 			
-			this.setBackground(Color.red);
 
 	}
 	
@@ -47,63 +49,71 @@ Image neant,casevide,pionN,pionB,pionBS,pionNS;
 					g.drawImage(this.neant,j*TAILLEIM,i*TAILLEIM,null);
 				}
 				
-				else if ( i == 2 && j == 1 || i == 2 && j == 8 || i == 2 && j == 9){
+				else if ( i == 2 && j == 1 || i == 2 && j == 8 || i == 2 && j == 9 || i == 3 && j == 1 || i == 3 && j == 9){
 					g.drawImage(this.neant,j*TAILLEIM,i*TAILLEIM,null);
 				}
 				
-				else if ( i == 3 && j == 1 || i == 3 && j == 9 ){
+				else if ( i == 4 && j == 9 || i == 6 && j == 9 || i == 7 && j == 1 || i == 7 && j == 9){
 					g.drawImage(this.neant,j*TAILLEIM,i*TAILLEIM,null);
 				}
 				
-				else if ( i == 4 && j == 9 ){
-					g.drawImage(this.neant,j*TAILLEIM,i*TAILLEIM,null);
-				}
-				
-				else if ( i == 6 && j == 9 ){
+				else if ( i == 8 && j == 1 || i == 8 && j == 8 || i == 8 && j == 9 || i == 9 && j == 1 || i == 9 && j == 2 || i == 9 && j == 8 || i == 9 && j == 9){
 					g.drawImage(this.neant,j*TAILLEIM,i*TAILLEIM,null);
 				}
 
-				else if ( i == 7 && j == 1 || i == 7 && j == 9){
-					g.drawImage(this.neant,j*TAILLEIM,i*TAILLEIM,null);
-				}
-				
-				else if ( i == 8 && j == 1 || i == 8 && j == 8 || i == 8 && j == 9){
-					g.drawImage(this.neant,j*TAILLEIM,i*TAILLEIM,null);
-				}
-				
-				else if ( i == 9 && j == 1 || i == 9 && j == 2 || i == 9 && j == 8 || i == 9 && j == 9 ){
-					g.drawImage(this.neant,j*TAILLEIM,i*TAILLEIM,null);
-				}
+				// else if ( i == 3 && j == 2 || i == 3 && j == 3 || i == 3 && j == 7 || i == 3 && j == 8 ){	
+				// 	g.drawImage(this.casevide,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
+				// }
+				// 
+				// else if ( i == 7 && j == 2 || i == 7 && j == 3 || i == 7 && j == 7 || i == 7 && j == 8 ){	
+				// 	g.drawImage(this.casevide,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
+				// }
+				// 
+				// else if(i >= 4 && i < 7 && i%2 == 1){
+				// 	g.drawImage(this.casevide,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
+				// }
+				// 
+				// else if(i >= 4 && i < 7 && i%2 == 0){
+				// 	g.drawImage(this.casevide,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
+				// }
+				// 
+				// else if(i < 4 && i%2 == 1){
+				// 	g.drawImage(this.pionB,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
+				// }
+				// else if(i < 4 && i%2 == 0){
+				// 	g.drawImage(this.pionB,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
+				// }
+				// 
+				// else if(i >= 7 && i%2 == 1){
+				// 	g.drawImage(this.pionN,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
+				// }
+				// 
+				// else if(i >= 7 && i%2 == 0){
+				// 	g.drawImage(this.pionN,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
+				// }
 
-				else if ( i == 3 && j == 2 || i == 3 && j == 3 || i == 3 && j == 7 || i == 3 && j == 8 ){	
-					g.drawImage(this.casevide,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
+				else if(plateau.cases[j].getContenu() == Bille.NOIR && i%2 == 1){
+				 	g.drawImage(this.pionN,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
 				}
 				
-				else if ( i == 7 && j == 2 || i == 7 && j == 3 || i == 7 && j == 7 || i == 7 && j == 8 ){	
-					g.drawImage(this.casevide,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
-				}
-
-				else if(i >= 4 && i < 7 && i%2 == 1){
-					g.drawImage(this.casevide,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
+				else if(plateau.cases[j].getContenu() == Bille.NOIR && i%2 == 0){
+				 	g.drawImage(this.pionN,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
 				}
 				
-				else if(i >= 4 && i < 7 && i%2 == 0){
-					g.drawImage(this.casevide,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
-				}
-
-				else if(i < 4 && i%2 == 1){
-					g.drawImage(this.pionB,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
-				}
-				else if(i < 4 && i%2 == 0){
-					g.drawImage(this.pionB,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
-				}
-
-				else if(i >= 7 && i%2 == 1){
-					g.drawImage(this.pionN,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
+				else if(plateau.cases[j].getContenu() == Bille.BLANC && i%2 == 1){
+				 	g.drawImage(this.pionB,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
 				}
 				
-				else if(i >= 7 && i%2 == 0){
-					g.drawImage(this.pionN,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
+				else if(plateau.cases[j].getContenu() == Bille.BLANC && i%2 == 0){
+				 	g.drawImage(this.pionB,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
+				}
+				
+				else if(plateau.cases[j].getContientBille() == false && i%2 == 1){
+				 	g.drawImage(this.casevide,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
+				}
+				
+				else if(plateau.cases[j].getContientBille() == false && i%2 == 0){
+				 	g.drawImage(this.casevide,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
 				}
 
 				else if(false){

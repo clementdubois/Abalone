@@ -40,6 +40,12 @@ public class Plateau {
 		public static final int NB_CASES = 62;	
 	
 	
+	
+	public static void main(String args[]){
+		Plateau plateau = new Plateau();
+		FenetreJeu f = new FenetreJeu(plateau);
+	}	
+	
 	public Plateau() {
 		//On initialise le tableau de cases
 		this.cases = new Case[NB_CASES];
