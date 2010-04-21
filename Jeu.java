@@ -22,6 +22,8 @@ public class Jeu{
 		//Jeu de test
 		Plateau p = new Plateau();
 		p.afficher();
+		for(byte i = 0 ; i < 6 ; i++)
+			System.out.println(p.cases[1].getAdjacent(i));
 		Mouvement m = new Mouvement((byte)(1), (byte)(1), Mouvement.BG);
 		valide = m.valider(p);
 		
