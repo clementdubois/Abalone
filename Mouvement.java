@@ -28,6 +28,13 @@ public class Mouvement {
 	/** Vecteur en haut a gauche*/
 	public static final byte HG = 5;
 	
+	public Mouvement(byte prem, byte dern, byte vect){
+		this.premiere = prem;
+		this.derniere = dern;
+		this.vecteur = vecteur;
+		this.estMouvement = true;
+	}
+	
 	/** Renvoie vrai s'il s'agit d'un vrai deplacement et faux s'il s'agit d'une edition.
 	*
 	* @return true c'est un vrai deplacement

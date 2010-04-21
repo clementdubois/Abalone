@@ -29,7 +29,7 @@ public class Partie {
 			while(!(terminee)) {
 				coup=lireCoup(); // on attend que le joueur envoie son coup. (cense etre bloquant)
 				// maintenant qu'on a bien recu le coup, il faut recuperer la liste des Billes et le vecteur (pas besoin de verifier la validite du coup)
-				plateau.joue(coup);
+				//plateau.joue(coup);
 				// il faut maintenant envoyer le coup a tous les clients pour qu'ils le traduisent et l'appliquent.
 			}
 	}

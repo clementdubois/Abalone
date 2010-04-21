@@ -1,4 +1,4 @@
-Stana Katicpublic class Case {
+public class Case {
 /**
  * On va initialiser une bille sans aucune caracteristique sur chaque case, s'il n'est pas possible de faire autrement.
  * Ce seront de fausses billes, des billes qu'on utilisera pas.
@@ -24,12 +24,15 @@ Stana Katicpublic class Case {
  */
 	private byte hd, dd, bd, bg, gg, hg;
 	
-/**
- * 	fausse bille : false
- */
+ /** Constructeur par defaut*/	
+	public Case(byte num){
+		this.numero = num;
+		this.contientBille = false;
+	}
 	
-	public Case(byte numero, boolean placerBille) {
-		this.numero = numero;
+/**	fausse bille : false*/
+	public Case(byte num, boolean placerBille) {
+		this.numero = num;
 		this.contientBille = placerBille;
 		if(placerBille) {
 			contientBille = true;
@@ -40,9 +43,7 @@ Stana Katicpublic class Case {
 			bille = new Bille(this.numero); // fausse bille
 		}
 	}
-/**
- * Ce constructeur permet d'attribuer les cases adjacentes a une case lors de sa creation..	
- */
+/** Ce constructeur permet d'attribuer les cases adjacentes a une case lors de sa creation..*/
 	public Case(byte numero, byte HG, byte GG, byte BG, byte HD, byte DD, byte BD) {
 		this.numero = numero;
 		this.hg 	= HG;
@@ -79,6 +80,10 @@ Stana Katicpublic class Case {
 	
 	public byte getNumero() {
 		return this.numero;
+	}
+	
+	public void setNumero(byte num) {
+		this.numero = num;
 	}
 	
 	public void setContientBille(boolean contient) {

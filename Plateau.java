@@ -5,6 +5,13 @@ public class Plateau {
 	public final static int TROU = 0;
 	
 	public Plateau() {
+		//On initialise le tableau de cases
+		this.cases = new Case[62];
+		//On indique un numero a chaque case (en deux étapes obligatoire car sinon cases = NULL et cases[i] est donc impossible)
+		for(byte i=0; i<62; i++)
+			this.cases[i] = new Case(i);
+			
+		//On remplit les cases
 		initialiser();
 		// ici on utilisera mon algorithme pour initialiser les valeurs des cases[] adjacentes : cf schema
 	}
@@ -14,13 +21,12 @@ public class Plateau {
 	*/
 	
 	public void initialiser(){
-		 cases = new Case[62];
-
 		//On place les 14 pions de chaques couleurs sur le plateau et on indique les cases vides
 		for (int i = 1; i <= 61; i++){
-		       if (i < 17 && i != 12 && i != 13)
+		       if (i < 17 && i != 12 && i != 13){
 		          cases[i].setBille(new Bille(Bille.BLANC));
-		       else if (i > 45 && i != 50 && i != 49)
+						}		       
+						else if (i > 45 && i != 50 && i != 49)
 		          cases[i].setBille(new Bille(Bille.NOIR));
 		       else
 		          cases[i].setContient();//Met la case a Case.VIDE
@@ -35,7 +41,7 @@ public class Plateau {
 	* @param m le mouvement a effectuer
 	* 
 	 */
-	public boolean joue(Mouvement m) {
+	/*public boolean joue(Mouvement m) {
 		int i = 0;
 		while(i < m.length) { // on veut appliquer le mouvement a chaque bille.
 			cases[m[i].getCoordonneesArrivee()].contiensBille();
@@ -45,11 +51,7 @@ public class Plateau {
 // inutile : le traitement juste au-dessus gere tous les mouvements.
 // this.mettreAJour(); // permet de gerer n'importe quel type de deplacement : bille.appliquerCoordonnees() change le champ position de la bille et mettreAJour() va chercher les positions de chaque bille pour se mettre a jour.		
 		return true;
-	}
-	/**
-	* Afficher le plateau de jeu a la console
-	* @deprecated
-	*/
+	}*/
 
 	
 	/** Affiche l'etat du plateau en console*/
@@ -80,13 +82,14 @@ public class Plateau {
 				
 				numCase++;
 			}
-			
-			System.out.println("Bille Ejecte lors du mouvement : "+this.cases[0].getContenu());
-
-			System.out.println();
 			System.out.println();
 			
 		}
+		
+		System.out.println("Bille Ejecte lors du mouvement : "+this.cases[0].getContenu());
+
+		System.out.println();
+		System.out.println();
 
 	}
 	/**
