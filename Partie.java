@@ -21,7 +21,7 @@ public class Partie {
 
 
 		joueurs[1] = new Joueur("pseudo");
-		joueurs[2] = new Ia("parametre"); 
+		joueurs[2] = new IA("parametre"); 
 /* le plateau crée un processus pour l'ia afin de répondre à ses requetes (liste des coups disponibles, par exemple). Tant que l'ia n'a pas reçu de réponse, elle peut peut-être utiliser une autre méthode de recherche par exemple ?...
 */
 		plateau = new Plateau(); // initialise les valeurs des vecteurs

@@ -1,12 +1,17 @@
 
 public class Plateau {
-	private Case[] cases; // dans Case on retrouvera les cases adjacentes
+	public Case[] cases; // dans Case on retrouvera les cases adjacentes
+	/** la case trou (0) dans la liste des cases, la numero 0 est celle reservee au trou */
+	public final static int TROU = 0;
 	
 	public Plateau() {
 		initialiser();
 		// ici on utilisera mon algorithme pour initialiser les valeurs des cases[] adjacentes : cf schema
 	}
 
+	/**  Initialiser le plateau de jeu en posant les billes de depart
+	*
+	*/
 	
 	public void initialiser(){
 		 cases = new Case[62];
@@ -14,9 +19,9 @@ public class Plateau {
 		//On place les 14 pions de chaques couleurs sur le plateau et on indique les cases vides
 		for (int i = 1; i <= 61; i++){
 		       if (i < 17 && i != 12 && i != 13)
-		          cases[i].setBille(new Bille(Bille.BLANC))
+		          cases[i].setBille(new Bille(Bille.BLANC));
 		       else if (i > 45 && i != 50 && i != 49)
-		          cases[i].setBille(new Bille(Bille.NOIR))
+		          cases[i].setBille(new Bille(Bille.NOIR));
 		       else
 		          cases[i].setContient();//Met la case a Case.VIDE
 		}
@@ -47,7 +52,7 @@ public class Plateau {
 	*/
 
 	
-	
+	/** Affiche l'etat du plateau en console*/
 	public void afficher(){
 		int numCase = 1;
 		
@@ -66,9 +71,9 @@ public class Plateau {
 				
 			for(int j=0; (j< (5+i) && i<5) || (j < (13-i) && i>=5 ) ; j++ ){
 				
-				if (this.cases[numCase].getContient() == Bille.NOIR)
+				if (this.cases[numCase].getContenu() == Bille.NOIR)
 					System.out.print("N   ");
-				else if (this.cases[numCase].getContient() == Bille.BLANC)
+				else if (this.cases[numCase].getContenu() == Bille.BLANC)
 					System.out.print("B   ");
 				else
 					System.out.print("V   ");
@@ -76,19 +81,19 @@ public class Plateau {
 				numCase++;
 			}
 			
-			System.out.println("Bille Ejecte lors du mouvement : "+this.cases[0]);
+			System.out.println("Bille Ejecte lors du mouvement : "+this.cases[0].getContenu());
 
 			System.out.println();
 			System.out.println();
 			
+		}
+
 	}
-
-
 	/**
 	* Ajoute a chaque case du plateau ces 6 cases adjacentes.<br />
 	* Cela sera pratique pour savoir les deplacements possibles ainsi que pour effectuer ces deplacements.
 	*/
-	protected void caseAdjacente(){
+	public void caseAdjacente(){
 		
 /*
  * Ce qui suit sera remplace par un algorithme plus performant et plus style !.
@@ -166,11 +171,11 @@ public class Plateau {
 	* 
 	* @param p Le plateau de jeu qui sera copie dans plateau
 	*/
-	public boolean setPlateau(Bille[] p){
-		int i = 0;
-		for(Bille courante : p) {
-			this.cases[courante.getCoordonnees()].setBille(courante);
+	public boolean setPlateau(Plateau p){
+		for(int courante = 0; courante <= 61; courante++) {
+			this.cases[courante] = p.cases[courante];
 		}
+		
 		return true;
 	}
 /*	

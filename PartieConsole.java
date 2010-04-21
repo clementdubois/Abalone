@@ -1,11 +1,11 @@
 /** Gestion d'une partie en console (idem que locale mais pas de partie graphique). */
 public class PartieConsole extends Partie{
-	/** @param nbJ nombre de joueur */
+	/** @param nbJ nombre de joueur 
 	public PartieConsole() {
 		super();
-	}
+	}*/
 	
-	/** Gere la partie du debut a la fin*/
+	/** Gere la partie du debut a la fin
 	public void lancerPartie(){
 		Mouvement mouv = new Mouvement(Mouvement.GH, 61, plateau);
 		
@@ -24,10 +24,10 @@ public class PartieConsole extends Partie{
 		}while (!this.terminer()); //Tant que la partie n'est pas terminee
 		
 		plateau.afficher();
-	}
+	}*/
 	
-	/** Invite console pour demander au joueur de jouer*/
+	/** Invite console pour demander au joueur de jouer
 	public void inviteMouvement(){
 		System.out.println("Veuillez indiquez un mouvement : ");
-	}
+	}*/
 }
