@@ -18,7 +18,7 @@ public class Plateau {
 	/** Vecteur a gauche*/
 	public static final byte GG = 4;
 	/** Vecteur en haut a gauche*/
-	public static final byte HG = 5;	
+	public static final byte HG = 5;
 	
 	
 	
@@ -40,12 +40,12 @@ public class Plateau {
 		public static final int NB_CASES = 62;	
 	
 	
-	
+/*	
 	public static void main(String args[]){
 		Plateau plateau = new Plateau();
 		FenetreJeu f = new FenetreJeu(plateau);
 	}	
-	
+*/	
 	public Plateau() {
 		//On initialise le tableau de cases
 		this.cases = new Case[NB_CASES];
@@ -296,9 +296,9 @@ public class Plateau {
 		// on commence par initialiser les vecteurs avec l'automate.
 		for(byte i = 1 ; i < 62 ; i++)
 			for(byte j = 0 ; j < 6 ; j++)
-				this.cases[i].vecteurs[j] = multiplicateurVecteur(j, this.cases[i].getNumLigne());
+				this.cases[i].vecteurs[j] = (byte)(i+multiplicateurVecteur(j, this.cases[i].getNumLigne()));
 		
-		
+	
 		// il faut maintenant initialiser les vecteurs menant au TROU 
 		byte[] tempVecteurs = {HG, HD, GG};
 		cases[1].setVecteursNuls(tempVecteurs); // a1
@@ -345,17 +345,47 @@ public class Plateau {
 	}
 	
 	private byte multiplicateurVecteur (byte numVecteur, byte numLigne) {
-		if(numVecteur == HD)
-			return (byte)(-(longueurLigne[numLigne]));
-		else if(numVecteur == BD)
-			return (byte)((longueurLigne[numLigne])+1);
-		else if(numVecteur == BG)
-			return (byte)(longueurLigne[numLigne]);
-		else if(numVecteur == GG) 
-			return (byte)(-1);
-		else if(numVecteur == HG)
-			return (byte)(-(longueurLigne[numLigne])-1);
-		else // DD
-			return 1;		
+		if(numLigne < 5) {
+			if(numVecteur == HD)
+				return (byte)(-(longueurLigne[numLigne]-1));
+			else if(numVecteur == BD)
+				return (byte)((longueurLigne[numLigne])+1);
+			else if(numVecteur == BG)
+				return (byte)(longueurLigne[numLigne]);
+			else if(numVecteur == GG) 
+				return (byte)(-1);
+			else if(numVecteur == HG)
+				return (byte)(-(longueurLigne[numLigne]));
+			else // DD
+				return 1;
+		}
+		else if(numLigne > 5) {
+			if(numVecteur == HD)
+				return (byte)(-(longueurLigne[numLigne]));
+			else if(numVecteur == BD)
+				return (byte)((longueurLigne[numLigne]));
+			else if(numVecteur == BG)
+				return (byte)(longueurLigne[numLigne]-1);
+			else if(numVecteur == GG) 
+				return (byte)(-1);
+			else if(numVecteur == HG)
+				return (byte)(-(longueurLigne[numLigne])-1);
+			else // DD
+				return 1;
+		}
+		else {
+			if(numVecteur == HD)
+				return (byte)(-(longueurLigne[numLigne])+1);
+			else if(numVecteur == BD)
+				return (byte)((longueurLigne[numLigne]));
+			else if(numVecteur == BG)
+				return (byte)(longueurLigne[numLigne]-1);
+			else if(numVecteur == GG) 
+				return (byte)(-1);
+			else if(numVecteur == HG)
+				return (byte)(-(longueurLigne[numLigne]));
+			else // DD
+				return 1;
+		}
 	}
  }
