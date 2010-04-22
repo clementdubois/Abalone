@@ -31,7 +31,7 @@ public class Mouvement {
 	public Mouvement(byte prem, byte dern, byte vect){
 		this.premiere = prem;
 		this.derniere = dern;
-		this.vecteur = vecteur;
+		this.vecteur = vect;
 		this.estMouvement = true;
 	}
 	

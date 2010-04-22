@@ -39,26 +39,6 @@ public class Plateau {
 	 */	
 		public static final int NB_CASES = 62;	
 	
-	
-	
-	public static void main(String args[]){
-		Plateau plateau = new Plateau();
-		FenetreJeu f = new FenetreJeu(plateau);
-	}	
-	
-	/** Vecteur en haut a gauche*/
-	public static final byte HD = 0;
-	/** Vecteur a droite*/
-	public static final byte DD = 1;
-	/** Vecteur en bas a droite*/
-	public static final byte BD = 2;
-	/** Vecteur en bas a gauche*/
-	public static final byte BG = 3;
-	/** Vecteur a gauche*/
-	public static final byte GG = 4;
-	/** Vecteur en haut a gauche*/
-	public static final byte HG = 5;
-	
 	public Plateau() {
 		//On initialise le tableau de cases
 		this.cases = new Case[NB_CASES];
@@ -122,7 +102,15 @@ public class Plateau {
 			caseSuivante = cases[caseActuel].getAdjacent(m.getVecteur()); //Il y a forcement au moins une case suivante sinon il s'agirai d'un suicide
 			contenuSuivant = cases[caseSuivante].getContenu();
 			cases[m.getPremiere()].setContenu(Case.VIDE);
-
+			
+			System.out.println("contenuActuel : "+contenuActuel);
+			System.out.println("caseActuel : "+caseActuel);
+			System.out.println("caseSuivante : "+caseSuivante);
+			System.out.println("contenuSuivant : "+contenuSuivant);
+			
+			
+			
+			
 			while(contenuActuel != Case.VIDE && caseActuel != TROU){
 				cases[caseSuivante].setContenu(contenuActuel);
 
@@ -130,6 +118,9 @@ public class Plateau {
 				caseSuivante = cases[caseActuel].getAdjacent(m.getVecteur());
 				contenuActuel = contenuSuivant;
 				contenuSuivant = cases[caseSuivante].getContenu();
+				
+				System.out.println("dans while");
+				
 			}
 		}//Sinon, il ya a au moins deux billes et la direction du mouvement est différent de l'alignement des bille, c'est un mouvement lateral
 		else{
@@ -153,7 +144,7 @@ public class Plateau {
 	* @param derniere la derniere bille.
 	* @return le numero de la bille au milieu ou VIDE si il n'y a pas de case intermediaire
 	*/
-	private byte caseIntermediaire(byte premiere, byte derniere){
+	public byte caseIntermediaire(byte premiere, byte derniere){
 		// Si c'est la meme bille, il n'y a pas d'intermediaire
 		if(premiere == derniere)
 			return 0;
@@ -166,7 +157,7 @@ public class Plateau {
 						 cases[premiere].getAdjacent(GG) == derniere
 						)
 			return 0;
-		//Il y a forcément une case intermédiaire
+		//Il y a forcement une case intermediaire
 		else{
 			if(cases[premiere].getAdjacent(HG) == cases[derniere].getAdjacent(BD) )
 				return cases[premiere].getAdjacent(HG);
