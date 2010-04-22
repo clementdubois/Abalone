@@ -81,8 +81,14 @@ public class Case {
 	/** Change le contenu d'une case (vide, bille blanche, bille noire)
 	* Pas de parametre: on met une case vide
 	*/
-	public void setContient(){
+	public void setContenu(byte etat){
+		if(etat == VIDE)
 			this.contientBille = false;
+		else{//On change la bille sur la case
+			this.contientBille = true;
+			this.setBille(new Bille(etat));
+		}
+			
 	}
 	
 	public void setBille(Bille b) {

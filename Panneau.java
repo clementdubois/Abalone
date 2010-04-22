@@ -116,13 +116,6 @@ Image neant,casevide,pionN,pionB,pionBS,pionNS;
 				 	g.drawImage(this.casevide,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
 				}
 
-				else if(false){
-					g.drawImage(this.pionBS,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
-				}
-
-				else if(false){
-					g.drawImage(this.pionNS,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
-				}
 			}
 		}
 		
