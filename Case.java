@@ -166,21 +166,21 @@ public class Case {
 	private void calculerNumLigne (byte num) {
 		if(num > 0 && num < 5)
 			this.numLigne = 0;
-		else if(num < (5+6)+1)
+		else if(num <= (5+6))
 			this.numLigne = 1;
-		else if(num < (5+6+7)+1)
+		else if(num <= (5+6+7))
 			this.numLigne = 2;
-		else if(num < (5+6+7+8)+1)
+		else if(num <= (5+6+7+8))
 			this.numLigne = 3;
-		else if(num < (5+6+7+8+9)+1)
+		else if(num <= (5+6+7+8+9))
 			this.numLigne = 4;
-		else if(num < (5+6+7+8+9+8)+1)
+		else if(num <= (5+6+7+8+9+8))
 			this.numLigne = 5;
-		else if(num < (5+6+7+8+9+8+7)+1)
+		else if(num <= (5+6+7+8+9+8+7))
 			this.numLigne = 6;
-		else if(num < (5+6+7+8+9+8+7+6)+1)
+		else if(num <= (5+6+7+8+9+8+7+6))
 			this.numLigne = 7;
-		else if(num < 62)
+		else if(num <= 61)
 			this.numLigne = 8;
 	}
 	

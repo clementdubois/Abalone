@@ -23,9 +23,13 @@ public class Plateau {
 	
 	
 	/**
-	 * l'association entre notation Integer et notation officielle (et vice versa)
+	 * l'association entre notation officielle et notation byte
 	 */
-		private Hashtable assoCases;
+		private Hashtable assOfficielleVersByte;
+	/**
+	 * l'association entre notation byte et notation officielle
+	 */
+		private Hashtable assByteVersOfficielle;		
 	/**	
 	 * la longueur de chacune des 9 lignes
 	 */		
@@ -35,7 +39,7 @@ public class Plateau {
 	 */			
 		private String[] lettreLigne;
 	/**
-	 * il y a 61 cases sur le plateau de jeu	
+	 * il y a 61 cases sur le plateau de jeu, + le trou	(la case 0)
 	 */	
 		public static final int NB_CASES = 62;	
 	
@@ -135,83 +139,7 @@ public class Plateau {
 		System.out.println();
 
 	}
-	/**
-	* Ajoute a chaque case du plateau ces 6 cases adjacentes.<br />
-	* Cela sera pratique pour savoir les deplacements possibles ainsi que pour effectuer ces deplacements.
-	*/
-	public void caseAdjacente(){
-		
-/*
- * Ce qui suit sera remplace par un algorithme plus performant et plus style !.
- */
-/*		
-		int i;
-	   for (i = 1; i <= 61; i++) {
-			
-				// Case Haut Droite
-	      if ((i >= 6 && i <= 10) || (i >= 57 && i <= 61))
-	         plateau[i][DH] = i-5;
-	      else if ((i >= 12 && i <= 17) || (i >= 51 && i <= 56))
-	         plateau[i][DH] = i-6;
-	      else if ((i >= 19 && i <= 25) || (i >= 44 && i <= 50))
-	         plateau[i][DH] = i-7;
-	      else if ((i >= 27 && i <= 34) || (i >= 36 && i <= 43))
-	         plateau[i][DH] = i-8;
-	      else
-	         plateau[i][DH] = TROU;
-	
-				// Case Bas Gauche
-	      if ((i >= 1 && i <= 5) || (i >= 52 && i <= 56))
-	         plateau[i][GB] = i+5;
-	      else if ((i >= 6 && i <= 11) || (i >= 45 && i <= 50))
-           plateau[i][GB] = i+6;
-        else if ((i >= 12 && i <= 18) || (i >= 37 && i <= 43))
-           plateau[i][GB] = i+7;
-        else if ((i >= 19 && i <= 26) || (i >= 28 && i <= 35))
-           plateau[i][GB] = i+8;
-        else
-           plateau[i][GB] = TROU;
-				
-				// Case Droite
-	      if (i == 5 || i == 11 || i == 18 || i == 26 || i == 35
-	          || i == 43 || i == 50 || i == 56 || i == 61)
-	         plateau[i][DD] = TROU;
-	      else
-	         plateau[i][DD] = i+1;
-	
-				// Cases Gauche
-	      if (i == 1 || i == 6 || i == 12 || i == 19 || i == 27
-	          || i == 36 || i == 44 || i == 51 || i == 57)
-	         plateau[i][GG] = TROU;
-	      else
-	         plateau[i][GG] = i-1;
-				
-				//Case Bas Droite
-	      if ((i >= 1 && i <= 5) || (i >= 51 && i <= 55))
-	         plateau[i][DB] = i+6;
-	      else if ((i >= 6 && i <= 11) || (i >= 44 && i <= 49))
-           plateau[i][DB] = i+7;
-        else if ((i >= 12 && i <= 18) || (i >= 36 && i <= 42))
-           plateau[i][DB] = i+8;
-        else if ((i >= 19 && i <= 26) || (i >= 27 && i <= 34))
-           plateau[i][DB] = i+9;
-        else
-           plateau[i][DB] = TROU;
-	
-				// Case Haut Gauche
-	      if ((i >= 7 && i <= 11) || (i >= 57 && i <= 61))
-	         plateau[i][GH] = i-6;
-	      else if ((i >= 13 && i <= 18) || (i >= 51 && i <= 56))
-           plateau[i][GH] = i-7;
-        else if ((i >= 20 && i <= 26) || (i >= 44 && i <= 50))
-           plateau[i][GH] = i-8;
-        else if ((i >= 28 && i <= 35) || (i >= 36 && i <= 43))
-           plateau[i][GH] = i-9;
-        else
-           plateau[i][GH] = TROU;
-	   }
-*/
-	}
+
 	
 	/** Modifier Le plateau de jeu.
 	* 
@@ -272,28 +200,32 @@ public class Plateau {
 		 */
 		char letter;
 		int decalage;
-		byte k 			= 0;
-		int lastLength	= 5;		
-		assoCases 	= new Hashtable(2*NB_CASES); 
-		for(byte i=0;i<5;i++) { // from i to e
+		byte k 					= 0;
+		int lastLength			= 5;		
+		assOfficielleVersByte 	= new Hashtable<String, byte>(NB_CASES); 
+		assByteVersOfficielle 	= new Hashtable<byte, String>(NB_CASES); 
+		for(byte i=0;i<5;i++) { // de i à e
 			for(byte j=0;j<longueurLigne[i];j++) {
-				assoCases.put((lettreLigne[i]+""+(longueurLigne[i]-i*(longueurLigne[i]-lastLength)+j-i)), k); // we create the association between official and integer notation
-				assoCases.put(k++, (lettreLigne[i]+""+(longueurLigne[i]-i*(longueurLigne[i]-lastLength)+j-i))); // and vice versa
+				assOfficielleVersByte.put((lettreLigne[i]+""+(longueurLigne[i]-i*(longueurLigne[i]-lastLength)+j-i)), k); // on associe la notation officielle aux numeros de billes
+				assByteVersOfficielle.put(k++, (lettreLigne[i]+""+(longueurLigne[i]-i*(longueurLigne[i]-lastLength)+j-i))); // et vice versa
 			}
 			lastLength = longueurLigne[i];
 		}
 		// la valeur de k est conservée !
-		for(int i=5;i<9;i++) { // from d to a
+		for(int i=5;i<9;i++) { // de d à a
 			for(int j=0;j<longueurLigne[i];j++) {
-				assoCases.put((lettreLigne[i]+""+(j+1)), k); // we create the association between official and integer notation
-				assoCases.put(k++, (lettreLigne[i]+""+(j+1))); // and vice versa				
+				assOfficielleVersByte.put((lettreLigne[i]+""+(j+1)), k); // on associe la notation officielle aux numeros de billes
+				assByteVersOfficielle.put(k++, (lettreLigne[i]+""+(j+1))); // et vice versa				
 			}
 			lastLength = longueurLigne[i];
 		}			
 	}
-	
+
+/**
+ *	Associe a chaque case du plateau le numero de ses cases adjacentes.
+ */ 
 	private void casesAdjacentes() {
-		// on commence par initialiser les vecteurs avec l'automate.
+		// on commence par initialiser tous les vecteurs avec l'automate.
 		for(byte i = 1 ; i < 62 ; i++)
 			for(byte j = 0 ; j < 6 ; j++)
 				this.cases[i].vecteurs[j] = (byte)(i+multiplicateurVecteur(j, this.cases[i].getNumLigne()));
@@ -302,21 +234,23 @@ public class Plateau {
 		// il faut maintenant initialiser les vecteurs menant au TROU 
 		byte[] tempVecteurs = {HG, HD, GG};
 		cases[1].setVecteursNuls(tempVecteurs); // a1
+		cases[this.getNumCaseOpposee((byte)1)].setVecteursNulsOpposes(tempVecteurs); // son opposé
+		
 		byte[] tempVecteurs2 = {HG, HD, DD};
 		cases[5].setVecteursNuls(tempVecteurs2); // a5
-		byte[] tempVecteurs3 = {HG, GG, BG};
-		cases[(Byte)assoCases.get("e1")].setVecteursNuls(tempVecteurs3); // e1
-		cases[this.getNumCaseOpposee((byte)1)].setVecteursNulsOpposes(tempVecteurs); // son opposé
 		cases[this.getNumCaseOpposee((byte)5)].setVecteursNulsOpposes(tempVecteurs2); // son opposé
-		cases[this.getNumCaseOpposee((Byte)assoCases.get("e1"))].setVecteursNulsOpposes(tempVecteurs3); // son opposé		
 		
-		// on peut associer un vecteur a son opposé : cela nous servira d'ailleurs pour jouer un mouvement d'une partie.
+		byte[] tempVecteurs3 = {HG, GG, BG};
+		cases[(Byte)assOfficielleVersByte.get("e1")].setVecteursNuls(tempVecteurs3); // e1
+		cases[this.getNumCaseOpposee((Byte)assOfficielleVersByte.get("e1"))].setVecteursNulsOpposes(tempVecteurs3); // son opposé		
+		
 		byte i = 2;
 		for(byte numCase = 6 ; numCase < 19 ; numCase += longueurLigne[i++]) { // le bord haut gauche
 			byte[] tempVecteurs4 = {HG, GG};
 			cases[numCase].setVecteursNuls(tempVecteurs4);
 			cases[getNumCaseOpposee(numCase)].setVecteursNulsOpposes(tempVecteurs4); // son opposé
 		}
+		i = 2;
 		for(byte numCase = 11 ; numCase < 26 ; numCase += (longueurLigne[++i])) { // le bord haut droit
 			byte[] tempVecteurs4 = {HD, DD};
 			cases[numCase].setVecteursNuls(tempVecteurs4);
@@ -339,53 +273,18 @@ public class Plateau {
 		return (byte)(62 - v);
 	}
 	
-	private void calculerCasesAdjacentes(byte numCase, String lettreLigne) {
-		for(byte i = 0 ; i < 6 ; i++)
-			this.cases[numCase].vecteurs[i] = (i);
-	}
-	
 	private byte multiplicateurVecteur (byte numVecteur, byte numLigne) {
-		if(numLigne < 5) {
-			if(numVecteur == HD)
-				return (byte)(-(longueurLigne[numLigne]-1));
-			else if(numVecteur == BD)
-				return (byte)((longueurLigne[numLigne])+1);
-			else if(numVecteur == BG)
-				return (byte)(longueurLigne[numLigne]);
-			else if(numVecteur == GG) 
-				return (byte)(-1);
-			else if(numVecteur == HG)
-				return (byte)(-(longueurLigne[numLigne]));
-			else // DD
-				return 1;
-		}
-		else if(numLigne > 5) {
-			if(numVecteur == HD)
-				return (byte)(-(longueurLigne[numLigne]));
-			else if(numVecteur == BD)
-				return (byte)((longueurLigne[numLigne]));
-			else if(numVecteur == BG)
-				return (byte)(longueurLigne[numLigne]-1);
-			else if(numVecteur == GG) 
-				return (byte)(-1);
-			else if(numVecteur == HG)
-				return (byte)(-(longueurLigne[numLigne])-1);
-			else // DD
-				return 1;
-		}
-		else {
-			if(numVecteur == HD)
-				return (byte)(-(longueurLigne[numLigne])+1);
-			else if(numVecteur == BD)
-				return (byte)((longueurLigne[numLigne]));
-			else if(numVecteur == BG)
-				return (byte)(longueurLigne[numLigne]-1);
-			else if(numVecteur == GG) 
-				return (byte)(-1);
-			else if(numVecteur == HG)
-				return (byte)(-(longueurLigne[numLigne]));
-			else // DD
-				return 1;
-		}
+		if(numVecteur == DD)
+			return 1;
+		if(numVecteur == GG)
+			return (byte)(-1);
+		if(numVecteur == HD)
+			return (numLigne<5) ? (byte)(-(longueurLigne[numLigne])+1) : (byte)(-(longueurLigne[numLigne])) ;
+		if(numVecteur == HG)
+			return (numLigne<5) ? (byte)(-(longueurLigne[numLigne])) : (byte)(-(longueurLigne[numLigne])-1) ;
+		if(numVecteur == BD)
+			return (numLigne<4) ? (byte)((longueurLigne[numLigne])+1) : byte)((longueurLigne[numLigne])) ;
+		else // BG
+			return (numLigne<4) ? (byte)(longueurLigne[numLigne]) : (byte)(longueurLigne[numLigne]-1) ;
 	}
  }

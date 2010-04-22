@@ -2,10 +2,11 @@
  * 
 */
 
-public class Jeu{
-	static Partie p[];	// static ou pas ?
+public class Jeu {
+	private Partie p[];	// static ou pas ?
 	public static void main(String args[]){
 		boolean valide;
+
 		
 /**
  * Cela va creer le serveur Partie qui ecoutera les joueurs chacun leur tour.
@@ -23,7 +24,7 @@ public class Jeu{
 		Plateau p = new Plateau();
 		p.afficher();
 		for(byte i = 0 ; i < 6 ; i++)
-			System.out.println(p.cases[61].getAdjacent(i));
+			System.out.println(p.cases[37].getAdjacent(i));
 		Mouvement m = new Mouvement((byte)(1), (byte)(1), Mouvement.BG);
 		valide = m.valider(p);
 		
