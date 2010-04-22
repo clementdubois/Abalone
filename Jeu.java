@@ -6,6 +6,8 @@ public class Jeu{
 	static Partie p[];	// static ou pas ?
 	public static void main(String args[]){
 		boolean valide;
+		Plateau plateau = new Plateau();
+		FenetreJeu f = new FenetreJeu(plateau);
 		
 /**
  * Cela va creer le serveur Partie qui ecoutera les joueurs chacun leur tour.

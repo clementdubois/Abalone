@@ -5,6 +5,7 @@ import javax.swing.*;
 
 public class FenetreJeu extends JFrame{
 
+	Plateau plateau;
 	private Panneau pan;
     private JPanel container = new JPanel();
     // private int compteur = 0;
@@ -17,9 +18,7 @@ public class FenetreJeu extends JFrame{
 	private final static int LARGEUR=558;
 	private final static int HAUTEUR=650;
 
-	/**
-    * La declaration pour le menu de la JMenuBar.
-    */
+    // La declaration pour le menu de la JMenuBar.    
 	private JMenuBar menuBar = new JMenuBar();
 
     private JMenu partie = new JMenu("Partie"),
@@ -39,26 +38,20 @@ public class FenetreJeu extends JFrame{
     			    				maitre    = new JRadioButtonMenuItem("Maitre");
 
     private ButtonGroup bg = new ButtonGroup();
-
-	/**	
-    * La declaration pour le menu contextuel.
-    */
+	
+    // La declaration pour le menu contextuel.
 	private JPopupMenu jpm   = new JPopupMenu();
 
     private JMenuItem launch = new JMenuItem("Lancer la partie");	            		
     private JMenuItem stop 	 = new JMenuItem("Arreter la partie");
 
 
-	/**
-    * creation des listener globaux.
-	*/
+    // creation des listener globaux.
     private StopPartieListener  stopPartie  = new StopPartieListener();
     private StartPartieListener startPartie = new StartPartieListener();
 
 
-	/**
-    * Création de notre barre d'outils.
-	*/
+    // Création de notre barre d'outils.
     private JToolBar toolBar = new JToolBar();
 
     //Les boutons
@@ -76,9 +69,12 @@ public class FenetreJeu extends JFrame{
 	// 	f.setVisible(true);	
 	// }
 	
-
+	/**
+	* C'est le constructeur de la fenetre
+	*/
     public FenetreJeu(Plateau plateau){
 			super();
+			this.plateau = plateau;
             this.setTitle("Abalone");
             this.setSize(LARGEUR,HAUTEUR);
 			this.setResizable(false);
@@ -95,7 +91,7 @@ public class FenetreJeu extends JFrame{
             stop.addActionListener(stopPartie);
     		launch.addActionListener(startPartie);
 
-			/**
+			/*
     		* On cree et on passe l'écouteur pour afficher le menu contextuel
     		* Creation d'une implementation de MouseAdapter
     		* avec redefinition de la methode adequate
@@ -126,7 +122,9 @@ public class FenetreJeu extends JFrame{
     }
 
 
-
+	/**
+	* methode pour initialiser la barre de raccourcis
+	*/
     private void initToolBar(){
 
     	this.cancel.setEnabled(false);
@@ -154,22 +152,24 @@ public class FenetreJeu extends JFrame{
     }
 
 
+	/**
+	* methode pour initialiser la barre de menu
+	*/
     private void initMenu(){
-		/**
+
     	//Menu partie
     	//Ajout du listener pour lancer la partie
     	//Attention, le listener est global
-		*/
     	lancer.addActionListener(startPartie);
     	//On attribue l'accélerateur c
     	lancer.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L,
     												KeyEvent.CTRL_MASK));
     	partie.add(lancer);
 
-		/**
-    	* Ajout du listener pour arrêter la partie
-    	* listener a changer ici aussi
-		*/
+
+    	// Ajout du listener pour arrêter la partie
+    	// listener a changer ici aussi
+
     	arreter.addActionListener(stopPartie);
     	arreter.setEnabled(false);
     	arreter.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A,
@@ -214,9 +214,8 @@ public class FenetreJeu extends JFrame{
     	});
     	aPropos.add(aProposItem);
 
-		/**
-    	* Ajout des menus dans la barre de menus.
-		*/
+    	// Ajout des menus dans la barre de menus.
+		
     	partie.setMnemonic('P');
     	menuBar.add(partie);
 
@@ -226,9 +225,9 @@ public class FenetreJeu extends JFrame{
     	aPropos.setMnemonic('I');
     	menuBar.add(aPropos);
 
-		/**
-    	* Ajout de la barre de menus sur la fenêtre.
-		*/
+
+    	// Ajout de la barre de menus sur la fenêtre.
+		
     	this.setJMenuBar(menuBar);
     }
 
@@ -280,14 +279,12 @@ public class FenetreJeu extends JFrame{
 			{
 				// animated = false;
 				
-				/**
-				* On remplace nos bouton par nous MenuItem
-				*/
+				
+				// On remplace nos bouton par nous MenuItem
 				lancer.setEnabled(true);
 				arreter.setEnabled(false);
-				/**
-				* instruction pour le menu contextuel
-				*/
+				
+				// instruction pour le menu contextuel
 				launch.setEnabled(true);
 				stop.setEnabled(false);
 
