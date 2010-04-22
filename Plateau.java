@@ -1,40 +1,75 @@
+import java.util.Hashtable;
+
 
 public class Plateau {
-	public Case[] cases; // dans Case on retrouvera les cases adjacentes
 	/** la case trou (0) dans la liste des cases, la numero 0 est celle reservee au trou */
 	public final static int TROU = 0;
-		
+
+	public Case[] cases; // dans Case on retrouvera les cases adjacentes
+
+	/** Vecteur en haut a gauche*/
+	public static final byte HD = 0;
+	/** Vecteur a droite*/
+	public static final byte DD = 1;
+	/** Vecteur en bas a droite*/
+	public static final byte BD = 2;
+	/** Vecteur en bas a gauche*/
+	public static final byte BG = 3;
+	/** Vecteur a gauche*/
+	public static final byte GG = 4;
+	/** Vecteur en haut a gauche*/
+	public static final byte HG = 5;	
 	
+	
+	
+	/**
+	 * l'association entre notation Integer et notation officielle (et vice versa)
+	 */
+		private Hashtable assoCases;
+	/**	
+	 * la longueur de chacune des 9 lignes
+	 */		
+		private byte[] longueurLigne;
+	/** 
+	 * les lettres associÈes aux lignes
+	 */			
+		private String[] lettreLigne;
+	/**
+	 * il y a 61 cases sur le plateau de jeu	
+	 */	
+		public static final int NB_CASES = 62;	
+
 	public Plateau() {
 		//On initialise le tableau de cases
-		this.cases = new Case[62];
+		this.cases = new Case[NB_CASES];
 		//On indique un numero a chaque case (en deux √©tapes obligatoire car sinon cases = NULL et cases[i] est donc impossible)
-		for(byte i=0; i<62; i++)
+		for(byte i=0; i<NB_CASES; i++)
 			this.cases[i] = new Case(i);
 			
 		//On remplit les cases
 		initialiser();
-		// ici on utilisera mon algorithme pour initialiser les valeurs des cases[] adjacentes : cf schema
+		associerNotations();
+		
+		//Pour chaque pion on enregistre ses points adjacents
+		casesAdjacentes();
 	}
 
 	/**  Initialiser le plateau de jeu en posant les billes de depart
 	*
 	*/
 	
+
 	public void initialiser(){
 		//On place les 14 pions de chaques couleurs sur le plateau et on indique les cases vides
-		for (int i = 1; i <= 61; i++){
+		for (byte i = 1; i < NB_CASES ; i++){
 		       if (i < 17 && i != 12 && i != 13){
 		          cases[i].setBille(new Bille(Bille.BLANC));
 						}		       
 						else if (i > 45 && i != 50 && i != 49)
 		          cases[i].setBille(new Bille(Bille.NOIR));
 		       else
-		          cases[i].setContient();//Met la case a Case.VIDE
+		          cases[i].setContenu(Case.VIDE);//Met la case a Case.VIDE
 		}
-
-		//Pour chaque pion on enregistre ces points adjacents
-		//caseAdjacente();
 	}
 	
 	/** Rendre effectif un mouvement sur le plateau.
@@ -54,6 +89,102 @@ public class Plateau {
 		return true;
 	}*/
 
+	/** Effectuer un mouvement */
+	public void effectuer(Mouvement m){
+		byte caseActuel = m.getPremiere();
+		byte caseSuivante;
+		byte contenuActuel = cases[caseActuel].getContenu();
+		byte contenuSuivant;
+
+		// Si on ne pousse qu'une bille c'est qu'il s'agit d'une pouss√©e
+		if(m.getPremiere() == m.getDerniere()){
+			/*On POUSSE toute la ligne d'une case*/
+			caseSuivante = cases[caseActuel].getAdjacent(m.getVecteur()); //Il y a forcement au moins une case suivante sinon il s'agirai d'un suicide
+			contenuSuivant = cases[caseSuivante].getContenu();
+			cases[m.getPremiere()].setContenu(Case.VIDE);
+			
+			System.out.println("contenuActuel : "+contenuActuel);
+			System.out.println("caseActuel : "+caseActuel);
+			System.out.println("caseSuivante : "+caseSuivante);
+			System.out.println("contenuSuivant : "+contenuSuivant);
+			
+			
+			
+			
+			while(contenuActuel != Case.VIDE && caseActuel != TROU){
+				cases[caseSuivante].setContenu(contenuActuel);
+
+				caseActuel = caseSuivante;
+				caseSuivante = cases[caseActuel].getAdjacent(m.getVecteur());
+				contenuActuel = contenuSuivant;
+				contenuSuivant = cases[caseSuivante].getContenu();
+				
+				System.out.println("dans while");
+				
+			}
+		}//Sinon, il ya a au moins deux billes et la direction du mouvement est diff√©rent de l'alignement des bille, c'est un mouvement lateral
+		else{
+			/* on prend la bille 1 et on la deplace sur la case vide,
+				on fait pareil avec la deuxi√®me et la troisi√®me si elle existe.
+				Les billes deplac√©es sont forc√©ment de la m√™me couleur, il est donc inutile de redefinir le contenu pour chaque bille
+				Les cases destinations sont forc√©ment vide.*/
+			
+			cases[m.getPremiere()].setContenu(Case.VIDE);	
+			cases[m.getDerniere()].setContenu(Case.VIDE);	
+			cases[cases[m.getPremiere()].getAdjacent(m.getVecteur())].setContenu(contenuActuel); 			
+			cases[cases[m.getDerniere()].getAdjacent(m.getVecteur())].setContenu(contenuActuel);
+			//A FAIRE : La case interm√©diaire
+		}
+
+	}
+	
+	/** Renvoie le numero de la case intermediaire entre deux billes si cette case existe.
+	*
+	* @param premiere la premiere bille.
+	* @param derniere la derniere bille.
+	* @return le numero de la bille au milieu ou VIDE si il n'y a pas de case intermediaire
+	*/
+	public byte caseIntermediaire(byte premiere, byte derniere){
+		// Si c'est la meme bille, il n'y a pas d'intermediaire
+		if(premiere == derniere)
+			return 0;
+		//Si deuxieme est directement adjacent a deuxieme, il n'y a pas d'intermediaire
+		else if( cases[premiere].getAdjacent(HG) == derniere ||
+						 cases[premiere].getAdjacent(HD) == derniere ||
+						 cases[premiere].getAdjacent(DD) == derniere ||
+						 cases[premiere].getAdjacent(BD) == derniere ||
+						 cases[premiere].getAdjacent(BG) == derniere ||
+						 cases[premiere].getAdjacent(GG) == derniere
+						)
+			return 0;
+		//Il y a forcement une case intermediaire
+		else{
+			if(cases[premiere].getAdjacent(HG) == cases[derniere].getAdjacent(BD) )
+				return cases[premiere].getAdjacent(HG);
+				
+			else if(cases[premiere].getAdjacent(HD) == cases[derniere].getAdjacent(BG) )
+				return cases[premiere].getAdjacent(HD);
+			
+			else if(cases[premiere].getAdjacent(DD) == cases[derniere].getAdjacent(GG) )
+				return cases[premiere].getAdjacent(DD);
+				
+			else if(cases[premiere].getAdjacent(BD) == cases[derniere].getAdjacent(HG) )
+				return cases[premiere].getAdjacent(BD);
+				
+			else if(cases[premiere].getAdjacent(BG) == cases[derniere].getAdjacent(HD) )
+				return cases[premiere].getAdjacent(BG);
+				
+			else if(cases[premiere].getAdjacent(GG) == cases[derniere].getAdjacent(DD) )
+				return cases[premiere].getAdjacent(GG);
+			
+			else{
+				System.out.println("Erreur de caseIntermediaire, elle ne devrait jamais entrer dans ce else");
+				return 0;
+			}
+			
+		}
+		
+	}
 	
 	/** Affiche l'etat du plateau en console*/
 	public void afficher(){
@@ -191,4 +322,129 @@ public class Plateau {
 		}
 	}
 */	
-}
+	
+	private void associerNotations() {
+		longueurLigne = new byte[9];
+		lettreLigne = new String[9];
+		
+		for(byte i = 0; i < 5; i++) {
+			longueurLigne[i] = (byte)(i+5);
+		}
+		longueurLigne[5] = 8;
+		longueurLigne[6] = 7;
+		longueurLigne[7] = 6;
+		longueurLigne[8] = 5;
+	
+		lettreLigne[0] = "i";		
+		lettreLigne[1] = "h";
+		lettreLigne[2] = "g";
+		lettreLigne[3] = "f";	
+		lettreLigne[4] = "e";	
+		lettreLigne[5] = "d";	
+		lettreLigne[6] = "c";	
+		lettreLigne[7] = "b";
+		lettreLigne[8] = "a";
+
+		/*
+		 * i5->i9
+		 * h4->h9
+		 * g3->g9
+		 * f2->f9
+		 * e1->e9
+		 * 
+		 *  2nd round : 
+		 * 
+		 * d1->d8
+		 * c1->c7
+		 * b1->b6
+		 * a1->a5
+		 */
+		char letter;
+		int decalage;
+		byte k 			= 0;
+		int lastLength	= 5;		
+		assoCases 	= new Hashtable(2*NB_CASES); 
+		for(byte i=0;i<5;i++) { // from i to e
+			for(byte j=0;j<longueurLigne[i];j++) {
+				assoCases.put((lettreLigne[i]+""+(longueurLigne[i]-i*(longueurLigne[i]-lastLength)+j-i)), k); // we create the association between official and integer notation
+				assoCases.put(k++, (lettreLigne[i]+""+(longueurLigne[i]-i*(longueurLigne[i]-lastLength)+j-i))); // and vice versa
+			}
+			lastLength = longueurLigne[i];
+		}
+		// la valeur de k est conservÈe !
+		for(int i=5;i<9;i++) { // from d to a
+			for(int j=0;j<longueurLigne[i];j++) {
+				assoCases.put((lettreLigne[i]+""+(j+1)), k); // we create the association between official and integer notation
+				assoCases.put(k++, (lettreLigne[i]+""+(j+1))); // and vice versa				
+			}
+			lastLength = longueurLigne[i];
+		}			
+	}
+	
+	private void casesAdjacentes() {
+		// on commence par initialiser les vecteurs avec l'automate.
+		for(byte i = 1 ; i < 62 ; i++)
+			for(byte j = 0 ; j < 6 ; j++)
+				this.cases[i].vecteurs[j] = multiplicateurVecteur(j, this.cases[i].getNumLigne());
+		
+		
+		// il faut maintenant initialiser les vecteurs menant au TROU 
+		byte[] tempVecteurs = {HG, HD, GG};
+		cases[1].setVecteursNuls(tempVecteurs); // a1
+		byte[] tempVecteurs2 = {HG, HD, DD};
+		cases[5].setVecteursNuls(tempVecteurs2); // a5
+		byte[] tempVecteurs3 = {HG, GG, BG};
+		cases[(Byte)assoCases.get("e1")].setVecteursNuls(tempVecteurs3); // e1
+		cases[this.getNumCaseOpposee((byte)1)].setVecteursNulsOpposes(tempVecteurs); // son opposÈ
+		cases[this.getNumCaseOpposee((byte)5)].setVecteursNulsOpposes(tempVecteurs2); // son opposÈ
+		cases[this.getNumCaseOpposee((Byte)assoCases.get("e1"))].setVecteursNulsOpposes(tempVecteurs3); // son opposÈ		
+		
+		// on peut associer un vecteur a son opposÈ : cela nous servira d'ailleurs pour jouer un mouvement d'une partie.
+		byte i = 2;
+		for(byte numCase = 6 ; numCase < 19 ; numCase += longueurLigne[i++]) { // le bord haut gauche
+			byte[] tempVecteurs4 = {HG, GG};
+			cases[numCase].setVecteursNuls(tempVecteurs4);
+			cases[getNumCaseOpposee(numCase)].setVecteursNulsOpposes(tempVecteurs4); // son opposÈ
+		}
+		for(byte numCase = 11 ; numCase < 26 ; numCase += (longueurLigne[++i])) { // le bord haut droit
+			byte[] tempVecteurs4 = {HD, DD};
+			cases[numCase].setVecteursNuls(tempVecteurs4);
+			cases[getNumCaseOpposee(numCase)].setVecteursNulsOpposes(tempVecteurs4); // son opposÈ
+		}
+		for(byte numCase = 1 ; numCase < 5 ; numCase++) { // le bord haut
+			byte[] tempVecteurs4 = {HD, HG};
+			cases[numCase].setVecteursNuls(tempVecteurs4);
+			cases[getNumCaseOpposee(numCase)].setVecteursNulsOpposes(tempVecteurs4); // son opposÈ
+		}		
+	}
+	
+	private byte getVecteurOppose(byte v) {
+		if(v<=2)
+			return (byte) (v+3);
+		return (byte) (v-3);
+	}
+	
+	private byte getNumCaseOpposee(byte v) {
+		return (byte)(62 - v);
+	}
+	
+	private void calculerCasesAdjacentes(byte numCase, String lettreLigne) {
+		for(byte i = 0 ; i < 6 ; i++)
+			this.cases[numCase].vecteurs[i] = (i);
+	}
+	
+	private byte multiplicateurVecteur (byte numVecteur, byte numLigne) {
+		if(numVecteur == HD)
+			return (byte)(-(longueurLigne[numLigne]));
+		else if(numVecteur == BD)
+			return (byte)((longueurLigne[numLigne])+1);
+		else if(numVecteur == BG)
+			return (byte)(longueurLigne[numLigne]);
+		else if(numVecteur == GG) 
+			return (byte)(-1);
+		else if(numVecteur == HG)
+			return (byte)(-(longueurLigne[numLigne])-1);
+		else // DD
+			return 1;		
+	}
+ }

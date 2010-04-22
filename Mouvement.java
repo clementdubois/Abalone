@@ -31,7 +31,7 @@ public class Mouvement {
 	public Mouvement(byte prem, byte dern, byte vect){
 		this.premiere = prem;
 		this.derniere = dern;
-		this.vecteur = vecteur;
+		this.vecteur = vect;
 		this.estMouvement = true;
 	}
 	
@@ -96,14 +96,19 @@ public class Mouvement {
 		
 		//Si c'est une poussee (si on ne touche qu'une bille)
 		if(this.derniere == this.premiere){	
+			System.out.println("=> Poussée");
 			//On teste la case juste apres nos billes
 			//Si suivante vide et je pousse maximum trois de mes billes : OK
 			if (plateau.cases[plateau.cases[derniereBille].getAdjacent(vecteur)].getContenu() == Case.VIDE &&
-			         cptBilleMoi <= 3)
+			         cptBilleMoi <= 3){
+				System.out.println(plateau.cases[plateau.cases[derniereBille].getAdjacent(vecteur)].getContenu());
+				System.out.println("==> Case suivante vide : OK");
 				return true;
+			}
 			// Si on fait face a une bille du camp adverse (suivante ni VIDE ni TROU)
 			else if(plateau.cases[plateau.cases[derniereBille].getAdjacent(vecteur)].getContenu() != Plateau.TROU &&
 			        cptBilleMoi <= 3 ){ 
+				System.out.println("==> Case suivante bille adverse");
 				//On regarde la couleur de la bille adverse a pousser
 				couleurAdverse = plateau.cases[plateau.cases[derniereBille].getAdjacent(vecteur)].getContenu();
 				//On calcule le nombre de billes adverse qui vont être deplacées
@@ -111,18 +116,24 @@ public class Mouvement {
 					derniereBille = plateau.cases[derniereBille].getAdjacent(vecteur);
 				
 			  //Je dois etre en superiorite numerique pour valider le mouvement
-				if(cptBilleMoi > cptBilleLui)
+				if(cptBilleMoi > cptBilleLui){
+					System.out.println("===> Superiorité numerique");
 					//Aucune autre bille ne doit se trouver derriere les billes poussees car elle bloquerai le passage
 					if(plateau.cases[plateau.cases[derniereBille].getAdjacent(vecteur)].getContenu() == Case.VIDE ||
-					   plateau.cases[plateau.cases[derniereBille].getAdjacent(vecteur)].getContenu() == Plateau.TROU )
+					   plateau.cases[plateau.cases[derniereBille].getAdjacent(vecteur)].getContenu() == Plateau.TROU ){
+						System.out.println("====> Rien derriere les billes adverses");
 						return true;
+					}
+				}
+						
 			}
 		}else{//Deplacement lateral
+			System.out.println("=> Déplacement latéral");
 			//Il suffit de verifier que toutes les cases visees sont vides
-			System.out.println("Pas une poussee");
 			/* A FAIRE: calculer le numero de la bille du mileu si cptBilleMoi == 3 et tester comme les deux autres*/
 			if (plateau.cases[plateau.cases[this.premiere].getAdjacent(vecteur)].getContenu() == Case.VIDE &&
 			    plateau.cases[plateau.cases[this.derniere].getAdjacent(vecteur)].getContenu() == Case.VIDE)
+				System.out.println("==> Les cases visées sont vides");
 				return true;
 		}
 		//Si on arrive là c'est que c'est un mauvais mouvement

@@ -24,14 +24,27 @@ public class Jeu{
 		//Jeu de test
 		Plateau p = new Plateau();
 		p.afficher();
+		//test case adjacente
+		for(byte i = 0 ; i < 6 ; i++)
+			System.out.println(p.cases[1].getAdjacent(i));
+				
 		Mouvement m = new Mouvement((byte)(1), (byte)(1), Mouvement.BG);
-		valide = m.valider(p);
+		//test valider mouvement
+		//valide = m.valider(p);
+		//test effectuer mouvement
+		p.effectuer(m);
+		p.afficher();
 		
+		//test caseIntermediaire
+		System.out.println(Mouvement.DD);
+		System.out.println("adjacent : "+m.getPremiere()+" vers : "+m.getVecteur()+" = "+p.cases[m.getPremiere()].getAdjacent(Mouvement.DD));
+		byte inter = p.caseIntermediaire(m.getPremiere(), m.getDerniere());
+		System.out.println("Inter = "+inter);
 		
-		if(valide)
-			System.out.println("Mouvement Valide");
-		else
-			System.out.println("Mouvement Invalide");
+		// if(valide)
+		// 			System.out.println("Mouvement Valide");
+		// 		else
+		// 			System.out.println("Mouvement Invalide");
 		
 	}
 }
