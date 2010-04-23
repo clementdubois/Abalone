@@ -40,7 +40,8 @@ Image neant,casevide,pionN,pionB,pionBS,pionNS;
 	* Methode pour afficher le plateau et les billes.
 	*/
 	public void paintComponent(Graphics g){
-		int i,j;
+		byte i,j;
+		int taillePlateau = 1;
 		//Pour chaque ligne
 		for (i=1; i<=NBCASES; i++){
 			//pour chaque colonne
@@ -92,28 +93,34 @@ Image neant,casevide,pionN,pionB,pionBS,pionNS;
 				// 	g.drawImage(this.pionN,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
 				// }
 
-				else if(plateau.cases[j].getContenu() == Bille.NOIR && i%2 == 1){
+				else if(plateau.cases[taillePlateau].getContenu() == Bille.NOIR && i%2 == 1 && taillePlateau < 62){
 				 	g.drawImage(this.pionN,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
+					taillePlateau += 1;
 				}
 				
-				else if(plateau.cases[j].getContenu() == Bille.NOIR && i%2 == 0){
+				else if(plateau.cases[taillePlateau].getContenu() == Bille.NOIR && i%2 == 0 && taillePlateau < 62){
 				 	g.drawImage(this.pionN,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
+					taillePlateau += 1;
 				}
 				
-				else if(plateau.cases[j].getContenu() == Bille.BLANC && i%2 == 1){
+				else if(plateau.cases[taillePlateau].getContenu() == Bille.BLANC && i%2 == 1 && taillePlateau < 62){
 				 	g.drawImage(this.pionB,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
+					taillePlateau += 1;
 				}
 				
-				else if(plateau.cases[j].getContenu() == Bille.BLANC && i%2 == 0){
+				else if(plateau.cases[taillePlateau].getContenu() == Bille.BLANC && i%2 == 0 && taillePlateau < 62){
 				 	g.drawImage(this.pionB,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
+					taillePlateau += 1;
 				}
 				
-				else if(plateau.cases[j].getContientBille() == false && i%2 == 1){
+				else if(plateau.cases[taillePlateau].getContientBille() == false && i%2 == 1 && taillePlateau < 62){
 				 	g.drawImage(this.casevide,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
+					taillePlateau += 1;
 				}
 				
-				else if(plateau.cases[j].getContientBille() == false && i%2 == 0){
+				else if(plateau.cases[taillePlateau].getContientBille() == false && i%2 == 0 && taillePlateau < 62){
 				 	g.drawImage(this.casevide,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
+					taillePlateau += 1;
 				}
 
 			}

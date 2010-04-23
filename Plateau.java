@@ -46,7 +46,7 @@ public class Plateau {
 	public Plateau() {
 		//On initialise le tableau de cases
 		this.cases = new Case[NB_CASES];
-		//On indique un numero a chaque case (en deux étapes obligatoire car sinon cases = NULL et cases[i] est donc impossible)
+		//On indique un numero a chaque case (en deux etapes obligatoire car sinon cases = NULL et cases[i] est donc impossible)
 		for(byte i=0; i<NB_CASES; i++)
 			this.cases[i] = new Case(i);
 			
