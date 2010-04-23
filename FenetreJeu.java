@@ -121,6 +121,17 @@ public class FenetreJeu extends JFrame{
 
     }
 
+	/**
+	* methode pour rafrachir le plateau avec le nouveau tableau
+	*/
+	public void rafraichir(Plateau plateau){
+		pan.rafraichir(plateau);
+		pan.repaint();
+        this.initMenu();
+        this.initToolBar(); 
+		
+	}
+
 
 	/**
 	* methode pour initialiser la barre de raccourcis

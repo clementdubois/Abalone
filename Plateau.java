@@ -46,7 +46,7 @@ public class Plateau {
 	public Plateau() {
 		//On initialise le tableau de cases
 		this.cases = new Case[NB_CASES];
-		//On indique un numero a chaque case (en deux étapes obligatoire car sinon cases = NULL et cases[i] est donc impossible)
+		//On indique un numero a chaque case (en deux etapes obligatoire car sinon cases = NULL et cases[i] est donc impossible)
 		for(byte i=0; i<NB_CASES; i++)
 			this.cases[i] = new Case(i);
 			
@@ -107,36 +107,28 @@ public class Plateau {
 			contenuSuivant = cases[caseSuivante].getContenu();
 			cases[m.getPremiere()].setContenu(Case.VIDE);
 			
-			System.out.println("contenuActuel : "+contenuActuel);
-			System.out.println("caseActuel : "+caseActuel);
-			System.out.println("caseSuivante : "+caseSuivante);
-			System.out.println("contenuSuivant : "+contenuSuivant);
-			
-			
-			
-			
 			while(contenuActuel != Case.VIDE && caseActuel != TROU){
 				cases[caseSuivante].setContenu(contenuActuel);
 
 				caseActuel = caseSuivante;
 				caseSuivante = cases[caseActuel].getAdjacent(m.getVecteur());
 				contenuActuel = contenuSuivant;
-				contenuSuivant = cases[caseSuivante].getContenu();
-				
-				System.out.println("dans while");
-				
+				contenuSuivant = cases[caseSuivante].getContenu();				
 			}
-		}//Sinon, il ya a au moins deux billes et la direction du mouvement est différent de l'alignement des bille, c'est un mouvement lateral
+		}//Sinon, il ya a au moins deux billes et la direction du mouvement est different de l'alignement des bille, c'est un mouvement lateral
 		else{
 			/* on prend la bille 1 et on la deplace sur la case vide,
-				on fait pareil avec la deuxième et la troisième si elle existe.
-				Les billes deplacées sont forcément de la même couleur, il est donc inutile de redefinir le contenu pour chaque bille
-				Les cases destinations sont forcément vide.*/
+				on fait pareil avec la deuxieme et la troisieme si elle existe.
+				Les billes deplacees sont forcement de la meme couleur, il est donc inutile de redefinir le contenu pour chaque bille
+				Les cases destinations sont forcement vide.*/
 			
 			cases[m.getPremiere()].setContenu(Case.VIDE);	
 			cases[m.getDerniere()].setContenu(Case.VIDE);	
+			cases[caseIntermediaire(m.getPremiere(), m.getDerniere())].setContenu(Case.VIDE);
 			cases[cases[m.getPremiere()].getAdjacent(m.getVecteur())].setContenu(contenuActuel); 			
 			cases[cases[m.getDerniere()].getAdjacent(m.getVecteur())].setContenu(contenuActuel);
+			cases[cases[caseIntermediaire(m.getPremiere(), m.getDerniere())].getAdjacent(m.getVecteur())].setContenu(contenuActuel);
+			
 			//A FAIRE : La case intermédiaire
 		}
 
