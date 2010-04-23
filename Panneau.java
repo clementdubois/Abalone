@@ -62,37 +62,6 @@ Image neant,casevide,pionN,pionB,pionBS,pionNS;
 					g.drawImage(this.neant,j*TAILLEIM,i*TAILLEIM,null);
 				}
 
-				// else if ( i == 3 && j == 2 || i == 3 && j == 3 || i == 3 && j == 7 || i == 3 && j == 8 ){	
-				// 	g.drawImage(this.casevide,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
-				// }
-				// 
-				// else if ( i == 7 && j == 2 || i == 7 && j == 3 || i == 7 && j == 7 || i == 7 && j == 8 ){	
-				// 	g.drawImage(this.casevide,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
-				// }
-				// 
-				// else if(i >= 4 && i < 7 && i%2 == 1){
-				// 	g.drawImage(this.casevide,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
-				// }
-				// 
-				// else if(i >= 4 && i < 7 && i%2 == 0){
-				// 	g.drawImage(this.casevide,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
-				// }
-				// 
-				// else if(i < 4 && i%2 == 1){
-				// 	g.drawImage(this.pionB,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
-				// }
-				// else if(i < 4 && i%2 == 0){
-				// 	g.drawImage(this.pionB,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
-				// }
-				// 
-				// else if(i >= 7 && i%2 == 1){
-				// 	g.drawImage(this.pionN,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
-				// }
-				// 
-				// else if(i >= 7 && i%2 == 0){
-				// 	g.drawImage(this.pionN,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
-				// }
-
 				else if(plateau.cases[taillePlateau].getContenu() == Bille.NOIR && i%2 == 1 && taillePlateau < 62){
 				 	g.drawImage(this.pionN,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
 					taillePlateau += 1;
@@ -128,6 +97,13 @@ Image neant,casevide,pionN,pionB,pionBS,pionNS;
 		
 		repaint();	
 	
+	}
+	
+	/**
+	* methode pour reinitialiser la variable de plateau
+	*/
+	public void rafraichir(Plateau plateau){
+		this.plateau = plateau;
 	}
 	
 }

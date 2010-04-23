@@ -34,12 +34,16 @@ public class Jeu {
 		//test effectuer mouvement
 		p.effectuer(m);
 		p.afficher();
+
 		
 		//test caseIntermediaire
 		System.out.println(Mouvement.DD);
 		System.out.println("adjacent : "+m.getPremiere()+" vers : "+m.getVecteur()+" = "+p.cases[m.getPremiere()].getAdjacent(Mouvement.DD));
 		byte inter = p.caseIntermediaire(m.getPremiere(), m.getDerniere());
 		System.out.println("Inter = "+inter);
+		
+		//on rafraichit la fenetre
+		f.rafraichir(p);
 		
 		
 		// OH OUI CA MARCHE ON EST TROP PUISSANTS !!!!!!!!
