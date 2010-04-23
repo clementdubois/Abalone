@@ -87,6 +87,8 @@ public class Mouvement {
 		byte contenuBille = plateau.cases[premiere].getContenu();
 		/* La couleur de la bille adverse adjacente qui va peut etre etre deplacee*/
 		byte couleurAdverse;
+		//La bille du mileu s'il s'agit d'un mouvement latéral de trois billes 
+		byte milieu = 100;//Initialisation a un nombre quelconque pour éviter qu'il ne soit pas initialiser (surtout pas mettre 0)
 		byte cptBilleMoi; //Compteur du nombre de bille que je deplace
 		byte cptBilleLui; //Compteur du nombre de bille adverse qui vont etre deplacees
 		
@@ -125,14 +127,17 @@ public class Mouvement {
 						return true;
 					}
 				}
-						
 			}
 		}else{//Deplacement lateral
 			System.out.println("=> Déplacement latéral");
 			//Il suffit de verifier que toutes les cases visees sont vides
-			/* A FAIRE: calculer le numero de la bille du mileu si cptBilleMoi == 3 et tester comme les deux autres*/
+			if (cptBilleMoi == 3){
+				milieu = plateau.cases[plateau.cases[plateau.caseIntermediaire(this.premiere, this.derniere)].getAdjacent(vecteur)].getContenu();
+			}
+			
 			if (plateau.cases[plateau.cases[this.premiere].getAdjacent(vecteur)].getContenu() == Case.VIDE &&
-			    plateau.cases[plateau.cases[this.derniere].getAdjacent(vecteur)].getContenu() == Case.VIDE)
+			    plateau.cases[plateau.cases[this.derniere].getAdjacent(vecteur)].getContenu() == Case.VIDE &&
+					( (cptBilleMoi == 3 && milieu == Case.VIDE) || cptBilleMoi != 3) )
 				System.out.println("==> Les cases visées sont vides");
 				return true;
 		}
