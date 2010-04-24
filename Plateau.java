@@ -25,11 +25,11 @@ public class Plateau {
 	/**
 	 * l'association entre notation officielle et notation byte
 	 */
-		private Hashtable assOfficielleVersByte;
+		private Hashtable<String, Byte> assOfficielleVersByte;
 	/**
 	 * l'association entre notation byte et notation officielle
 	 */
-		private Hashtable assByteVersOfficielle;		
+		private Hashtable<Byte, String> assByteVersOfficielle;		
 	/**	
 	 * la longueur de chacune des 9 lignes
 	 */		

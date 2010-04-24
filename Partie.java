@@ -19,7 +19,7 @@ public class Partie {
 	protected byte nbBillesAEjecter; 
 	
 	public Partie(String[] pseudo) {
-		this.nbBillesAEjecter = 6;
+		this.nbBillesAEjecter = 1; // pour faire les tests plus rapidement
 		terminee = false;
  		int i = 0;
  		joueurs = new ArrayList<Joueur>();
@@ -45,5 +45,6 @@ public class Partie {
 			i++;
 			this.plateau.afficher();
 		}
+		System.out.println("Partie terminee.");
 	}
 }
