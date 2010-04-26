@@ -11,13 +11,19 @@ public class Jeu {
 	*    Case Intermediaire fonctionne
 	*    
 	*/
-	private Partie p[];	// static ou pas ?
+	private static Partie[] p;
+	
 	public static void main(String args[]){
+		String[] pseudo = new String[2];
+		pseudo[0] = "Vincent";
+		pseudo[1] = "Bidule";
+		Partie[] p = new Partie[1];
+		p[0] = new Partie(pseudo);
+		
+		
+/*		
 		boolean valide;
 		Plateau plateau = new Plateau();
-		FenetreJeu f = new FenetreJeu(plateau);
-		
-
 	
 		//Jeu de test
 		Plateau p = new Plateau();
@@ -27,8 +33,12 @@ public class Jeu {
 			System.out.println(p.cases[55].getAdjacent(i));
 
 		Mouvement m = new Mouvement((byte)(14), (byte)(15), Mouvement.BD);
+
+		p.effectuer(m);
+		m = ia.;
 		p.effectuer(m);
 		p.afficher();
+
 
 		//test caseIntermediaire
 		System.out.println(Mouvement.DD);
@@ -47,7 +57,7 @@ public class Jeu {
 		f.rafraichir(p);
 				
 		// OH OUI CA MARCHE ON EST TROP PUISSANTS !!!!!!!!
-		
+*/		
 		
 		// if(valide)
 		// 						System.out.println("Mouvement Valide");
