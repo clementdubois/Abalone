@@ -26,7 +26,7 @@ public class Jeu {
 		for(byte i = 0 ; i < 6 ; i++)
 			System.out.println(p.cases[55].getAdjacent(i));
 
-		Mouvement m = new Mouvement((byte)(56), (byte)(55), Mouvement.HD);
+		Mouvement m = new Mouvement((byte)(14), (byte)(15), Mouvement.BD);
 		p.effectuer(m);
 		p.afficher();
 
@@ -36,7 +36,14 @@ public class Jeu {
 		byte inter = p.caseIntermediaire(m.getPremiere(), m.getDerniere());
 		System.out.println("Inter = "+inter);
 		
-		//on rafraichit la fenetre
+		try{
+		  //do what you want to do before sleeping
+		  Thread.currentThread().sleep(4000);//sleep for 1000 ms
+		  //do what you want to do after sleeptig
+		}
+		catch(InterruptedException ie){
+		//If this thread was intrrupted by nother thread 
+		}		//on rafraichit la fenetre
 		f.rafraichir(p);
 				
 		// OH OUI CA MARCHE ON EST TROP PUISSANTS !!!!!!!!

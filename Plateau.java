@@ -124,12 +124,12 @@ public class Plateau {
 			
 			cases[m.getPremiere()].setContenu(Case.VIDE);	
 			cases[m.getDerniere()].setContenu(Case.VIDE);	
-			cases[caseIntermediaire(m.getPremiere(), m.getDerniere())].setContenu(Case.VIDE);
+			if(caseIntermediaire(m.getPremiere(), m.getDerniere()) != 0){
+				cases[caseIntermediaire(m.getPremiere(), m.getDerniere())].setContenu(Case.VIDE);
+				cases[cases[caseIntermediaire(m.getPremiere(), m.getDerniere())].getAdjacent(m.getVecteur())].setContenu(contenuActuel);
+			}
 			cases[cases[m.getPremiere()].getAdjacent(m.getVecteur())].setContenu(contenuActuel); 			
 			cases[cases[m.getDerniere()].getAdjacent(m.getVecteur())].setContenu(contenuActuel);
-			cases[cases[caseIntermediaire(m.getPremiere(), m.getDerniere())].getAdjacent(m.getVecteur())].setContenu(contenuActuel);
-			
-			//A FAIRE : La case intermédiaire
 		}
 
 	}
