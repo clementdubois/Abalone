@@ -1,5 +1,5 @@
 /** Gestion d'une partie en console (idem que locale mais pas de partie graphique). */
-public class PartieConsole extends Partie{
+// public class PartieConsole extends Partie{
 	/** @param nbJ nombre de joueur 
 	public PartieConsole() {
 		super();
@@ -30,4 +30,4 @@ public class PartieConsole extends Partie{
 	public void inviteMouvement(){
 		System.out.println("Veuillez indiquez un mouvement : ");
 	}*/
-}
+// }

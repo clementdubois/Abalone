@@ -28,7 +28,7 @@ public class Partie {
 		}
 		plateau = new Plateau(); // initialise les valeurs des vecteurs
 		
-//		FenetreJeu f = new FenetreJeu(plateau);
+		FenetreJeu f = new FenetreJeu(plateau);
 		i = 0;
 		System.out.println();
 
@@ -44,6 +44,7 @@ public class Partie {
 			}
 			i++;
 			this.plateau.afficher();
+			f.rafraichir(plateau);
 		}
 		System.out.println("Partie terminee.");
 	}
