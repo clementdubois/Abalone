@@ -51,8 +51,12 @@ public class IA {
 	
 /**
  * fonction d'evaluation
+ *
+ 	public float evaluerPlateau() {
+ 		
+ 	}
  */
-
+ 
 /**
  * alpha-beta
  */
