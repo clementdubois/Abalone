@@ -1,5 +1,5 @@
 
-public class IA extends Joueur {
+public class IA {
 	// temps : java.util.*; <= Timer	
 	// vkaenemi@ee.ethz.ch - ssilvan@ee.ethz.ch
 	
@@ -43,15 +43,20 @@ public class IA extends Joueur {
 	public IA() {
 		
 	}
+/*
 	public IA(String nom) {
 		this.nom = nom;
 	}
-	
+*/	
 	
 /**
  * fonction d'evaluation
+ *
+ 	public float evaluerPlateau() {
+ 		
+ 	}
  */
-
+ 
 /**
  * alpha-beta
  */
@@ -83,10 +88,11 @@ public class IA extends Joueur {
  * 
  * 
  */	
+/* 
 	private score setHeuristique(byte h) {
 		this.heuristique = h;
 	}
-	
+*/	
 
 	
 	
@@ -95,6 +101,7 @@ public class IA extends Joueur {
 /**
  * methodes AVANT une partie.
  */
+/* 
 	public preparerPartie() {
 		// les infos de la partie : variante, (blitz), .	
 	}
@@ -107,7 +114,7 @@ public class IA extends Joueur {
 	public chercherPartie() {
 		// comme un joueur : on veut récupérer la liste des parties en attente de joueur.	
 	}
-	
+*/	
 /**
  * opening : lorsque la fonction d'evaluation sera pas mal il serait interessant de generer les ouvertures sur une profondeur importante.
  */
@@ -117,10 +124,11 @@ public class IA extends Joueur {
  * il faut une methode pour forcer l'ia a jouer si elle est consideree trop lente : la methode est donc public
  * on va simplement parcourir la liste des resultats des evaluations et
  */
+ /*
  	public joue() {
  		foreach(JTree) {
  			
  		}
  	}
- 
+ */
 }

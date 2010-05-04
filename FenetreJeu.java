@@ -38,7 +38,7 @@ public class FenetreJeu extends JFrame{
     			    				maitre    = new JRadioButtonMenuItem("Maitre");
 
     private ButtonGroup bg = new ButtonGroup();
-	
+
     // La declaration pour le menu contextuel.
 	private JPopupMenu jpm   = new JPopupMenu();
 
@@ -51,7 +51,7 @@ public class FenetreJeu extends JFrame{
     private StartPartieListener startPartie = new StartPartieListener();
 
 
-    // CrÃ©ation de notre barre d'outils.
+    // Création de notre barre d'outils.
     private JToolBar toolBar = new JToolBar();
 
     //Les boutons
@@ -68,7 +68,7 @@ public class FenetreJeu extends JFrame{
 	// 	FenetreJeu f = new FenetreJeu();
 	// 	f.setVisible(true);	
 	// }
-	
+
 	/**
 	* C'est le constructeur de la fenetre
 	*/
@@ -87,12 +87,12 @@ public class FenetreJeu extends JFrame{
 
             //On initialise le menu stop
             stop.setEnabled(false);
-            //On affecte les Ã©couteurs
+            //On affecte les écouteurs
             stop.addActionListener(stopPartie);
     		launch.addActionListener(startPartie);
 
 			/*
-    		* On cree et on passe l'Ã©couteur pour afficher le menu contextuel
+    		* On cree et on passe l'écouteur pour afficher le menu contextuel
     		* Creation d'une implementation de MouseAdapter
     		* avec redefinition de la methode adequate
             */
@@ -103,7 +103,7 @@ public class FenetreJeu extends JFrame{
             		{	            	
 	            		jpm.add(launch);
 	            		jpm.add(stop);
-	
+
 						/**
 	            		* La methode qui va afficher le menu.
 						*/
@@ -129,7 +129,7 @@ public class FenetreJeu extends JFrame{
 		pan.repaint();
         this.initMenu();
         this.initToolBar(); 
-		
+
 	}
 
 
@@ -172,13 +172,13 @@ public class FenetreJeu extends JFrame{
     	//Ajout du listener pour lancer la partie
     	//Attention, le listener est global
     	lancer.addActionListener(startPartie);
-    	//On attribue l'accÃ©lerateur c
+    	//On attribue l'accélerateur c
     	lancer.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L,
     												KeyEvent.CTRL_MASK));
     	partie.add(lancer);
 
 
-    	// Ajout du listener pour arrÃªter la partie
+    	// Ajout du listener pour arrêter la partie
     	// listener a changer ici aussi
 
     	arreter.addActionListener(stopPartie);
@@ -209,7 +209,7 @@ public class FenetreJeu extends JFrame{
     	
     	forme.add(difficulte);
 
-    	//menu Ã  propos
+    	//menu à propos
 
     	//Ajout de ce que doit faire le "?"
     	aProposItem.addActionListener(new ActionListener(){
@@ -226,7 +226,7 @@ public class FenetreJeu extends JFrame{
     	aPropos.add(aProposItem);
 
     	// Ajout des menus dans la barre de menus.
-		
+
     	partie.setMnemonic('P');
     	menuBar.add(partie);
 
@@ -237,8 +237,8 @@ public class FenetreJeu extends JFrame{
     	menuBar.add(aPropos);
 
 
-    	// Ajout de la barre de menus sur la fenÃªtre.
-		
+    	// Ajout de la barre de menus sur la fenêtre.
+
     	this.setJMenuBar(menuBar);
     }
 
@@ -247,7 +247,7 @@ public class FenetreJeu extends JFrame{
 	// }
 
 	 /**
-	 * Ã‰couteur du menu Lancer.
+	 * Écouteur du menu Lancer.
 	*/
 	public class StartPartieListener implements ActionListener{
 
@@ -276,7 +276,7 @@ public class FenetreJeu extends JFrame{
 	}
 
 	 /**
-	 * Ã‰couteur du menu Quitter.
+	 * Écouteur du menu Quitter.
 	 */
 	class StopPartieListener  implements ActionListener{
 
@@ -289,12 +289,12 @@ public class FenetreJeu extends JFrame{
 			if(option != JOptionPane.NO_OPTION && option != JOptionPane.CANCEL_OPTION && option != JOptionPane.CLOSED_OPTION)
 			{
 				// animated = false;
-				
-				
+
+
 				// On remplace nos bouton par nous MenuItem
 				lancer.setEnabled(true);
 				arreter.setEnabled(false);
-				
+
 				// instruction pour le menu contextuel
 				launch.setEnabled(true);
 				stop.setEnabled(false);
@@ -316,3 +316,4 @@ public class FenetreJeu extends JFrame{
 
 
 }
+

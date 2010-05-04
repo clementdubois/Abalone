@@ -25,11 +25,11 @@ public class Plateau {
 	/**
 	 * l'association entre notation officielle et notation byte
 	 */
-		private Hashtable assOfficielleVersByte;
+		private Hashtable<String, Byte> assOfficielleVersByte;
 	/**
 	 * l'association entre notation byte et notation officielle
 	 */
-		private Hashtable assByteVersOfficielle;		
+		private Hashtable<Byte, String> assByteVersOfficielle;		
 	/**	
 	 * la longueur de chacune des 9 lignes
 	 */		
@@ -124,12 +124,12 @@ public class Plateau {
 			
 			cases[m.getPremiere()].setContenu(Case.VIDE);	
 			cases[m.getDerniere()].setContenu(Case.VIDE);	
-			cases[caseIntermediaire(m.getPremiere(), m.getDerniere())].setContenu(Case.VIDE);
+			if(caseIntermediaire(m.getPremiere(), m.getDerniere()) != 0){
+				cases[caseIntermediaire(m.getPremiere(), m.getDerniere())].setContenu(Case.VIDE);
+				cases[cases[caseIntermediaire(m.getPremiere(), m.getDerniere())].getAdjacent(m.getVecteur())].setContenu(contenuActuel);
+			}
 			cases[cases[m.getPremiere()].getAdjacent(m.getVecteur())].setContenu(contenuActuel); 			
 			cases[cases[m.getDerniere()].getAdjacent(m.getVecteur())].setContenu(contenuActuel);
-			cases[cases[caseIntermediaire(m.getPremiere(), m.getDerniere())].getAdjacent(m.getVecteur())].setContenu(contenuActuel);
-			
-			//A FAIRE : La case intermédiaire
 		}
 
 	}

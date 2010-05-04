@@ -11,13 +11,19 @@ public class Jeu {
 	*    Case Intermediaire fonctionne
 	*    
 	*/
-	private Partie p[];	// static ou pas ?
+	private static Partie[] p;
+	
 	public static void main(String args[]){
+		String[] pseudo = new String[2];
+		pseudo[0] = "Vincent";
+		pseudo[1] = "Bidule";
+		Partie[] p = new Partie[1];
+		p[0] = new Partie(pseudo);
+		
+		
+/*		
 		boolean valide;
 		Plateau plateau = new Plateau();
-		FenetreJeu f = new FenetreJeu(plateau);
-		
-
 	
 		//Jeu de test
 		Plateau p = new Plateau();
@@ -26,9 +32,13 @@ public class Jeu {
 		for(byte i = 0 ; i < 6 ; i++)
 			System.out.println(p.cases[55].getAdjacent(i));
 
-		Mouvement m = new Mouvement((byte)(56), (byte)(55), Mouvement.HD);
+		Mouvement m = new Mouvement((byte)(14), (byte)(15), Mouvement.BD);
+
+		p.effectuer(m);
+		m = ia.;
 		p.effectuer(m);
 		p.afficher();
+
 
 		//test caseIntermediaire
 		System.out.println(Mouvement.DD);
@@ -36,11 +46,18 @@ public class Jeu {
 		byte inter = p.caseIntermediaire(m.getPremiere(), m.getDerniere());
 		System.out.println("Inter = "+inter);
 		
-		//on rafraichit la fenetre
+		try{
+		  //do what you want to do before sleeping
+		  Thread.currentThread().sleep(4000);//sleep for 1000 ms
+		  //do what you want to do after sleeptig
+		}
+		catch(InterruptedException ie){
+		//If this thread was intrrupted by nother thread 
+		}		//on rafraichit la fenetre
 		f.rafraichir(p);
 				
 		// OH OUI CA MARCHE ON EST TROP PUISSANTS !!!!!!!!
-		
+*/		
 		
 		// if(valide)
 		// 						System.out.println("Mouvement Valide");
