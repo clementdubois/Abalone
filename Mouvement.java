@@ -144,5 +144,11 @@ public class Mouvement {
 		//Si on arrive là c'est que c'est un mauvais mouvement
 		return false;
 	}
+	
+	public char traduction() {
+		char temp = 0xa000;
+		char temp2 = 0x0000;
+		return temp;
+	}
 
 }
