@@ -8,3 +8,23 @@ Command-line arguments:  -os macosx -ws carbon -arch x86 -data /Users/clement/pr
 
 !ENTRY org.eclipse.core.net 1 0 2010-04-11 10:39:48.623
 !MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences
+!SESSION 2010-04-26 07:23:05.923 -----------------------------------------------
+eclipse.buildId=M20080221-1800
+java.version=1.5.0_22
+java.vendor=Apple Inc.
+BootLoader constants: OS=macosx, ARCH=x86, WS=carbon, NL=fr_FR
+Framework arguments:  -keyring /Users/clement/.eclipse_keyring -showlocation
+Command-line arguments:  -os macosx -ws carbon -arch x86 -keyring /Users/clement/.eclipse_keyring -consoleLog -showlocation
+
+!ENTRY org.eclipse.core.net 1 0 2010-04-26 07:23:22.324
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences
+!SESSION 2010-04-30 09:24:31.653 -----------------------------------------------
+eclipse.buildId=M20080221-1800
+java.version=1.5.0_22
+java.vendor=Apple Inc.
+BootLoader constants: OS=macosx, ARCH=x86, WS=carbon, NL=fr_FR
+Framework arguments:  -keyring /Users/clement/.eclipse_keyring -showlocation
+Command-line arguments:  -os macosx -ws carbon -arch x86 -keyring /Users/clement/.eclipse_keyring -consoleLog -showlocation
+
+!ENTRY org.eclipse.core.net 1 0 2010-04-30 09:24:51.085
+!MESSAGE System property http.nonProxyHosts has been set to local|*.local|169.254/16|*.169.254/16 by an external source. This value will be overwritten using the values from the preferences

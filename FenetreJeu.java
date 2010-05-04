@@ -128,7 +128,7 @@ public class FenetreJeu extends JFrame{
 		pan.rafraichir(plateau);
 		pan.repaint();
         this.initMenu();
-        this.initToolBar(); 
+        //this.initToolBar(); 
 
 	}
 
