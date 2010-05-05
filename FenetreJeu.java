@@ -6,6 +6,7 @@ import javax.swing.*;
 public class FenetreJeu extends JFrame{
 
 	Plateau plateau;
+	ClickAction listener;
 	private Panneau pan;
     private JPanel container = new JPanel();
     // private int compteur = 0;
@@ -72,7 +73,7 @@ public class FenetreJeu extends JFrame{
 	/**
 	* C'est le constructeur de la fenetre
 	*/
-    public FenetreJeu(Plateau plateau){
+    public FenetreJeu(Plateau plateau,ClickAction listener){
 			super();
 			this.plateau = plateau;
             this.setTitle("Abalone");
@@ -82,7 +83,7 @@ public class FenetreJeu extends JFrame{
             this.setLocationRelativeTo(null);
 			container.setBackground(couleurFond);
             container.setLayout(new BorderLayout());
-			this.pan = new Panneau(plateau);
+			this.pan = new Panneau(plateau,listener);
 			pan.repaint();
 
             //On initialise le menu stop
@@ -128,8 +129,6 @@ public class FenetreJeu extends JFrame{
 		pan.rafraichir(plateau);
 		pan.repaint();
         this.initMenu();
-        this.initToolBar(); 
-
 	}
 
 

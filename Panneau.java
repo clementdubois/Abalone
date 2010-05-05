@@ -9,15 +9,17 @@ public static final int NBCASES  =  9;
 public static final int TAILLEIM = 62;
 
 Plateau plateau;
-
+ClickAction listener;
 Image neant,casevide,pionN,pionB,pionBS,pionNS;
 
 	/**
 	* Constructeur du panel.
 	*/
-	public Panneau(Plateau plateau){
-
+	public Panneau(Plateau plateau,ClickAction listener){
+			//initialisation des variables
 			this.plateau = plateau;
+			//permet de gérer la gestion des click dans la classe ClickAction
+			addMouseListener(listener);
 			Toolkit kit=Toolkit.getDefaultToolkit();
 			MediaTracker tracker=new MediaTracker(this);
 			this.neant	  = kit.getImage("images/neant.jpg");

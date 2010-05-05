@@ -27,12 +27,13 @@ public class Partie {
 			joueurs.add(new Joueur(Pseudocourant));//joueurs[i++] = new Joueur(Pseudocourant);
 		}
 		plateau = new Plateau(); // initialise les valeurs des vecteurs
-		
-		FenetreJeu f = new FenetreJeu(plateau);
+		ClickAction listener = new ClickAction();
+		FenetreJeu f = new FenetreJeu(plateau,listener);
 		i = 0;
 		System.out.println();
 
 		while(!terminee) {
+			
 			this.coupActuel = this.joueurs.get(i%(joueurs.size())).jouer(); // on attend que le joueur envoie son coup.
 			System.out.println("Partie::J"+(i%joueurs.size())+" joue : "+coupActuel.getPremiere()+"-"+coupActuel.getDerniere()+"-"+coupActuel.getVecteur());
 			this.plateau.effectuer(coupActuel);
