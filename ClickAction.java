@@ -7,6 +7,7 @@ public class ClickAction extends MouseAdapter {
 	private boolean finPartie;
 	/** compteur de click*/
 	private int nbClick;
+	private int premiere,deuxieme,vecteur;
 	
 	public ClickAction(){
 		//Initialisation des variables
@@ -18,10 +19,34 @@ public class ClickAction extends MouseAdapter {
 	*Cette méthode envoie en parametre les coordonées du plateau afin de determiner le numero de la case selectionnee
 	*/
 	public void mousePressed(MouseEvent event){
-		int premiere,deuxieme,vecteur;
+		if(nbClick == 1){
+			premiere = transcription(event.getY(),event.getX());
+			nbclick = 2;
+		}
+	}
+	
+	public void mouseRelease(MouseEvent event){
+		if(nbClick == 2){
+			deuxieme = transcription(event.getY(),event.getX());
+			nbclick = 3;
+		}
 		
-		transcription(event.getY(),event.getX());
-		nbClick++;
+	}
+	
+	public void mousePressed(MouseEvent event){
+		if(nbClick == 1){
+			premiere = transcription(event.getY(),event.getX());
+			nbclick = 2;
+		}
+		if(nbClick == 2){
+			deuxieme = transcription(event.getY(),event.getX());
+			nbclick = 3;
+		}
+		if(nbClick == 3){
+			vecteur = transcription(event.getY(),event.getX());
+			//ici il faut determiner le vecteur, envoyer le mouvement et reinitialiser nbClick
+		}
+		
 	}
 	
 	/**
@@ -51,15 +76,9 @@ public class ClickAction extends MouseAdapter {
 		if(x==6) caseSelected = y + 43 - 1; 
 		if(x==7) caseSelected = y + 50 - 2;
 		if(x==8) caseSelected = y + 56 - 2; 
+		
+		return caseSelected;
 					
-	}
-	
-	
-	/** 
-	*Retourne le numero de la case selectionnee a la souris
-	*/
-	public int getCaseSelected(){
-		return caseSelected
 	}
 	
 }
