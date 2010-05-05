@@ -4,7 +4,6 @@ import java.lang.*;
 public class Joueur {
 	String pseudonyme;
 	BufferedReader br;
-	public byte score;
 	Mouvement coupChoisi;
 	
 	public Joueur() {

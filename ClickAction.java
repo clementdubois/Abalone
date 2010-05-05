@@ -7,11 +7,18 @@ public class ClickAction extends MouseAdapter {
 	private boolean finPartie;
 	/** compteur de click*/
 	private int nbClick;
+	/** Le plateau de jeu*/
+	private Plateau plateau;
+	/** La partie en cour*/
+	private Partie partie;
 	
-	public ClickAction(){
+	/** On evoie la partie associé a la fenetre pour pouvoir la modifier*/
+	public ClickAction(Partie p){
 		//Initialisation des variables
 		this.joueur=joueur;
 		nbClick = 0;
+		this.plateau = p.plateau;
+		this.partie = p;
 	}
 	
 	/**
@@ -27,12 +34,14 @@ public class ClickAction extends MouseAdapter {
 	/**
 	*Cette fonction permet de passer des coordonnees graphiques ( sur le panel) en coordonees de tableau
 	*/
-	public int transcription(int x,int y){
-		int caseSelected ;
+	public int transcription(int xx,int yy){
+		int caseSelected =0;
+		int x = xx;
+		int y = yy;
 		
 		x = (x-(x%Panneau.TAILLEIM))/Panneau.TAILLEIM;
 		
-		if(x%2 = 1){
+		if(x%2 == 1){
 			if(y%Panneau.TAILLEIM > Panneau.TAILLEIM/2)
 				y = ((y-(y%Panneau.TAILLEIM))/Panneau.TAILLEIM)+1;
 			else
@@ -51,15 +60,46 @@ public class ClickAction extends MouseAdapter {
 		if(x==6) caseSelected = y + 43 - 1; 
 		if(x==7) caseSelected = y + 50 - 2;
 		if(x==8) caseSelected = y + 56 - 2; 
-					
+			
+		return caseSelected;		
+	}
+	
+	public void deroulementMouvement(int premiere, int deuxieme, int vecteur){
+		boolean is_valid;
+		
+		Mouvement m = new Mouvement((byte)premiere, (byte)deuxieme, (byte)vecteur);
+		
+		// On vérifie le mouvement 
+		is_valid = m.valider(plateau);
+		//Si c'est valide on l'effectue
+		if(is_valid){
+			System.out.println("Listener mouv valide");
+			//On effectue le mouvement
+			plateau.effectuer(m);
+			//On modifie l'état de la partie
+				//On change le joueur courant
+				partie.setJoueur();
+				//On incremente le nombre de coups
+				partie.setNumCoup();
+				//On vérifie si il faut incrementer le score de la partie
+				partie.setScore();
+			//On affiche en console
+			plateau.afficher();
+			System.out.println(partie);
+			//On rafraichie graphiquement
+			partie.f.rafraichir(plateau);
+		}else{
+			System.out.println("Listener mouv invalide");
+		}
+		
 	}
 	
 	
 	/** 
 	*Retourne le numero de la case selectionnee a la souris
 	*/
-	public int getCaseSelected(){
-		return caseSelected
-	}
+	// public int getCaseSelected(){
+	// 	return caseSelected;
+	// }
 	
 }
