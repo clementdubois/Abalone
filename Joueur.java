@@ -16,8 +16,8 @@ public class Joueur {
 		System.out.println(pseudo+" a rejoint la partie.");
 		br = new BufferedReader(new InputStreamReader(System.in));
 	}
-	public Mouvement jouer(/*Mouvement[] coupsPossibles*/) {
-		System.out.println("Liste des coups possibles : ");
+	public Mouvement jouer() {
+		//System.out.println("Liste des coups possibles : ");
 		/*
 		for(Mouvement[] coupsPossibles : coupPossible)
 			System.out.println("1ere:"+coupPossible.getPremiere()+" 2e:"+coupPossible.getDerniere()+" vecteur:"+coupPossible.getVecteur());

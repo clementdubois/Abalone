@@ -25,19 +25,19 @@ public class Plateau {
 	/**
 	 * l'association entre notation officielle et notation byte
 	 */
-		private Hashtable<String, Byte> assOfficielleVersByte;
+		private static Hashtable<String, Byte> assOfficielleVersByte;
 	/**
 	 * l'association entre notation byte et notation officielle
 	 */
-		private Hashtable<Byte, String> assByteVersOfficielle;		
+		private static Hashtable<Byte, String> assByteVersOfficielle;		
 	/**	
 	 * la longueur de chacune des 9 lignes
 	 */		
-		private byte[] longueurLigne;
+		private static byte[] longueurLigne;
 	/** 
 	 * les lettres associées aux lignes
 	 */			
-		private String[] lettreLigne;
+		private static String[] lettreLigne;
 	/**
 	 * il y a 61 cases sur le plateau de jeu, + le trou	(la case 0)
 	 */	
