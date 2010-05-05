@@ -11,6 +11,8 @@ public class ClickAction extends MouseAdapter {
 	private Plateau plateau;
 	/** La partie en cour*/
 	private Partie partie;
+
+	private int premiere,deuxieme,vecteur;
 	
 	/** On evoie la partie associé a la fenetre pour pouvoir la modifier*/
 	public ClickAction(Partie p){
@@ -24,11 +26,30 @@ public class ClickAction extends MouseAdapter {
 	/**
 	*Cette méthode envoie en parametre les coordonées du plateau afin de determiner le numero de la case selectionnee
 	*/
-	public void mousePressed(MouseEvent event){
-		int premiere,deuxieme,vecteur;
+
+	
+	public void mouseRelease(MouseEvent event){
+		if(nbClick == 2){
+			deuxieme = transcription(event.getY(),event.getX());
+			nbClick = 3;
+		}
 		
-		transcription(event.getY(),event.getX());
-		nbClick++;
+	}
+	
+	public void mousePressed(MouseEvent event){
+		if(nbClick == 1){
+			premiere = transcription(event.getY(),event.getX());
+			nbClick = 2;
+		}
+		if(nbClick == 2){
+			deuxieme = transcription(event.getY(),event.getX());
+			nbClick = 3;
+		}
+		if(nbClick == 3){
+			vecteur = transcription(event.getY(),event.getX());
+			//ici il faut determiner le vecteur, envoyer le mouvement et reinitialiser nbClick
+		}
+		
 	}
 	
 	/**
@@ -101,5 +122,5 @@ public class ClickAction extends MouseAdapter {
 	// public int getCaseSelected(){
 	// 	return caseSelected;
 	// }
-	
+
 }
