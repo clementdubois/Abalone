@@ -19,7 +19,7 @@ public class ClickAction extends MouseAdapter {
 	public ClickAction(Partie p){
 		//Initialisation des variables
 		this.joueur=joueur;
-		nbClick = 0;
+		nbClick = 1;
 		this.plateau = p.plateau;
 		this.partie = p;
 	}
@@ -28,15 +28,19 @@ public class ClickAction extends MouseAdapter {
 	public void mousePressed(MouseEvent event){
 		if(nbClick == 1){
 			premiere = transcription(event.getY(),event.getX());
+			System.out.println("premiere-pressed" + premiere);
 			nbClick = 2;
 		}
 		if(nbClick == 2){
 			deuxieme = transcription(event.getY(),event.getX());
+			System.out.println("deuxieme-pressed" + deuxieme);
 			balise = deuxieme;
+			System.out.println("balise-pressed" + balise);
 			nbClick = 3;
 		}
 		if(nbClick == 3){
 			balise = transcription(event.getY(),event.getX());
+			System.out.println("balise-pressed" + deuxieme);
 		}
 		
 	}
@@ -44,6 +48,7 @@ public class ClickAction extends MouseAdapter {
 	public void mouseRelease(MouseEvent event){
 		if(nbClick == 2){
 			deuxieme = transcription(event.getY(),event.getX());
+			System.out.println("deuxieme-release" + deuxieme);
 			nbClick = 3;
 		}
 		if(nbClick == 3){
@@ -57,9 +62,11 @@ public class ClickAction extends MouseAdapter {
 			else if(vecteur > balise && yy%Panneau.TAILLEIM > Panneau.TAILLEIM/2) vecteur = 2; //deplacement bas-droite
 			else if(vecteur > balise && yy%Panneau.TAILLEIM < Panneau.TAILLEIM/2) vecteur = 3; //deplacement bas-gauche
 			
+			System.out.println("vecteur-release" + vecteur);
+			
 			deroulementMouvement(premiere,deuxieme,vecteur);
 			
-			nbClick = 0;
+			nbClick = 1;
 		}
 		
 	}
@@ -67,10 +74,12 @@ public class ClickAction extends MouseAdapter {
 	public void mouseClicked(MouseEvent event){
 		if(nbClick == 1){
 			premiere = transcription(event.getY(),event.getX());
+			System.out.println("premiere-clicked" + premiere);
 			nbClick = 2;
 		}
 		if(nbClick == 2){
 			deuxieme = transcription(event.getY(),event.getX());
+			System.out.println("deuxieme-clicked" + deuxieme);
 			nbClick = 3;
 		}
 		
