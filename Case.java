@@ -26,7 +26,7 @@ public class Case {
 	/** Si une case est vide (contenu de la case)*/
 	public final static byte VIDE = 0;
 	
-	/** Vecteur en haut a gauche*/
+	/** Vecteur en haut a droite*/
 	public static final byte HD = 0;
 	/** Vecteur a droite*/
 	public static final byte DD = 1;

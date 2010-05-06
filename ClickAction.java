@@ -12,7 +12,8 @@ public class ClickAction extends MouseAdapter {
 	/** La partie en cour*/
 	private Partie partie;
 
-	private int premiere,deuxieme,vecteur;
+	private int premiere,deuxieme,vecteur,balise;
+	private int yy;
 	
 	/** On evoie la partie associé a la fenetre pour pouvoir la modifier*/
 	public ClickAction(Partie p){
@@ -23,18 +24,6 @@ public class ClickAction extends MouseAdapter {
 		this.partie = p;
 	}
 	
-	/**
-	*Cette méthode envoie en parametre les coordonées du plateau afin de determiner le numero de la case selectionnee
-	*/
-
-	
-	public void mouseRelease(MouseEvent event){
-		if(nbClick == 2){
-			deuxieme = transcription(event.getY(),event.getX());
-			nbClick = 3;
-		}
-		
-	}
 	
 	public void mousePressed(MouseEvent event){
 		if(nbClick == 1){
@@ -43,11 +32,46 @@ public class ClickAction extends MouseAdapter {
 		}
 		if(nbClick == 2){
 			deuxieme = transcription(event.getY(),event.getX());
+			balise = deuxieme;
 			nbClick = 3;
 		}
 		if(nbClick == 3){
+			balise = transcription(event.getY(),event.getX());
+		}
+		
+	}
+	
+	public void mouseRelease(MouseEvent event){
+		if(nbClick == 2){
+			deuxieme = transcription(event.getY(),event.getX());
+			nbClick = 3;
+		}
+		if(nbClick == 3){
+			yy = event.getY();
 			vecteur = transcription(event.getY(),event.getX());
-			//ici il faut determiner le vecteur, envoyer le mouvement et reinitialiser nbClick
+			
+			if(vecteur == balise - 1) vecteur = 4; //deplacement a gauche
+			else if(vecteur == balise + 1) vecteur = 1; //deplacement a droite
+			else if(vecteur < balise && yy%Panneau.TAILLEIM > Panneau.TAILLEIM/2) vecteur = 0; //deplacement haut-droite 
+			else if(vecteur < balise && yy%Panneau.TAILLEIM < Panneau.TAILLEIM/2) vecteur = 5; //deplacement haut-gauche
+			else if(vecteur > balise && yy%Panneau.TAILLEIM > Panneau.TAILLEIM/2) vecteur = 2; //deplacement bas-droite
+			else if(vecteur > balise && yy%Panneau.TAILLEIM < Panneau.TAILLEIM/2) vecteur = 3; //deplacement bas-gauche
+			
+			deroulementMouvement(premiere,deuxieme,vecteur);
+			
+			nbClick = 0;
+		}
+		
+	}
+	
+	public void mouseClicked(MouseEvent event){
+		if(nbClick == 1){
+			premiere = transcription(event.getY(),event.getX());
+			nbClick = 2;
+		}
+		if(nbClick == 2){
+			deuxieme = transcription(event.getY(),event.getX());
+			nbClick = 3;
 		}
 		
 	}
@@ -73,17 +97,19 @@ public class ClickAction extends MouseAdapter {
 		}
 		
 		if(x==0) caseSelected = y - 2;
-		if(x==1) caseSelected = y + 5 - 2;
-		if(x==2) caseSelected = y + 11 - 1; 
-		if(x==3) caseSelected = y + 18 - 1;
-		if(x==4) caseSelected = y + 26;
-		if(x==5) caseSelected = y + 35 - 1;
-		if(x==6) caseSelected = y + 43 - 1; 
-		if(x==7) caseSelected = y + 50 - 2;
-		if(x==8) caseSelected = y + 56 - 2; 
+		else if(x==1) caseSelected = y + 5 - 2;
+		else if(x==2) caseSelected = y + 11 - 1; 
+		else if(x==3) caseSelected = y + 18 - 1;
+		else if(x==4) caseSelected = y + 26;
+		else if(x==5) caseSelected = y + 35 - 1;
+		else if(x==6) caseSelected = y + 43 - 1; 
+		else if(x==7) caseSelected = y + 50 - 2;
+		else if(x==8) caseSelected = y + 56 - 2; 
 			
 		return caseSelected;		
 	}
+	
+	
 	
 	public void deroulementMouvement(int premiere, int deuxieme, int vecteur){
 		boolean is_valid;
@@ -115,12 +141,5 @@ public class ClickAction extends MouseAdapter {
 		
 	}
 	
-	
-	/** 
-	*Retourne le numero de la case selectionnee a la souris
-	*/
-	// public int getCaseSelected(){
-	// 	return caseSelected;
-	// }
 
 }
