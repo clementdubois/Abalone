@@ -26,22 +26,22 @@ public class ClickAction extends MouseAdapter {
 	
 	
 	public void mousePressed(MouseEvent event){
-		if(nbClick == 1){
-			premiere = transcription(event.getY(),event.getX());
-			System.out.println("premiere-pressed" + premiere);
-			nbClick = 2;
-		}
-		if(nbClick == 2){
-			deuxieme = transcription(event.getY(),event.getX());
-			System.out.println("deuxieme-pressed" + deuxieme);
-			balise = deuxieme;
-			System.out.println("balise-pressed" + balise);
-			nbClick = 3;
-		}
-		if(nbClick == 3){
-			balise = transcription(event.getY(),event.getX());
-			System.out.println("balise-pressed" + deuxieme);
-		}
+		// if(nbClick == 1){
+		// 	premiere = transcription(event.getY(),event.getX());
+		// 	System.out.println("premiere-pressed" + premiere);
+		// 	nbClick = 2;
+		// }
+		// else if(nbClick == 2){
+		// 	deuxieme = transcription(event.getY(),event.getX());
+		// 	System.out.println("deuxieme-pressed" + deuxieme);
+		// 	balise = deuxieme;
+		// 	System.out.println("balise-pressed" + balise);
+		// 	nbClick = 3;
+		// }
+		// else if(nbClick == 3){
+		// 	balise = transcription(event.getY(),event.getX());
+		// 	System.out.println("balise-pressed" + deuxieme);
+		// }
 		
 	}
 	
@@ -51,7 +51,7 @@ public class ClickAction extends MouseAdapter {
 			System.out.println("deuxieme-release" + deuxieme);
 			nbClick = 3;
 		}
-		if(nbClick == 3){
+		else if(nbClick == 3){
 			yy = event.getY();
 			vecteur = transcription(event.getY(),event.getX());
 			
@@ -77,10 +77,28 @@ public class ClickAction extends MouseAdapter {
 			System.out.println("premiere-clicked" + premiere);
 			nbClick = 2;
 		}
-		if(nbClick == 2){
+		else if(nbClick == 2){
 			deuxieme = transcription(event.getY(),event.getX());
 			System.out.println("deuxieme-clicked" + deuxieme);
 			nbClick = 3;
+		}
+		else if(nbClick == 3){
+			yy = event.getY();
+			vecteur = transcription(event.getY(),event.getX());
+			
+			if(vecteur == balise - 1) vecteur = 4; //deplacement a gauche
+			else if(vecteur == balise + 1) vecteur = 1; //deplacement a droite
+			else if(vecteur < balise && yy%Panneau.TAILLEIM > Panneau.TAILLEIM/2) vecteur = 0; //deplacement haut-droite 
+			else if(vecteur < balise && yy%Panneau.TAILLEIM < Panneau.TAILLEIM/2) vecteur = 5; //deplacement haut-gauche
+			else if(vecteur > balise && yy%Panneau.TAILLEIM > Panneau.TAILLEIM/2) vecteur = 2; //deplacement bas-droite
+			else if(vecteur > balise && yy%Panneau.TAILLEIM < Panneau.TAILLEIM/2) vecteur = 3; //deplacement bas-gauche
+			
+			System.out.println("vecteur-release" + vecteur);
+			
+			deroulementMouvement(premiere,deuxieme,vecteur);
+			System.out.println("nbClick avant" + nbClick);
+			nbClick = 1;
+			System.out.println("nbClick apres" + nbClick);
 		}
 		
 	}
@@ -115,7 +133,7 @@ public class ClickAction extends MouseAdapter {
 		else if(x==7) caseSelected = y + 50 - 2;
 		else if(x==8) caseSelected = y + 56 - 2; 
 			
-		return caseSelected;		
+		return caseSelected + 1;		
 	}
 	
 	
