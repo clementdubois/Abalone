@@ -139,8 +139,8 @@ public class FenetreJeu extends JFrame{
 		pan.repaint();
         this.initMenu();
 	}
-	public void rafraichirBS2(int bille2){
-		pan.rafraichirBS2(bille2);
+	public void rafraichirBS2(int bille2, int bille3){
+		pan.rafraichirBS2(bille2,bille3);
 		pan.repaint();
         this.initMenu();
 	}

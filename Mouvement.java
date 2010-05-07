@@ -80,6 +80,7 @@ public class Mouvement {
 	* @return true si le mouvement est autorise, false si le mouvement est interdit
 	*/
 	public boolean valider(Plateau p){
+		System.out.println("------------DEBUT DE VALIDATION-----------");
 		Plateau plateau = p;
 		/* La derniere bille testé*/
 		byte derniereBille = this.premiere;
@@ -95,6 +96,7 @@ public class Mouvement {
 		//On calcul le nombre de bille poussées et on regarde la derniere de nos billes poussee, derniereBille vaudra la derniere de nos billes poussée
 		for(cptBilleMoi = 1; plateau.cases[plateau.cases[derniereBille].getAdjacent(vecteur)].getContenu() == contenuBille; cptBilleMoi++)
 			derniereBille = plateau.cases[derniereBille].getAdjacent(vecteur);
+		System.out.println("cpt bille moi : "+cptBilleMoi);
 		
 		//Si c'est une poussee (si on ne touche qu'une bille)
 		if(this.derniere == this.premiere){	
@@ -141,6 +143,8 @@ public class Mouvement {
 				System.out.println("==> Les cases visées sont vides");
 				return true;
 		}
+		
+		System.out.println("------------FIN DE VALIDATION-----------");
 		//Si on arrive là c'est que c'est un mauvais mouvement
 		return false;
 	}

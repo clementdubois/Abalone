@@ -12,7 +12,7 @@ public class ClickAction extends MouseAdapter {
 	/** La partie en cour*/
 	private Partie partie;
 
-	private int premiere,deuxieme,vecteur,balise;
+	private int premiere,deuxieme,vecteur,balise,intermediaire;
 	private int yb,yv,xb,xv;
 	
 	/** On evoie la partie associé a la fenetre pour pouvoir la modifier*/
@@ -81,7 +81,8 @@ public class ClickAction extends MouseAdapter {
 		else if(nbClick == 2){
 			deuxieme = transcription(event.getY(),event.getX());
 			System.out.println("deuxieme-clicked: " + deuxieme);
-			partie.f.rafraichirBS2(deuxieme);
+			intermediaire = this.plateau.caseIntermediaire((byte)premiere, (byte)deuxieme);
+			partie.f.rafraichirBS2(deuxieme,intermediaire);
 			nbClick = 3;
 		}
 		else if(nbClick == 3){
@@ -100,12 +101,13 @@ public class ClickAction extends MouseAdapter {
 			
 			if(vecteur == balise - 1) vecteur = 4; //deplacement a gauche
 			else if(vecteur == balise + 1) vecteur = 1; //deplacement a droite
-			else if(vecteur < balise && yv > yb) vecteur = 0; //deplacement haut-droite 
-			else if(vecteur < balise && yv < yb) vecteur = 5; //deplacement haut-gauche
-			else if(vecteur > balise && yv > yb) vecteur = 2; //deplacement bas-droite
-			else if(vecteur > balise && yv < yb) vecteur = 3; //deplacement bas-gauche
+			else if(vecteur < balise && xv > xb) vecteur = 0; //deplacement haut-droite 
+			else if(vecteur < balise && xv < xb) vecteur = 5; //deplacement haut-gauche
+			else if(vecteur > balise && xv > xb) vecteur = 2; //deplacement bas-droite
+			else if(vecteur > balise && xv < xb) vecteur = 3; //deplacement bas-gauche
 			
-			System.out.println("vecteur-release: " + vecteur);
+			
+			System.out.println("vecteur-clicked: " + vecteur);
 			
 			System.out.println("xb: " + xb);
 			System.out.println("xv: " + xv);
@@ -113,9 +115,13 @@ public class ClickAction extends MouseAdapter {
 			System.out.println("yv: " + yv);
 			if(xv - xb > Panneau.TAILLEIM * 1.9 || yv - yb > Panneau.TAILLEIM * 1.9){
 				System.out.println("Mouvement invalide !\n");
+				partie.f.rafraichir(plateau);
+			}
+			else if(vecteur<=5){
+				deroulementMouvement(premiere,deuxieme,vecteur);
 			}
 			else{
-				deroulementMouvement(premiere,deuxieme,vecteur);
+				partie.f.rafraichir(plateau);
 			}	
 			System.out.println("nbClick avant: " + nbClick);
 			nbClick = 1;
@@ -182,10 +188,12 @@ public class ClickAction extends MouseAdapter {
 			plateau.afficher();
 			System.out.println(partie);
 			//On rafraichie graphiquement
-			partie.f.rafraichir(plateau);
 		}else{
 			System.out.println("Listener mouv invalide");
 		}
+		
+		partie.f.rafraichir(plateau);
+		
 		
 	}
 	

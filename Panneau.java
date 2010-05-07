@@ -11,8 +11,7 @@ public static final int TAILLEIM = 62;
 Plateau plateau;
 ClickAction listener;
 Image neant,casevide,pionN,pionB,pionBS,pionNS;
-int bille1;
-int bille2;
+int bille1,bille2,bille3;
 
 	/**
 	* Constructeur du panel.
@@ -69,33 +68,38 @@ int bille2;
 				}
 				
 				else if(plateau.cases[taillePlateau].getContenu() == Bille.NOIR && i%2 == 1 && taillePlateau < 62){
-				 	g.drawImage(this.pionN,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
-					if(plateau.cases[taillePlateau].getNumero() == bille1 || plateau.cases[taillePlateau].getNumero() == bille2){
+				
+					if(plateau.cases[taillePlateau].getNumero() == bille1 || plateau.cases[taillePlateau].getNumero() == bille2 || plateau.cases[taillePlateau].getNumero() == bille3){
 						g.drawImage(this.pionNS,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
+					}else{
+						g.drawImage(this.pionN,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
 					}	
 					taillePlateau += 1;
 				}
 
 				else if(plateau.cases[taillePlateau].getContenu() == Bille.NOIR && i%2 == 0 && taillePlateau < 62){
-				 	g.drawImage(this.pionN,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
-					if(plateau.cases[taillePlateau].getNumero() == bille1 || plateau.cases[taillePlateau].getNumero() == bille2){
-						g.drawImage(this.pionNS,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
+					if(plateau.cases[taillePlateau].getNumero() == bille1 || plateau.cases[taillePlateau].getNumero() == bille2 || plateau.cases[taillePlateau].getNumero() == bille3){
+						g.drawImage(this.pionNS,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
+					}else{
+						g.drawImage(this.pionN,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
 					}
 					taillePlateau += 1;
 				}
 				
 				else if(plateau.cases[taillePlateau].getContenu() == Bille.BLANC && i%2 == 1 && taillePlateau < 62){
-				 	g.drawImage(this.pionB,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
-					if(plateau.cases[taillePlateau].getNumero() == bille1 || plateau.cases[taillePlateau].getNumero() == bille2){
+					if(plateau.cases[taillePlateau].getNumero() == bille1 || plateau.cases[taillePlateau].getNumero() == bille2 || plateau.cases[taillePlateau].getNumero() == bille3){
 						g.drawImage(this.pionBS,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
+					}else{
+						g.drawImage(this.pionB,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
 					}
 					taillePlateau += 1;
 				}
 
 				else if(plateau.cases[taillePlateau].getContenu() == Bille.BLANC && i%2 == 0 && taillePlateau < 62){
-				 	g.drawImage(this.pionB,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
-					if(plateau.cases[taillePlateau].getNumero() == bille1 || plateau.cases[taillePlateau].getNumero() == bille2){
-						g.drawImage(this.pionBS,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
+					if(plateau.cases[taillePlateau].getNumero() == bille1 || plateau.cases[taillePlateau].getNumero() == bille2 || plateau.cases[taillePlateau].getNumero() == bille3){
+						g.drawImage(this.pionBS,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
+					}else{
+						g.drawImage(this.pionB,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
 					}
 					taillePlateau += 1;
 				}
@@ -110,43 +114,6 @@ int bille2;
 					taillePlateau += 1;
 				}
 				
-				
-				// ------------------->
-					// if(taillePlateau < 62 && plateau.cases[taillePlateau].getNumero() == bille1 && i%2 == 1 && plateau.cases[taillePlateau].getContenu() == Bille.NOIR){
-					// 	System.out.println("Entrer");
-					//  	g.drawImage(this.pionNS,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
-					// }
-					// 
-					// if(taillePlateau < 62 && plateau.cases[taillePlateau].getContenu() == Bille.NOIR && plateau.cases[taillePlateau].getNumero() == bille1 && i%2 == 0){
-					//  	g.drawImage(this.pionNS,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);						
-					// }
-					// 
-					// if(taillePlateau < 62 && plateau.cases[taillePlateau].getContenu() == Bille.BLANC && plateau.cases[taillePlateau].getNumero() == bille1 && i%2 == 1){
-					//  	g.drawImage(this.pionBS,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);						
-					// }
-					// 
-					// if(taillePlateau < 62 && plateau.cases[taillePlateau].getContenu() == Bille.BLANC && plateau.cases[taillePlateau].getNumero() == bille1 && i%2 == 0){
-					//  	g.drawImage(this.pionBS,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);					
-					// }
-					// 
-					// 
-					// if(taillePlateau < 62 && plateau.cases[taillePlateau].getContenu() == Bille.NOIR && plateau.cases[taillePlateau].getNumero() == bille2 && i%2 == 1){
-					//  	g.drawImage(this.pionNS,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
-					// }
-					// 
-					// if(taillePlateau < 62 && plateau.cases[taillePlateau].getContenu() == Bille.NOIR && plateau.cases[taillePlateau].getNumero() == bille2 && i%2 == 0){
-					//  	g.drawImage(this.pionNS,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);						
-					// }
-					// 
-					// if(taillePlateau < 62 && plateau.cases[taillePlateau].getContenu() == Bille.BLANC && plateau.cases[taillePlateau].getNumero() == bille2 && i%2 == 1){
-					//  	g.drawImage(this.pionBS,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);						
-					// }
-					// 
-					// if(taillePlateau < 62 && plateau.cases[taillePlateau].getContenu() == Bille.BLANC && plateau.cases[taillePlateau].getNumero() == bille2 && i%2 == 0){
-					//  	g.drawImage(this.pionBS,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);					
-					// }
-				// ------------------>
-
 			}
 		}
 
@@ -161,14 +128,16 @@ int bille2;
 		this.plateau = plateau;
 		this.bille1 = 0;
 		this.bille2 = 0;
+		this.bille3 = 0;
 	}
 	
 	public void rafraichirBS1(int bille1){
 		this.bille1 = bille1;
 	}
 	
-	public void rafraichirBS2(int bille2){
+	public void rafraichirBS2(int bille2, int bille3){
 		this.bille2 = bille2;
+		this.bille3 = bille3;
 	} 
 
 }
