@@ -75,11 +75,13 @@ public class ClickAction extends MouseAdapter {
 		if(nbClick == 1){
 			premiere = transcription(event.getY(),event.getX());
 			System.out.println("premiere-clicked: " + premiere);
+			partie.f.rafraichirBS1(premiere);
 			nbClick = 2;
 		}
 		else if(nbClick == 2){
 			deuxieme = transcription(event.getY(),event.getX());
 			System.out.println("deuxieme-clicked: " + deuxieme);
+			partie.f.rafraichirBS2(deuxieme);
 			nbClick = 3;
 		}
 		else if(nbClick == 3){
@@ -109,7 +111,7 @@ public class ClickAction extends MouseAdapter {
 			System.out.println("xv: " + xv);
 			System.out.println("yb: " + yb);
 			System.out.println("yv: " + yv);
-			if(xv - xb > Panneau.TAILLEIM * 1.5 || yv - yb > Panneau.TAILLEIM * 1.5){
+			if(xv - xb > Panneau.TAILLEIM * 1.9 || yv - yb > Panneau.TAILLEIM * 1.9){
 				System.out.println("Mouvement invalide !\n");
 			}
 			else{

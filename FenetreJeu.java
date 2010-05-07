@@ -130,6 +130,20 @@ public class FenetreJeu extends JFrame{
 		pan.repaint();
         this.initMenu();
 	}
+	
+	/**
+	* methode pour rafrachir le plateau avec le nouveau tableau avec billes selectionnees
+	*/
+	public void rafraichirBS1(int bille1){
+		pan.rafraichirBS1(bille1);
+		pan.repaint();
+        this.initMenu();
+	}
+	public void rafraichirBS2(int bille2){
+		pan.rafraichirBS2(bille2);
+		pan.repaint();
+        this.initMenu();
+	}
 
 
 	/**
