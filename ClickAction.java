@@ -13,7 +13,7 @@ public class ClickAction extends MouseAdapter {
 	private Partie partie;
 
 	private int premiere,deuxieme,vecteur,balise;
-	private int yy;
+	private int yb,yv,xb,xv;
 	
 	/** On evoie la partie associé a la fenetre pour pouvoir la modifier*/
 	public ClickAction(Partie p){
@@ -25,7 +25,7 @@ public class ClickAction extends MouseAdapter {
 	}
 	
 	
-	public void mousePressed(MouseEvent event){
+	// public void mousePressed(MouseEvent event){
 		// if(nbClick == 1){
 		// 	premiere = transcription(event.getY(),event.getX());
 		// 	System.out.println("premiere-pressed" + premiere);
@@ -43,62 +43,81 @@ public class ClickAction extends MouseAdapter {
 		// 	System.out.println("balise-pressed" + deuxieme);
 		// }
 		
-	}
-	
-	public void mouseRelease(MouseEvent event){
-		if(nbClick == 2){
-			deuxieme = transcription(event.getY(),event.getX());
-			System.out.println("deuxieme-release" + deuxieme);
-			nbClick = 3;
-		}
-		else if(nbClick == 3){
-			yy = event.getY();
-			vecteur = transcription(event.getY(),event.getX());
-			
-			if(vecteur == balise - 1) vecteur = 4; //deplacement a gauche
-			else if(vecteur == balise + 1) vecteur = 1; //deplacement a droite
-			else if(vecteur < balise && yy%Panneau.TAILLEIM > Panneau.TAILLEIM/2) vecteur = 0; //deplacement haut-droite 
-			else if(vecteur < balise && yy%Panneau.TAILLEIM < Panneau.TAILLEIM/2) vecteur = 5; //deplacement haut-gauche
-			else if(vecteur > balise && yy%Panneau.TAILLEIM > Panneau.TAILLEIM/2) vecteur = 2; //deplacement bas-droite
-			else if(vecteur > balise && yy%Panneau.TAILLEIM < Panneau.TAILLEIM/2) vecteur = 3; //deplacement bas-gauche
-			
-			System.out.println("vecteur-release" + vecteur);
-			
-			deroulementMouvement(premiere,deuxieme,vecteur);
-			
-			nbClick = 1;
-		}
-		
-	}
+	// }
+	// 
+	// public void mouseRelease(MouseEvent event){
+	// 	if(nbClick == 2){
+	// 		deuxieme = transcription(event.getY(),event.getX());
+	// 		System.out.println("deuxieme-release" + deuxieme);
+	// 		nbClick = 3;
+	// 	}
+	// 	else if(nbClick == 3){
+	// 		yy = event.getY();
+	// 		vecteur = transcription(event.getY(),event.getX());
+	// 		
+	// 		if(vecteur == balise - 1) vecteur = 4; //deplacement a gauche
+	// 		else if(vecteur == balise + 1) vecteur = 1; //deplacement a droite
+	// 		else if(vecteur < balise && yy%Panneau.TAILLEIM > Panneau.TAILLEIM/2) vecteur = 0; //deplacement haut-droite 
+	// 		else if(vecteur < balise && yy%Panneau.TAILLEIM < Panneau.TAILLEIM/2) vecteur = 5; //deplacement haut-gauche
+	// 		else if(vecteur > balise && yy%Panneau.TAILLEIM > Panneau.TAILLEIM/2) vecteur = 2; //deplacement bas-droite
+	// 		else if(vecteur > balise && yy%Panneau.TAILLEIM < Panneau.TAILLEIM/2) vecteur = 3; //deplacement bas-gauche
+	// 		
+	// 		System.out.println("vecteur-release" + vecteur);
+	// 		
+	// 		deroulementMouvement(premiere,deuxieme,vecteur);
+	// 		
+	// 		nbClick = 1;
+	// 	}
+	// 	
+	// }
 	
 	public void mouseClicked(MouseEvent event){
 		if(nbClick == 1){
 			premiere = transcription(event.getY(),event.getX());
-			System.out.println("premiere-clicked" + premiere);
+			System.out.println("premiere-clicked: " + premiere);
 			nbClick = 2;
 		}
 		else if(nbClick == 2){
 			deuxieme = transcription(event.getY(),event.getX());
-			System.out.println("deuxieme-clicked" + deuxieme);
+			System.out.println("deuxieme-clicked: " + deuxieme);
 			nbClick = 3;
 		}
 		else if(nbClick == 3){
-			yy = event.getY();
+			yb = event.getY();
+			xb = event.getX();
+			balise = transcription(event.getY(),event.getX());
+			System.out.println("balise-clicked: " + balise);
+			nbClick = 4;
+		}
+		else if(nbClick == 4){
+			xv = event.getX();
+			xv = (xv - (xv%Panneau.TAILLEIM)) + Panneau.TAILLEIM/2;
+			yv = event.getY();
+			yv = (yv - (yv%Panneau.TAILLEIM)) + Panneau.TAILLEIM/2;
 			vecteur = transcription(event.getY(),event.getX());
 			
 			if(vecteur == balise - 1) vecteur = 4; //deplacement a gauche
 			else if(vecteur == balise + 1) vecteur = 1; //deplacement a droite
-			else if(vecteur < balise && yy%Panneau.TAILLEIM > Panneau.TAILLEIM/2) vecteur = 0; //deplacement haut-droite 
-			else if(vecteur < balise && yy%Panneau.TAILLEIM < Panneau.TAILLEIM/2) vecteur = 5; //deplacement haut-gauche
-			else if(vecteur > balise && yy%Panneau.TAILLEIM > Panneau.TAILLEIM/2) vecteur = 2; //deplacement bas-droite
-			else if(vecteur > balise && yy%Panneau.TAILLEIM < Panneau.TAILLEIM/2) vecteur = 3; //deplacement bas-gauche
+			else if(vecteur < balise && yv > yb) vecteur = 0; //deplacement haut-droite 
+			else if(vecteur < balise && yv < yb) vecteur = 5; //deplacement haut-gauche
+			else if(vecteur > balise && yv > yb) vecteur = 2; //deplacement bas-droite
+			else if(vecteur > balise && yv < yb) vecteur = 3; //deplacement bas-gauche
 			
-			System.out.println("vecteur-release" + vecteur);
+			System.out.println("vecteur-release: " + vecteur);
 			
-			deroulementMouvement(premiere,deuxieme,vecteur);
-			System.out.println("nbClick avant" + nbClick);
+			System.out.println("xb: " + xb);
+			System.out.println("xv: " + xv);
+			System.out.println("yb: " + yb);
+			System.out.println("yv: " + yv);
+			if(xv - xb > Panneau.TAILLEIM * 1.5 || yv - yb > Panneau.TAILLEIM * 1.5){
+				System.out.println("Mouvement invalide !\n");
+			}
+			else{
+				deroulementMouvement(premiere,deuxieme,vecteur);
+			}	
+			System.out.println("nbClick avant: " + nbClick);
 			nbClick = 1;
-			System.out.println("nbClick apres" + nbClick);
+			System.out.println("nbClick apres: " + nbClick);
 		}
 		
 	}
@@ -123,17 +142,17 @@ public class ClickAction extends MouseAdapter {
 			y = (y-(y%Panneau.TAILLEIM))/Panneau.TAILLEIM;
 		}
 		
-		if(x==0) caseSelected = y - 2;
-		else if(x==1) caseSelected = y + 5 - 2;
-		else if(x==2) caseSelected = y + 11 - 1; 
-		else if(x==3) caseSelected = y + 18 - 1;
-		else if(x==4) caseSelected = y + 26;
-		else if(x==5) caseSelected = y + 35 - 1;
-		else if(x==6) caseSelected = y + 43 - 1; 
-		else if(x==7) caseSelected = y + 50 - 2;
-		else if(x==8) caseSelected = y + 56 - 2; 
+		if(x==0) caseSelected = y - 1;
+		else if(x==1) caseSelected = y + 6 - 2;
+		else if(x==2) caseSelected = y + 12 - 1; 
+		else if(x==3) caseSelected = y + 19 - 1;
+		else if(x==4) caseSelected = y + 27;
+		else if(x==5) caseSelected = y + 36 - 1;
+		else if(x==6) caseSelected = y + 44 - 1; 
+		else if(x==7) caseSelected = y + 51 - 2;
+		else if(x==8) caseSelected = y + 57 - 2; 
 			
-		return caseSelected + 1;		
+		return caseSelected;		
 	}
 	
 	
