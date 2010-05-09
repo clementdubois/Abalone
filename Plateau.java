@@ -74,6 +74,9 @@ public class Plateau {
 		       else
 		          cases[i].setContenu(Case.VIDE);//Met la case a Case.VIDE
 		}
+		
+		//On initialise la case TROU
+		cases[TROU].setContenu(Case.NEANT);
 	}
 	
 	/** Rendre effectif un mouvement sur le plateau.
@@ -138,44 +141,46 @@ public class Plateau {
 	*
 	* @param premiere la premiere bille.
 	* @param derniere la derniere bille.
-	* @return le numero de la bille au milieu ou VIDE si il n'y a pas de case intermediaire
+	* @return le numero de la bille au milieu ou 0 si il n'y a pas de case intermediaire ou -1 si la distance entre les deux billes est trop grande
 	*/
 	public byte caseIntermediaire(byte premiere, byte derniere){
 		// Si c'est la meme bille, il n'y a pas d'intermediaire
-		if(premiere == derniere)
+		if(premiere == derniere){
 			return 0;
-		//Si deuxieme est directement adjacent a deuxieme, il n'y a pas d'intermediaire
+		}
+		//Si premiere est directement adjacent a deuxieme, il n'y a pas d'intermediaire
 		else if( cases[premiere].getAdjacent(HG) == derniere ||
 						 cases[premiere].getAdjacent(HD) == derniere ||
 						 cases[premiere].getAdjacent(DD) == derniere ||
 						 cases[premiere].getAdjacent(BD) == derniere ||
 						 cases[premiere].getAdjacent(BG) == derniere ||
 						 cases[premiere].getAdjacent(GG) == derniere
-						)
+						){
 			return 0;
-		//Il y a forcement une case intermediaire
+		}
+		//Il y a forcement une case intermediaire, attention a ne pas comparer la case vide
 		else{
-			if(cases[premiere].getAdjacent(HG) == cases[derniere].getAdjacent(BD) )
+			if(cases[premiere].getAdjacent(HG) == cases[derniere].getAdjacent(BD) && cases[premiere].getAdjacent(HG) != TROU)
 				return cases[premiere].getAdjacent(HG);
 				
-			else if(cases[premiere].getAdjacent(HD) == cases[derniere].getAdjacent(BG) )
+			else if(cases[premiere].getAdjacent(HD) == cases[derniere].getAdjacent(BG) && cases[premiere].getAdjacent(HD) != TROU )
 				return cases[premiere].getAdjacent(HD);
 			
-			else if(cases[premiere].getAdjacent(DD) == cases[derniere].getAdjacent(GG) )
+			else if(cases[premiere].getAdjacent(DD) == cases[derniere].getAdjacent(GG) && cases[premiere].getAdjacent(DD) != TROU )
 				return cases[premiere].getAdjacent(DD);
 				
-			else if(cases[premiere].getAdjacent(BD) == cases[derniere].getAdjacent(HG) )
+			else if(cases[premiere].getAdjacent(BD) == cases[derniere].getAdjacent(HG) && cases[premiere].getAdjacent(BD) != TROU )
 				return cases[premiere].getAdjacent(BD);
 				
-			else if(cases[premiere].getAdjacent(BG) == cases[derniere].getAdjacent(HD) )
+			else if(cases[premiere].getAdjacent(BG) == cases[derniere].getAdjacent(HD) && cases[premiere].getAdjacent(BG) != TROU )
 				return cases[premiere].getAdjacent(BG);
 				
-			else if(cases[premiere].getAdjacent(GG) == cases[derniere].getAdjacent(DD) )
+			else if(cases[premiere].getAdjacent(GG) == cases[derniere].getAdjacent(DD) && cases[premiere].getAdjacent(GG) != TROU )
 				return cases[premiere].getAdjacent(GG);
 			
 			else{
-				System.out.println("Erreur de caseIntermediaire, elle ne devrait jamais entrer dans ce else");
-				return 0;
+				//La séparation entre les deux billes est de plus d'une bille intermediaire
+				return -1;
 			}
 			
 		}
@@ -214,7 +219,7 @@ public class Plateau {
 			
 		}
 		
-		System.out.println("Bille Ejecte lors du mouvement : "+this.cases[0].getContenu());
+		System.out.println("Bille Ejecte lors du mouvement : "+this.cases[TROU].getContenu());
 
 		System.out.println();
 		System.out.println();

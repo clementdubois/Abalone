@@ -81,12 +81,12 @@ public class Partie {
 	/** Vérifie le plateau pour savoir si une bille est tombé au dernier coup et incremente le score*/
 	public void setScore(){
 		//Dès qu'une bille est tombé incremente le score
-		if(this.plateau.cases[0].getContenu() != Case.VIDE) {
+		if(this.plateau.cases[Plateau.TROU].getContenu() != Case.NEANT) {
 			if((this.score[joueurActuel] += 1) == this.NB_BILLES_EJECTER) {
 				this.terminee = true;
 			}
 			//On revide la case trou comme le score à été pris en compte
-			this.plateau.cases[0].setContenu(Case.VIDE);				
+			this.plateau.cases[Plateau.TROU].setContenu(Case.NEANT);				
 		}
 	}
 	

@@ -89,7 +89,7 @@ public class Mouvement {
 		/* La couleur de la bille adverse adjacente qui va peut etre etre deplacee*/
 		byte couleurAdverse;
 		//La bille du mileu s'il s'agit d'un mouvement latéral de trois billes 
-		byte milieu = 100;//Initialisation a un nombre quelconque pour éviter qu'il ne soit pas initialiser (surtout pas mettre 0)
+		byte milieu = -10;//Initialisation a un nombre quelconque pour éviter qu'il ne soit pas initialiser (surtout pas mettre 0)
 		byte cptBilleMoi; //Compteur du nombre de bille que je deplace
 		byte cptBilleLui; //Compteur du nombre de bille adverse qui vont etre deplacees
 		
@@ -110,7 +110,8 @@ public class Mouvement {
 				return true;
 			}
 			// Si on fait face a une bille du camp adverse (suivante ni VIDE ni TROU)
-			else if(plateau.cases[plateau.cases[derniereBille].getAdjacent(vecteur)].getContenu() != Plateau.TROU &&
+			else if(plateau.cases[plateau.cases[derniereBille].getAdjacent(vecteur)].getContenu() != Case.NEANT &&
+							plateau.cases[plateau.cases[derniereBille].getAdjacent(vecteur)].getContenu() != Case.VIDE &&
 			        cptBilleMoi <= 3 ){ 
 				System.out.println("==> Case suivante bille adverse");
 				//On regarde la couleur de la bille adverse a pousser
@@ -124,7 +125,7 @@ public class Mouvement {
 					System.out.println("===> Superiorité numerique");
 					//Aucune autre bille ne doit se trouver derriere les billes poussees car elle bloquerai le passage
 					if(plateau.cases[plateau.cases[derniereBille].getAdjacent(vecteur)].getContenu() == Case.VIDE ||
-					   plateau.cases[plateau.cases[derniereBille].getAdjacent(vecteur)].getContenu() == Plateau.TROU ){
+					   plateau.cases[plateau.cases[derniereBille].getAdjacent(vecteur)].getContenu() == Case.NEANT ){
 						System.out.println("====> Rien derriere les billes adverses");
 						return true;
 					}
@@ -132,16 +133,24 @@ public class Mouvement {
 			}
 		}else{//Deplacement lateral
 			System.out.println("=> Déplacement latéral");
-			//Il suffit de verifier que toutes les cases visees sont vides
-			if (cptBilleMoi == 3){
-				milieu = plateau.cases[plateau.cases[plateau.caseIntermediaire(this.premiere, this.derniere)].getAdjacent(vecteur)].getContenu();
-			}
 			
-			if (plateau.cases[plateau.cases[this.premiere].getAdjacent(vecteur)].getContenu() == Case.VIDE &&
-			    plateau.cases[plateau.cases[this.derniere].getAdjacent(vecteur)].getContenu() == Case.VIDE &&
-					( (cptBilleMoi == 3 && milieu == Case.VIDE) || cptBilleMoi != 3) )
-				System.out.println("==> Les cases visées sont vides");
-				return true;
+			//On vérifie que la distance entre les deux billes est valide (invalide si case intermediaire renvoi -1)
+			if (plateau.caseIntermediaire(this.premiere, this.derniere) != -1){
+				//Si il y a effectivement une case intermediaire...
+				if(plateau.caseIntermediaire(this.premiere, this.derniere) != 0)
+					// milieu = la case adjacente a la case intermediaire
+					milieu = plateau.cases[plateau.cases[plateau.caseIntermediaire(this.premiere, this.derniere)].getAdjacent(vecteur)].getContenu();
+				
+				//Il suffit de verifier que toutes les cases visees sont vides
+				if (plateau.cases[plateau.cases[this.premiere].getAdjacent(vecteur)].getContenu() == Case.VIDE &&
+				    plateau.cases[plateau.cases[this.derniere].getAdjacent(vecteur)].getContenu() == Case.VIDE &&
+						( milieu == -10 || milieu == Case.VIDE ) ){
+					System.out.println("==> Les cases visées sont vides");
+					return true;
+				}
+				
+			}
+
 		}
 		
 		System.out.println("------------FIN DE VALIDATION-----------");

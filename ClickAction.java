@@ -94,9 +94,9 @@ public class ClickAction extends MouseAdapter {
 		}
 		else if(nbClick == 4){
 			xv = event.getX();
-			xv = (xv - (xv%Panneau.TAILLEIM)) + Panneau.TAILLEIM/2;
+			xv = (xv - (xv % Panneau.TAILLEIM)) + Panneau.TAILLEIM/2;
 			yv = event.getY();
-			yv = (yv - (yv%Panneau.TAILLEIM)) + Panneau.TAILLEIM/2;
+			yv = (yv - (yv % Panneau.TAILLEIM)) + Panneau.TAILLEIM/2;
 			vecteur = transcription(event.getY(),event.getX());
 			
 			if(vecteur == balise - 1) vecteur = 4; //deplacement a gauche
@@ -113,6 +113,8 @@ public class ClickAction extends MouseAdapter {
 			System.out.println("xv: " + xv);
 			System.out.println("yb: " + yb);
 			System.out.println("yv: " + yv);
+			
+			
 			if(xv - xb > Panneau.TAILLEIM * 1.9 || yv - yb > Panneau.TAILLEIM * 1.9){
 				System.out.println("Mouvement invalide !\n");
 				partie.f.rafraichir(plateau);
@@ -179,7 +181,7 @@ public class ClickAction extends MouseAdapter {
 		is_valid = m.valider(plateau);
 		//Si c'est valide on l'effectue
 		if(is_valid){
-			System.out.println("Listener mouv valide");
+			System.out.println("Mouvement Valide");
 			//On effectue le mouvement
 			plateau.effectuer(m);
 			//On modifie l'état de la partie
@@ -194,7 +196,7 @@ public class ClickAction extends MouseAdapter {
 			System.out.println(partie);
 			//On rafraichie graphiquement
 		}else{
-			System.out.println("Listener mouv invalide");
+			System.out.println("Mouvement Ivalide");
 		}
 		
 		partie.f.rafraichir(plateau);
