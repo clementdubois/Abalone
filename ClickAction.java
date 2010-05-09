@@ -85,6 +85,12 @@ public class ClickAction extends MouseAdapter {
 		return caseSelected;		
 	}
 	
+	/** Gère le déroulement d'un mouvement à partir des coordonnées envoyé par l'interface
+	*
+	* @param premiere numero de case de la premiere bille
+	* @param deuxieme numero de case de a deuxieme bille
+	* @param vecteur sens du déplacement
+	*/
 	public void deroulementMouvement(int premiere, int deuxieme, int vecteur){
 		boolean is_valid;
 		
