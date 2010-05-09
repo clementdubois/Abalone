@@ -11,6 +11,7 @@ public static final int TAILLEIM = 62;
 Plateau plateau;
 ClickAction listener;
 Image neant,casevide,pionN,pionB,pionBS,pionNS;
+int bille1,bille2,bille3;
 
 	/**
 	* Constructeur du panel.
@@ -18,6 +19,8 @@ Image neant,casevide,pionN,pionB,pionBS,pionNS;
 	public Panneau(Plateau plateau,ClickAction listener){
 			//initialisation des variables
 			this.plateau = plateau;
+			this.bille1 = 0;
+			this.bille2 = 0;
 			//permet de gérer la gestion des click dans la classe ClickAction
 			addMouseListener(listener);
 			Toolkit kit=Toolkit.getDefaultToolkit();
@@ -45,9 +48,9 @@ Image neant,casevide,pionN,pionB,pionBS,pionNS;
 		byte i,j;
 		int taillePlateau = 1;
 		//Pour chaque ligne
-		for (i=1; i<=NBCASES; i++){
+		for (i=1; i<=9; i++){
 			//pour chaque colonne
-			for (j=1; j<=NBCASES; j++){
+			for (j=1; j<=9; j++){
 				if ( i == 1 && j == 1 || i == 1 && j == 2 || i == 1 && j == 8 || i == 1 && j == 9 ){
 					g.drawImage(this.neant,j*TAILLEIM,i*TAILLEIM,null);
 				}
@@ -63,24 +66,41 @@ Image neant,casevide,pionN,pionB,pionBS,pionNS;
 				else if ( i == 8 && j == 1 || i == 8 && j == 8 || i == 8 && j == 9 || i == 9 && j == 1 || i == 9 && j == 2 || i == 9 && j == 8 || i == 9 && j == 9){
 					g.drawImage(this.neant,j*TAILLEIM,i*TAILLEIM,null);
 				}
-
+				
 				else if(plateau.cases[taillePlateau].getContenu() == Bille.NOIR && i%2 == 1 && taillePlateau < 62){
-				 	g.drawImage(this.pionN,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
+				
+					if(plateau.cases[taillePlateau].getNumero() == bille1 || plateau.cases[taillePlateau].getNumero() == bille2 || plateau.cases[taillePlateau].getNumero() == bille3){
+						g.drawImage(this.pionNS,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
+					}else{
+						g.drawImage(this.pionN,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
+					}	
 					taillePlateau += 1;
 				}
 
 				else if(plateau.cases[taillePlateau].getContenu() == Bille.NOIR && i%2 == 0 && taillePlateau < 62){
-				 	g.drawImage(this.pionN,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
+					if(plateau.cases[taillePlateau].getNumero() == bille1 || plateau.cases[taillePlateau].getNumero() == bille2 || plateau.cases[taillePlateau].getNumero() == bille3){
+						g.drawImage(this.pionNS,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
+					}else{
+						g.drawImage(this.pionN,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
+					}
 					taillePlateau += 1;
 				}
-
+				
 				else if(plateau.cases[taillePlateau].getContenu() == Bille.BLANC && i%2 == 1 && taillePlateau < 62){
-				 	g.drawImage(this.pionB,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
+					if(plateau.cases[taillePlateau].getNumero() == bille1 || plateau.cases[taillePlateau].getNumero() == bille2 || plateau.cases[taillePlateau].getNumero() == bille3){
+						g.drawImage(this.pionBS,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
+					}else{
+						g.drawImage(this.pionB,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
+					}
 					taillePlateau += 1;
 				}
 
 				else if(plateau.cases[taillePlateau].getContenu() == Bille.BLANC && i%2 == 0 && taillePlateau < 62){
-				 	g.drawImage(this.pionB,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
+					if(plateau.cases[taillePlateau].getNumero() == bille1 || plateau.cases[taillePlateau].getNumero() == bille2 || plateau.cases[taillePlateau].getNumero() == bille3){
+						g.drawImage(this.pionBS,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
+					}else{
+						g.drawImage(this.pionB,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
+					}
 					taillePlateau += 1;
 				}
 
@@ -93,7 +113,7 @@ Image neant,casevide,pionN,pionB,pionBS,pionNS;
 				 	g.drawImage(this.casevide,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
 					taillePlateau += 1;
 				}
-
+				
 			}
 		}
 
@@ -106,7 +126,19 @@ Image neant,casevide,pionN,pionB,pionBS,pionNS;
 	*/
 	public void rafraichir(Plateau plateau){
 		this.plateau = plateau;
+		this.bille1 = 0;
+		this.bille2 = 0;
+		this.bille3 = 0;
 	}
+	
+	public void rafraichirBS1(int bille1){
+		this.bille1 = bille1;
+	}
+	
+	public void rafraichirBS2(int bille2, int bille3){
+		this.bille2 = bille2;
+		this.bille3 = bille3;
+	} 
 
 }
 
