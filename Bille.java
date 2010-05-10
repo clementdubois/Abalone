@@ -8,8 +8,6 @@ public class Bille {
 	protected byte couleur;
 	public final static byte NOIR = 1;
 	public final static byte BLANC = 2;
-	public final static byte BLEU = 3;
-	public final static byte ROUGE = 4;
 	//protected int coordonnees;
 /**
  * permet de savoir si la bille instanciee sur une case est une vraie.

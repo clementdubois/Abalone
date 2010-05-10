@@ -1,4 +1,6 @@
 import java.util.Hashtable;
+import java.util.Vector;
+import java.util.Iterator;
 
 
 public class Plateau {
@@ -373,4 +375,94 @@ public class Plateau {
 		else // BG
 			return (numLigne<4) ? (byte)(longueurLigne[numLigne]) : (byte)(longueurLigne[numLigne]-1) ;
 	}
+	
+	/** Calcul tous les mouvements possibles a partir d'un etat du plateau
+	* @param joueurActuel le numero du joueur en cours pour obtenir la liste des coups qu'il peut jouer
+	* @return la liste des mouvements que je joueur peut faire
+	*/
+	public Vector<Mouvement> mouvementsValides(int joueurActuel){
+		//Liste des mouvements valide à retourner
+		Vector<Mouvement> mouvements = new Vector<Mouvement>();
+		//Mouvement en cours de test de validite
+		Mouvement m;
+		//Le numero de la bille du joueur teste
+		Byte numCase;
+		//Le numero des cases adjacente
+		Case adjacent, adjacent1, adjacent2;
+		
+		//On cherche les billes du joueur
+		Vector<Byte> billes = chercheBilles(joueurActuel);
+		
+		//Pour chaque bille on teste tous les mouvements de poussés possible
+		Iterator itr = billes.iterator();
+		while(itr.hasNext()){
+			numCase = (Byte)itr.next();
+			
+			//Pour chaque billes 6 directions possibles à tester
+			for(byte i=0; i<6; i++){
+				//--------------------Mouvements de poussees---------------------
+					m = new Mouvement(numCase, numCase, i);
+				
+					//On teste la validité du mouvement, s'il est valide on l'ajoute à la liste des mouv renvoyés
+					if(m.valider(this))
+						mouvements.add(m);
+				//-----------------Mouvements lateraux a deux billes-------
+					//Si la case adjacente via le vecteur i est une autre bille de la meme couleur alors on peut tester les mouvements correspondants
+					adjacent = cases[cases[numCase].getAdjacent(i)];
+					if(adjacent.getContenu() == joueurActuel ){
+						//On teste toutes les directions
+						for(byte j=0; j<6; j++){
+							//On ne teste pas les mouvements de poussees deja fait auparavent (qui sont en fait le vecteur i et son oppose)
+							if(j != i && j != getVecteurOppose(i)){
+								m = new Mouvement(numCase, adjacent.getNumero(), j);
+								if(m.valider(this))
+									mouvements.add(m);
+							}
+						}
+					}
+				
+			}
+			
+			//---------------Mouvements lateraux a trois billes------------
+				//On regarde autour de la bille
+				for(byte i=0; i<3; i++){
+					//Si la bille est entre deux autres on peut vérifier les mouvements possibles avec ces trois billes
+					adjacent1 = cases[cases[numCase].getAdjacent(i)];
+					adjacent2 = cases[cases[numCase].getAdjacent(getVecteurOppose(i))];
+					
+					if( adjacent1.getContenu() == joueurActuel && adjacent2.getContenu() == joueurActuel ){
+						//On teste toutes les directions pour le mouvement
+						for(byte j=0; j<6; j++){
+							//On ne teste pas les mouvements de poussees deja fait auparavent (qui sont en fait le vecteur j et son oppose)
+							if(j != i && j != getVecteurOppose(i)){
+								m = new Mouvement(adjacent1.getNumero(), adjacent2.getNumero(), j);
+								if(m.valider(this))
+									mouvements.add(m);
+							}
+						}
+						
+					}
+				}
+				//On regarde si la bille est au mileu de deux autres
+				
+				//On teste le mouvements pour tous les vecteurs lateraux
+		}
+		
+		
+		return mouvements;
+	}
+	
+	/** Cherche la liste des numero de cases ou sont placees les billes d'un joueur*/
+	private Vector<Byte> chercheBilles(int joueurActuel){
+	 	Vector<Byte> billes = new Vector<Byte>();
+		
+		for(byte i=1; i<NB_CASES; i++){
+			if(cases[i].getContenu() == joueurActuel){
+				billes.add(i);
+			}          
+		}
+		
+		return billes;
+	}
+	
  }

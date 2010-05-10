@@ -80,7 +80,6 @@ public class Mouvement {
 	* @return true si le mouvement est autorise, false si le mouvement est interdit
 	*/
 	public boolean valider(Plateau p){
-		System.out.println("------------DEBUT DE VALIDATION-----------");
 		Plateau plateau = p;
 		/* La derniere bille testé*/
 		byte derniereBille = this.premiere;
@@ -96,24 +95,19 @@ public class Mouvement {
 		//On calcul le nombre de bille poussées et on regarde la derniere de nos billes poussee, derniereBille vaudra la derniere de nos billes poussée
 		for(cptBilleMoi = 1; plateau.cases[plateau.cases[derniereBille].getAdjacent(vecteur)].getContenu() == contenuBille; cptBilleMoi++)
 			derniereBille = plateau.cases[derniereBille].getAdjacent(vecteur);
-		System.out.println("cpt bille moi : "+cptBilleMoi);
 		
 		//Si c'est une poussee (si on ne touche qu'une bille)
 		if(this.derniere == this.premiere){	
-			System.out.println("=> Poussée");
 			//On teste la case juste apres nos billes
 			//Si suivante vide et je pousse maximum trois de mes billes : OK
 			if (plateau.cases[plateau.cases[derniereBille].getAdjacent(vecteur)].getContenu() == Case.VIDE &&
 			         cptBilleMoi <= 3){
-				System.out.println(plateau.cases[plateau.cases[derniereBille].getAdjacent(vecteur)].getContenu());
-				System.out.println("==> Case suivante vide : OK");
 				return true;
 			}
 			// Si on fait face a une bille du camp adverse (suivante ni VIDE ni TROU)
 			else if(plateau.cases[plateau.cases[derniereBille].getAdjacent(vecteur)].getContenu() != Case.NEANT &&
 							plateau.cases[plateau.cases[derniereBille].getAdjacent(vecteur)].getContenu() != Case.VIDE &&
 			        cptBilleMoi <= 3 ){ 
-				System.out.println("==> Case suivante bille adverse");
 				//On regarde la couleur de la bille adverse a pousser
 				couleurAdverse = plateau.cases[plateau.cases[derniereBille].getAdjacent(vecteur)].getContenu();
 				//On calcule le nombre de billes adverse qui vont être deplacées
@@ -122,17 +116,14 @@ public class Mouvement {
 				
 			  //Je dois etre en superiorite numerique pour valider le mouvement
 				if(cptBilleMoi > cptBilleLui){
-					System.out.println("===> Superiorité numerique");
 					//Aucune autre bille ne doit se trouver derriere les billes poussees car elle bloquerai le passage
 					if(plateau.cases[plateau.cases[derniereBille].getAdjacent(vecteur)].getContenu() == Case.VIDE ||
 					   plateau.cases[plateau.cases[derniereBille].getAdjacent(vecteur)].getContenu() == Case.NEANT ){
-						System.out.println("====> Rien derriere les billes adverses");
 						return true;
 					}
 				}
 			}
 		}else{//Deplacement lateral
-			System.out.println("=> Déplacement latéral");
 			
 			//On vérifie que la distance entre les deux billes est valide (invalide si case intermediaire renvoi -1)
 			if (plateau.caseIntermediaire(this.premiere, this.derniere) != -1){
@@ -145,7 +136,6 @@ public class Mouvement {
 				if (plateau.cases[plateau.cases[this.premiere].getAdjacent(vecteur)].getContenu() == Case.VIDE &&
 				    plateau.cases[plateau.cases[this.derniere].getAdjacent(vecteur)].getContenu() == Case.VIDE &&
 						( milieu == -10 || milieu == Case.VIDE ) ){
-					System.out.println("==> Les cases visées sont vides");
 					return true;
 				}
 				
@@ -153,7 +143,6 @@ public class Mouvement {
 
 		}
 		
-		System.out.println("------------FIN DE VALIDATION-----------");
 		//Si on arrive là c'est que c'est un mauvais mouvement
 		return false;
 	}
@@ -164,4 +153,12 @@ public class Mouvement {
 		return temp;
 	}
 
+	
+	public String toString(){
+		String res="";
+		
+		res = res+"Premiere : "+this.premiere+"\n"+"Deuxieme : "+this.derniere+"\n"+"Vecteur : "+this.vecteur+"\n";
+
+		return res;
+	}
 }

@@ -7,8 +7,9 @@ import java.util.*;
 */
 public class Partie {
 	protected ArrayList<Joueur> joueurs; // permet de gerer plus de 2 joueurs.
-	public Plateau plateau; // 61 cases contenant soit une bille soit null (empty)
-	/** Stocke le numero joueur qui doit jouer */
+	/** 61 cases contenant soit une bille soit null (empty)*/
+	public Plateau plateau; 
+	/** Stocke le numero joueur qui doit jouer (1 = NOIR, 2 = BLANC) */
 	protected int joueurActuel;
 /**
  * terminee est effectivement utile car on peut changer les conditions de victoire a l'interieur d'une partie.	
@@ -25,7 +26,7 @@ public class Partie {
 	public ClickAction listener;
 	
 	public Partie() {
-		joueurActuel = 0;
+		joueurActuel = 1;
 		numCoup = 1;
 		terminee = false;
 		score = new int[2];
@@ -72,17 +73,17 @@ public class Partie {
 	
 	/** Change le jouer actuel pour savoir qui doit jouer*/
 	public void setJoueur(){
-		if(joueurActuel == 0)
-			joueurActuel = 1;
+		if(joueurActuel == 1)
+			joueurActuel = 2;
 		else
-			joueurActuel = 0;
+			joueurActuel = 1;
 	}
 	
 	/** Vérifie le plateau pour savoir si une bille est tombé au dernier coup et incremente le score*/
 	public void setScore(){
 		//Dès qu'une bille est tombé incremente le score
 		if(this.plateau.cases[Plateau.TROU].getContenu() != Case.NEANT) {
-			if((this.score[joueurActuel] += 1) == this.NB_BILLES_EJECTER) {
+			if((this.score[joueurActuel-1] += 1) == this.NB_BILLES_EJECTER) {
 				this.terminee = true;
 			}
 			//On revide la case trou comme le score à été pris en compte
@@ -101,8 +102,8 @@ public class Partie {
 		
 		afficher += "Joueur Actuel : "+joueurActuel+"\n";
 		afficher += "Numero du coup : "+numCoup+"\n";
-		afficher += "Score du joueur 0 : "+score[0]+"\n";
-		afficher += "Score du joueur 1 : "+score[1]+"\n";
+		afficher += "Score du joueur 1 : "+score[0]+"\n";
+		afficher += "Score du joueur 2 : "+score[1]+"\n";
 		
 		if(terminee)
 			afficher += "Partie terminée\n";

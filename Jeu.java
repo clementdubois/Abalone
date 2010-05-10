@@ -22,6 +22,7 @@ public class Jeu {
 		// try{Thread.sleep(3000);}catch(Exception e){}
 		// p.listener.deroulementMouvement(61,61,5);
 	
+		p.plateau.mouvementsValides(1);
 		
 
 	}

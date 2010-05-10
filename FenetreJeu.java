@@ -304,7 +304,7 @@ public class FenetreJeu extends JFrame{
 				// animated = false;
 
 
-				// On remplace nos bouton par nous MenuItem
+				// On remplace nos boutons par nous MenuItem
 				lancer.setEnabled(true);
 				arreter.setEnabled(false);
 
