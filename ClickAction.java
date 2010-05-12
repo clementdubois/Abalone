@@ -24,53 +24,9 @@ public class ClickAction extends MouseAdapter {
 		this.partie = p;
 	}
 	
-	
-	// public void mousePressed(MouseEvent event){
-		// if(nbClick == 1){
-		// 	premiere = transcription(event.getY(),event.getX());
-		// 	System.out.println("premiere-pressed" + premiere);
-		// 	nbClick = 2;
-		// }
-		// else if(nbClick == 2){
-		// 	deuxieme = transcription(event.getY(),event.getX());
-		// 	System.out.println("deuxieme-pressed" + deuxieme);
-		// 	balise = deuxieme;
-		// 	System.out.println("balise-pressed" + balise);
-		// 	nbClick = 3;
-		// }
-		// else if(nbClick == 3){
-		// 	balise = transcription(event.getY(),event.getX());
-		// 	System.out.println("balise-pressed" + deuxieme);
-		// }
-		
-	// }
-	// 
-	// public void mouseRelease(MouseEvent event){
-	// 	if(nbClick == 2){
-	// 		deuxieme = transcription(event.getY(),event.getX());
-	// 		System.out.println("deuxieme-release" + deuxieme);
-	// 		nbClick = 3;
-	// 	}
-	// 	else if(nbClick == 3){
-	// 		yy = event.getY();
-	// 		vecteur = transcription(event.getY(),event.getX());
-	// 		
-	// 		if(vecteur == balise - 1) vecteur = 4; //deplacement a gauche
-	// 		else if(vecteur == balise + 1) vecteur = 1; //deplacement a droite
-	// 		else if(vecteur < balise && yy%Panneau.TAILLEIM > Panneau.TAILLEIM/2) vecteur = 0; //deplacement haut-droite 
-	// 		else if(vecteur < balise && yy%Panneau.TAILLEIM < Panneau.TAILLEIM/2) vecteur = 5; //deplacement haut-gauche
-	// 		else if(vecteur > balise && yy%Panneau.TAILLEIM > Panneau.TAILLEIM/2) vecteur = 2; //deplacement bas-droite
-	// 		else if(vecteur > balise && yy%Panneau.TAILLEIM < Panneau.TAILLEIM/2) vecteur = 3; //deplacement bas-gauche
-	// 		
-	// 		System.out.println("vecteur-release" + vecteur);
-	// 		
-	// 		deroulementMouvement(premiere,deuxieme,vecteur);
-	// 		
-	// 		nbClick = 1;
-	// 	}
-	// 	
-	// }
-	
+	/**
+	* On surcharge la methode mouseClicked pour quelle recupere et envoie le numero des billes selectionnee
+	*/
 	public void mouseClicked(MouseEvent event){
 		if(nbClick == 1){
 			premiere = transcription(event.getY(),event.getX());
@@ -79,6 +35,8 @@ public class ClickAction extends MouseAdapter {
 			nbClick = 2;
 		}
 		else if(nbClick == 2){
+			yb = event.getY();
+			xb = event.getX();
 			deuxieme = transcription(event.getY(),event.getX());
 			System.out.println("deuxieme-clicked: " + deuxieme);
 			intermediaire = this.plateau.caseIntermediaire((byte)premiere, (byte)deuxieme);
@@ -86,25 +44,19 @@ public class ClickAction extends MouseAdapter {
 			nbClick = 3;
 		}
 		else if(nbClick == 3){
-			yb = event.getY();
-			xb = event.getX();
-			balise = transcription(event.getY(),event.getX());
-			System.out.println("balise-clicked: " + balise);
-			nbClick = 4;
-		}
-		else if(nbClick == 4){
 			xv = event.getX();
 			xv = (xv - (xv % Panneau.TAILLEIM)) + Panneau.TAILLEIM/2;
 			yv = event.getY();
 			yv = (yv - (yv % Panneau.TAILLEIM)) + Panneau.TAILLEIM/2;
 			vecteur = transcription(event.getY(),event.getX());
 			
-			if(vecteur == balise - 1) vecteur = 4; //deplacement a gauche
-			else if(vecteur == balise + 1) vecteur = 1; //deplacement a droite
-			else if(vecteur < balise && xv > xb) vecteur = 0; //deplacement haut-droite 
-			else if(vecteur < balise && xv < xb) vecteur = 5; //deplacement haut-gauche
-			else if(vecteur > balise && xv > xb) vecteur = 2; //deplacement bas-droite
-			else if(vecteur > balise && xv < xb) vecteur = 3; //deplacement bas-gauche
+			//En comparant la position du 2eme et 3eme clique, on peut savoir le numero du vecteur engendre
+			if(vecteur == deuxieme - 1) vecteur = 4; //deplacement a gauche
+			else if(vecteur == deuxieme + 1) vecteur = 1; //deplacement a droite
+			else if(vecteur < deuxieme && xv > xb) vecteur = 0; //deplacement haut-droite 
+			else if(vecteur < deuxieme && xv < xb) vecteur = 5; //deplacement haut-gauche
+			else if(vecteur > deuxieme && xv > xb) vecteur = 2; //deplacement bas-droite
+			else if(vecteur > deuxieme && xv < xb) vecteur = 3; //deplacement bas-gauche
 			
 			
 			System.out.println("vecteur-clicked: " + vecteur);
@@ -114,7 +66,7 @@ public class ClickAction extends MouseAdapter {
 			System.out.println("yb: " + yb);
 			System.out.println("yv: " + yv);
 			
-			
+			//Le mouvement est effectuee seulement si la position et le numero du vecteur est valide
 			if(xv - xb > Panneau.TAILLEIM * 1.9 || yv - yb > Panneau.TAILLEIM * 1.9){
 				System.out.println("Mouvement invalide !\n");
 				partie.f.rafraichir(plateau);
@@ -123,6 +75,7 @@ public class ClickAction extends MouseAdapter {
 				deroulementMouvement(premiere,deuxieme,vecteur);
 			}
 			else{
+				System.out.println("Mouvement invalide !\n");
 				partie.f.rafraichir(plateau);
 			}	
 			System.out.println("nbClick avant: " + nbClick);
@@ -130,10 +83,19 @@ public class ClickAction extends MouseAdapter {
 			System.out.println("nbClick apres: " + nbClick);
 		}
 		
+		//Un clique droit reinitialise la selection des billes
+		if(event.getButton() == MouseEvent.BUTTON3)	
+		{	            	
+ 			nbClick = 1;
+			partie.f.rafraichir(plateau);
+			System.out.println("Mouvement réinitialisé !");
+		}
+		
 	}
 	
+	
 	/**
-	*Cette fonction permet de passer des coordonnees graphiques ( sur le panel) en coordonees de tableau
+	*Cette fonction permet de passer des coordonnees graphiques ( sur le panel) en numero de cases
 	*/
 	public int transcription(int xx,int yy){
 		int caseSelected =0;
