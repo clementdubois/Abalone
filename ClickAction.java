@@ -146,6 +146,8 @@ public class ClickAction extends MouseAdapter {
 			System.out.println("Mouvement Valide");
 			//On effectue le mouvement
 			plateau.effectuer(m);
+			//On affiche en console
+			plateau.afficher();
 			//On modifie l'état de la partie
 				//On change le joueur courant
 				partie.setJoueur();
@@ -153,14 +155,12 @@ public class ClickAction extends MouseAdapter {
 				partie.setNumCoup();
 				//On vérifie si il faut incrementer le score de la partie
 				partie.setScore();
-			//On affiche en console
-			plateau.afficher();
 			System.out.println(partie);
-			//On rafraichie graphiquement
 		}else{
 			System.out.println("Mouvement Ivalide");
 		}
 		
+		//On rafraichie graphiquement
 		partie.f.rafraichir(plateau);
 		
 		
