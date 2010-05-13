@@ -97,21 +97,21 @@ public class FenetreJeu extends JFrame{
     		* Creation d'une implementation de MouseAdapter
     		* avec redefinition de la methode adequate
             */
-			pan.addMouseListener(new MouseAdapter(){
-            	public void mouseReleased(MouseEvent event){
-            		//Seulement s'il s'agit d'un clic droit
-					if(event.getButton() == MouseEvent.BUTTON3)	
-            		{	            	
-	            		jpm.add(launch);
-	            		jpm.add(stop);
-
-						/**
-	            		* La methode qui va afficher le menu.
-						*/
-	            		jpm.show(pan, event.getX(), event.getY());
-            		}
-            	}
-            });
+			// pan.addMouseListener(new MouseAdapter(){
+			//             	public void mouseReleased(MouseEvent event){
+			//             		//Seulement s'il s'agit d'un clic droit
+			// 		if(event.getButton() == MouseEvent.BUTTON3)	
+			//             		{	            	
+			// 	            		jpm.add(launch);
+			// 	            		jpm.add(stop);
+			// 
+			// 			/**
+			// 	            		* La methode qui va afficher le menu.
+			// 			*/
+			// 	            		jpm.show(pan, event.getX(), event.getY());
+			//             		}
+			//             	}
+			//             });
 
             container.add(pan, BorderLayout.CENTER);
 			this.getContentPane().add(container);

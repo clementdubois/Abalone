@@ -23,6 +23,7 @@ int bille1,bille2,bille3;
 			this.bille2 = 0;
 			//permet de gérer la gestion des click dans la classe ClickAction
 			addMouseListener(listener);
+			//chargement des images
 			Toolkit kit=Toolkit.getDefaultToolkit();
 			MediaTracker tracker=new MediaTracker(this);
 			this.neant	  = kit.getImage("images/neant.jpg");
@@ -51,6 +52,7 @@ int bille1,bille2,bille3;
 		for (i=1; i<=9; i++){
 			//pour chaque colonne
 			for (j=1; j<=9; j++){
+				//on s'occupe d'abord d'afficher le pourtour du plateau
 				if ( i == 1 && j == 1 || i == 1 && j == 2 || i == 1 && j == 8 || i == 1 && j == 9 ){
 					g.drawImage(this.neant,j*TAILLEIM,i*TAILLEIM,null);
 				}
@@ -68,9 +70,10 @@ int bille1,bille2,bille3;
 				}
 				
 				else if(plateau.cases[taillePlateau].getContenu() == Bille.NOIR && i%2 == 1 && taillePlateau < 62){
-				
+					//si une bille est selectionnée, on l'a met en surbrillance
 					if(plateau.cases[taillePlateau].getNumero() == bille1 || plateau.cases[taillePlateau].getNumero() == bille2 || plateau.cases[taillePlateau].getNumero() == bille3){
 						g.drawImage(this.pionNS,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
+					//sinon on l'affiche normalement	
 					}else{
 						g.drawImage(this.pionN,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
 					}	
@@ -131,10 +134,16 @@ int bille1,bille2,bille3;
 		this.bille3 = 0;
 	}
 	
+	/**
+	* methode pour connaitre le numero de la 1ere bille selectionnee
+	*/
 	public void rafraichirBS1(int bille1){
 		this.bille1 = bille1;
 	}
 	
+	/**
+	* methode pour connaitre le numero de la 2eme bille selectionnee
+	*/
 	public void rafraichirBS2(int bille2, int bille3){
 		this.bille2 = bille2;
 		this.bille3 = bille3;
