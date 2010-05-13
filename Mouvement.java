@@ -100,6 +100,12 @@ public class Mouvement {
 		if(this.derniere == this.premiere){	
 			//On teste la case juste apres nos billes
 			//Si suivante vide et je pousse maximum trois de mes billes : OK
+			System.out.println("DERNIERE BILLE : "+derniereBille+" ");
+			System.out.println("vecteur : "+vecteur+" ");
+			System.out.println("BILLE ADJ : "+plateau.cases[derniereBille].getAdjacent(vecteur)+" ");
+			
+			System.out.println("PREMIER : "+plateau.cases[plateau.cases[derniereBille].getAdjacent(vecteur)].getContenu()+" ");
+			
 			if (plateau.cases[plateau.cases[derniereBille].getAdjacent(vecteur)].getContenu() == Case.VIDE &&
 			         cptBilleMoi <= 3){
 				return true;
@@ -113,6 +119,7 @@ public class Mouvement {
 				//On calcule le nombre de billes adverse qui vont être deplacées
 				for(cptBilleLui = 0; plateau.cases[plateau.cases[derniereBille].getAdjacent(vecteur)].getContenu() == couleurAdverse; cptBilleLui++)
 					derniereBille = plateau.cases[derniereBille].getAdjacent(vecteur);
+				
 				
 			  //Je dois etre en superiorite numerique pour valider le mouvement
 				if(cptBilleMoi > cptBilleLui){
