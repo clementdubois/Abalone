@@ -16,13 +16,26 @@ public class Jeu {
 	public static void main(String args[]){
 		
 		Partie p = new Partie();
+		System.out.println("ADJACENT  :::::>>>>> "+p.plateau.cases[35].getAdjacent((byte)2));
+		
+		//Liste des adjacences
+		
+		for(byte i=1; i<62; i++){
+			System.out.println("Case Adjacente de la CASE : "+i);
+			for(byte j=0; j<6; j++){
+				System.out.print(j+" : "+p.plateau.cases[i].getAdjacent(j)+"| ");
+			}
+			System.out.println();
+			System.out.println();
+			
+		}
+		
 		
 		// try{Thread.sleep(3000);}catch(Exception e){}
 		// p.listener.deroulementMouvement(1,1,3);
 		// try{Thread.sleep(3000);}catch(Exception e){}
 		// p.listener.deroulementMouvement(61,61,5);
 	
-		p.plateau.mouvementsValides(1);
 		
 
 	}

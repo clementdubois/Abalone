@@ -166,9 +166,10 @@ public class Case {
 	}
 	
 	/**
+	 * Calcul le numero d'une ligne a partir du numero d'une case.
 	 * 
-	 * @param num
-	 * Modifie this.numLigne
+	 * @param num Le numero de la case
+	 * 
 	 */
 	private void calculerNumLigne (byte num) {
 		if(num > 0 && num < 5)

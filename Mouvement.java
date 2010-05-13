@@ -96,8 +96,8 @@ public class Mouvement {
 		for(cptBilleMoi = 1; plateau.cases[plateau.cases[derniereBille].getAdjacent(vecteur)].getContenu() == contenuBille; cptBilleMoi++)
 			derniereBille = plateau.cases[derniereBille].getAdjacent(vecteur);
 		
-		//Si c'est une poussee (si on ne touche qu'une bille)
-		if(this.derniere == this.premiere){	
+		//Si c'est une poussee (si on ne touche qu'une bille) et si on est bien sur une bille
+		if(this.derniere == this.premiere ){	
 			//On teste la case juste apres nos billes
 			//Si suivante vide et je pousse maximum trois de mes billes : OK
 			System.out.println("DERNIERE BILLE : "+derniereBille+" ");
@@ -131,22 +131,28 @@ public class Mouvement {
 				}
 			}
 		}else{//Deplacement lateral
+			byte numCaseIntermediaire = plateau.caseIntermediaire(this.premiere, this.derniere);
 			
-			//On vérifie que la distance entre les deux billes est valide (invalide si case intermediaire renvoi -1)
-			if (plateau.caseIntermediaire(this.premiere, this.derniere) != -1){
-				//Si il y a effectivement une case intermediaire...
-				if(plateau.caseIntermediaire(this.premiere, this.derniere) != 0)
-					// milieu = la case adjacente a la case intermediaire
-					milieu = plateau.cases[plateau.cases[plateau.caseIntermediaire(this.premiere, this.derniere)].getAdjacent(vecteur)].getContenu();
-				
-				//Il suffit de verifier que toutes les cases visees sont vides
-				if (plateau.cases[plateau.cases[this.premiere].getAdjacent(vecteur)].getContenu() == Case.VIDE &&
-				    plateau.cases[plateau.cases[this.derniere].getAdjacent(vecteur)].getContenu() == Case.VIDE &&
-						( milieu == -10 || milieu == Case.VIDE ) ){
-					return true;
-				}
-				
+			//On vérfie que des billes ont bien été séléctionnées
+			if(plateau.cases[this.premiere].getContenu() != Case.VIDE &&
+			  plateau.cases[this.derniere].getContenu() != Case.VIDE ){
+					//On vérifie que la distance entre les deux billes est valide (invalide si case intermediaire renvoi -1)
+					if (numCaseIntermediaire != -1){
+						//Si il y a effectivement une case intermediaire et que cette case n'est pas vide...
+						if(numCaseIntermediaire != 0 )
+							// milieu = la case adjacente a la case intermediaire
+							milieu = plateau.cases[plateau.cases[numCaseIntermediaire].getAdjacent(vecteur)].getContenu();
+
+						//Il suffit de verifier que toutes les cases visees sont vides et que la bille intermediaire existe
+						if (plateau.cases[plateau.cases[this.premiere].getAdjacent(vecteur)].getContenu() == Case.VIDE &&
+						    plateau.cases[plateau.cases[this.derniere].getAdjacent(vecteur)].getContenu() == Case.VIDE &&
+								( milieu == -10 || (milieu == Case.VIDE && plateau.cases[numCaseIntermediaire].getContenu() != Case.VIDE)) ){
+							return true;
+						}
+
+					}	
 			}
+			
 
 		}
 		

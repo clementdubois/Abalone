@@ -98,14 +98,16 @@ public class Plateau {
 		return true;
 	}*/
 
-	/** Effectuer un mouvement */
+	/** Effectuer un mouvement sur le plateau
+	* @param m Le mouvement a effctuer
+	*/
 	public void effectuer(Mouvement m){
 		byte caseActuel = m.getPremiere();
 		byte caseSuivante;
 		byte contenuActuel = cases[caseActuel].getContenu();
 		byte contenuSuivant;
 
-		// Si on ne pousse qu'une bille c'est qu'il s'agit d'une poussée
+		// Si on ne pousse qu'une bille c'est qu'il s'agit d'une poussee
 		if(m.getPremiere() == m.getDerniere()){
 			/*On POUSSE toute la ligne d'une case*/
 			caseSuivante = cases[caseActuel].getAdjacent(m.getVecteur()); //Il y a forcement au moins une case suivante sinon il s'agirai d'un suicide
