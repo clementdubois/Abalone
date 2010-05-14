@@ -16,12 +16,19 @@ public class Partie {
  */
 	protected boolean terminee;
 	protected String variante;
+	/** Le numero du coup*/
 	protected int numCoup;
 	protected final byte NB_BILLES_EJECTER = 1; 
 	/** Score actuel de chaque joueur*/
 	protected int[] score;
 	/** MODE SANS SERVEUR*/
 	public FenetreJeu f;
+	/** Joueur 1 : le noir*/
+	public final static int NOIR = 1;
+	/** Joueur 2: le blanc*/
+	public final static int BLANC = 2;
+	/** Le gagnant de la partie, a 0 si personne n'a encore gagne*/
+	protected int gagnant = 0;
 	//
 	public ClickAction listener;
 	
@@ -30,71 +37,82 @@ public class Partie {
 		numCoup = 1;
 		terminee = false;
 		score = new int[2];
-		score[0] = 0;
-		score[1] = 0;
+		score[NOIR-1] = 0;
+		score[BLANC-1] = 0;
 		plateau = new Plateau(); // initialise les valeurs des vecteurs
 		listener = new ClickAction(this);
 		f = new FenetreJeu(plateau,listener);
-		
-		
- 		// int i = 0;
- 		//  		joueurs = new ArrayList<Joueur>();
- 		//  		for(String pseudocourant : pseudo) {
- 		// 		joueurs.add(new Joueur(pseudocourant));//joueurs[i++] = new Joueur(Pseudocourant);
- 		// 	}
- 		// 
- 		// 	//On envoie la partie en cours pour pouvoir la modifier
- 		// 	
- 		// 	i = 0;
- 		// 	System.out.println();
- 		// 
- 		// 	while(!terminee) {
- 		// 		
- 		// 		this.coupActuel = this.joueurs.get(i).jouer(); // on attend que le joueur envoie son coup.
- 		// 		System.out.println("Partie::J"+(i%joueurs.size())+" joue : "+coupActuel.getPremiere()+"-"+coupActuel.getDerniere()+"-"+coupActuel.getVecteur());
- 		// 
- 		// 		this.plateau.effectuer(coupActuel);
- 		// 		
- 		// 		//Dès qu'une bille est tombé on termine la partie
- 		// 		if(this.plateau.cases[0].getContenu() != Case.VIDE) {
- 		// 			if((this.joueurs.get(i).score += 1) == this.NB_BILLES_EJECTER) {
- 		// 				this.terminee = true;
- 		// 			}
- 		// 			this.plateau.cases[0].setContenu(Case.VIDE);				
- 		// 		}
- 		// 		
- 		// 		i = (i+1)%joueurs.size(); //On passe au jouer suivant
- 		// 		
- 		// 		this.plateau.afficher();//Affiche en console
- 		// 		f.rafraichir(plateau); //Affiche en graphique
- 		// 	}
- 		// 	System.out.println("Partie terminee.");
 	}
-	
-	/** Change le jouer actuel pour savoir qui doit jouer*/
-	public void setJoueur(){
-		if(joueurActuel == 1)
-			joueurActuel = 2;
-		else
-			joueurActuel = 1;
-	}
-	
-	/** Vérifie le plateau pour savoir si une bille est tombé au dernier coup et incremente le score*/
-	public void setScore(){
-		//Dès qu'une bille est tombé incremente le score
-		if(this.plateau.cases[Plateau.TROU].getContenu() != Case.NEANT) {
-			if((this.score[joueurActuel-1] += 1) == this.NB_BILLES_EJECTER) {
-				this.terminee = true;
+	//--------------------------------------ACCESSEURS-----------------------------------
+			/** Renvoie le numero du joueur en cour
+			* @return le numero du jouer actuel (1 pour le J1 NOIR et 2 pour le J2 BLANC)
+			*/
+			public int getJoueurActuel(){
+				return joueurActuel;
 			}
-			//On revide la case trou comme le score à été pris en compte
-			this.plateau.cases[Plateau.TROU].setContenu(Case.NEANT);				
-		}
-	}
+			/** Change le jouer actuel pour savoir qui doit jouer*/
+			public void setJoueur(){
+				if(joueurActuel == NOIR)
+					joueurActuel = BLANC;
+				else
+					joueurActuel = NOIR;
+			}
 	
-	/** Ajoute un coup au compteur*/
-	public void setNumCoup(){
-		numCoup++;
-	}
+			/** Renvoie le score du joueur demande
+			* @param numJ le numero du joueur dont l'on veut connaitre le score
+			* @return le score du joueur demande
+			*/
+			public int getScore(int numJ){
+				if(numJ == NOIR)
+					return score[NOIR-1];
+				else
+					return score[BLANC-1];
+			}
+			/** Vérifie le plateau pour savoir si une bille est tombé au dernier coup et incremente le score*/
+			public void setScore(){
+				//Des qu'une bille est tombee incremente le score
+				//Si une bille blanche est dans le trou, on incrémente le score du joueur noir
+				if(this.plateau.cases[Plateau.TROU].getContenu() == Bille.BLANC) {
+					if((this.score[NOIR] += 1) == this.NB_BILLES_EJECTER) {
+						this.terminee = true;
+						this.gagnant = NOIR;
+					}
+							
+				}else	if(this.plateau.cases[Plateau.TROU].getContenu() == Bille.NOIR) {
+						if((this.score[BLANC] += 1) == this.NB_BILLES_EJECTER) {
+							this.terminee = true;
+							this.gagnant = BLANC;
+						}
+
+					}
+				
+				//On revide la case trou comme le score à été pris en compte
+				this.plateau.cases[Plateau.TROU].setContenu(Case.NEANT);
+			}
+		
+			/** Renvoie le numero du coup en cour*/
+			public int getNumCoup(){
+				return numCoup;
+			}
+			/** Ajoute un coup au compteur*/
+			public void setNumCoup(){
+				numCoup++;
+			}
+	//------------------------------------------------------------------------------------------------
+	
+	/** Un joueur abandonne la partie, la partie est terminee et l'autre joueur gagne
+	* @param numJ le numero du joueur qui abandonne (1 ou 2)
+	*/
+	public void abandonner(int numJ){
+		//La partie est finie
+		this.terminee = true;
+		
+		//On indique le gagnant de la partie
+		if(numJ == NOIR){this.gagnant = BLANC;}
+		else if(numJ == BLANC){this.gagnant =  NOIR;}
+		
+	}		
+			
 	
 	/** Affiche une partie en console avec le System*/
 	public String toString(){
@@ -102,8 +120,9 @@ public class Partie {
 		
 		afficher += "Joueur Actuel : "+joueurActuel+"\n";
 		afficher += "Numero du coup : "+numCoup+"\n";
-		afficher += "Score du joueur 1 : "+score[0]+"\n";
-		afficher += "Score du joueur 2 : "+score[1]+"\n";
+		afficher += "Score du joueur 1 : "+score[NOIR-1]+"\n";
+		afficher += "Score du joueur 2 : "+score[BLANC-1]+"\n";
+		afficher += "Gagnant : "+gagnant;
 		
 		if(terminee)
 			afficher += "Partie terminée\n";
