@@ -15,6 +15,8 @@ int bille1,bille2,bille3;
 
 	/**
 	* Constructeur du panel.
+	* @param plateau Le plateau de jeu
+	* @param listener L'ecouteur des actions de l'utilisateur
 	*/
 	public Panneau(Plateau plateau,ClickAction listener){
 			//initialisation des variables
@@ -72,7 +74,7 @@ int bille1,bille2,bille3;
 					g.drawImage(this.neant,j*TAILLEIM,i*TAILLEIM,null);
 				}
 				
-				else if(plateau.cases[taillePlateau].getContenu() == Bille.NOIR && i%2 == 1 && taillePlateau < 62){
+				else if(plateau.cases[taillePlateau].getContenu() == Case.NOIR && i%2 == 1 && taillePlateau < 62){
 					//si une bille est selectionnée, on l'a met en surbrillance
 					if(plateau.cases[taillePlateau].getNumero() == bille1 || plateau.cases[taillePlateau].getNumero() == bille2 || plateau.cases[taillePlateau].getNumero() == bille3){
 						if(bille1 != bille2) g.drawImage(this.pionNS,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
@@ -85,7 +87,7 @@ int bille1,bille2,bille3;
 					taillePlateau += 1;
 				}
 
-				else if(plateau.cases[taillePlateau].getContenu() == Bille.NOIR && i%2 == 0 && taillePlateau < 62){
+				else if(plateau.cases[taillePlateau].getContenu() == Case.NOIR && i%2 == 0 && taillePlateau < 62){
 					if(plateau.cases[taillePlateau].getNumero() == bille1 || plateau.cases[taillePlateau].getNumero() == bille2 || plateau.cases[taillePlateau].getNumero() == bille3){
 						if(bille1 != bille2) g.drawImage(this.pionNS,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
 						else g.drawImage(this.pionNP,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
@@ -96,7 +98,7 @@ int bille1,bille2,bille3;
 					taillePlateau += 1;
 				}
 				
-				else if(plateau.cases[taillePlateau].getContenu() == Bille.BLANC && i%2 == 1 && taillePlateau < 62){
+				else if(plateau.cases[taillePlateau].getContenu() == Case.BLANC && i%2 == 1 && taillePlateau < 62){
 					if(plateau.cases[taillePlateau].getNumero() == bille1 || plateau.cases[taillePlateau].getNumero() == bille2 || plateau.cases[taillePlateau].getNumero() == bille3){
 						if(bille1 != bille2) g.drawImage(this.pionBS,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
 						else g.drawImage(this.pionBP,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
@@ -107,7 +109,7 @@ int bille1,bille2,bille3;
 					taillePlateau += 1;
 				}
 
-				else if(plateau.cases[taillePlateau].getContenu() == Bille.BLANC && i%2 == 0 && taillePlateau < 62){
+				else if(plateau.cases[taillePlateau].getContenu() == Case.BLANC && i%2 == 0 && taillePlateau < 62){
 					if(plateau.cases[taillePlateau].getNumero() == bille1 || plateau.cases[taillePlateau].getNumero() == bille2 || plateau.cases[taillePlateau].getNumero() == bille3){
 						if(bille1 != bille2) g.drawImage(this.pionBS,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
 						else g.drawImage(this.pionBP,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
@@ -118,12 +120,12 @@ int bille1,bille2,bille3;
 					taillePlateau += 1;
 				}
 
-				else if(plateau.cases[taillePlateau].getContientBille() == false && i%2 == 1 && taillePlateau < 62){
+				else if(plateau.cases[taillePlateau].getContenu() == Case.VIDE && i%2 == 1 && taillePlateau < 62){
 				 	g.drawImage(this.casevide,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
 					taillePlateau += 1;
 				}
 
-				else if(plateau.cases[taillePlateau].getContientBille() == false && i%2 == 0 && taillePlateau < 62){
+				else if(plateau.cases[taillePlateau].getContenu() == Case.VIDE && i%2 == 0 && taillePlateau < 62){
 				 	g.drawImage(this.casevide,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
 					taillePlateau += 1;
 				}
@@ -137,6 +139,7 @@ int bille1,bille2,bille3;
 
 	/**
 	* methode pour reinitialiser la variable de plateau
+	* @param plateau Le plateau a reinitialiser.
 	*/
 	public void rafraichir(Plateau plateau){
 		this.plateau = plateau;
@@ -146,7 +149,8 @@ int bille1,bille2,bille3;
 	}
 	
 	/**
-	* methode pour connaitre le numero de la 1ere bille selectionnee
+	* Connaitre le numero de la 1ere bille selectionnee
+	* @param bille1
 	*/
 	public void rafraichirBS1(int bille1){
 		this.bille1 = bille1;

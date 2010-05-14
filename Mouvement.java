@@ -28,6 +28,11 @@ public class Mouvement {
 	/** Vecteur en haut a gauche*/
 	public static final byte HG = 5;
 	
+	/** Initialise un mouvement
+	* @param prem Le premiere bille selectionner.
+	* @param dern La derniere bille selectionner.
+	* @param vect L direction du mouvement.
+	*/
 	public Mouvement(byte prem, byte dern, byte vect){
 		this.premiere = prem;
 		this.derniere = dern;
@@ -74,9 +79,7 @@ public class Mouvement {
 	* plateau.cases[x].vecteur ==> le NUMERO de la bille adjacente a la bille x et de direction vecteur.
 	* plateau.cases[plateau.cases[x].vecteur] ==> la BILLE adjacente a la bille x et de direction vecteur.
 	*
-	* <strong>ATTENTION!!!</strong> : reflechir au cas de plus de deux joueurs.
 	* @param p Le plateau de jeu sur lequel on veux verifier que le mouvement est possible.
-	* @param couleur La couleur du joueur actuel (NOIR ou BLANC)
 	* @return true si le mouvement est autorise, false si le mouvement est interdit
 	*/
 	public boolean valider(Plateau p){
@@ -156,17 +159,18 @@ public class Mouvement {
 
 		}
 		
-		//Si on arrive là c'est que c'est un mauvais mouvement
+		//Si on arrive la c'est que c'est un mauvais mouvement
 		return false;
 	}
 	
+	/** */
 	public char traduction() {
 		char temp = 0xa000;
 		char temp2 = 0x0000;
 		return temp;
 	}
 
-	
+	/** Pour afficher en console un mouvement*/
 	public String toString(){
 		String res="";
 		

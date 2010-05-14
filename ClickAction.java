@@ -1,31 +1,28 @@
 import java.awt.event.*;
 	//Cette classe permet de gerer les clicksouris sur le plateau 
 public class ClickAction extends MouseAdapter {
-	//Cette variable permet d'acceder a la fonction jouer de la classe joueur
-	private Joueur joueur;
-	//variable de fin de partie
-	private boolean finPartie;
 	/** compteur de click*/
 	private int nbClick;
 	/** Le plateau de jeu*/
 	private Plateau plateau;
 	/** La partie en cour*/
 	private Partie partie;
-
-	private int premiere,deuxieme,vecteur,balise,intermediaire;
+  /** Les billes selectionner lors de clique*/
+	private int premiere,deuxieme,vecteur,intermediaire;
+	/** Les coordonnees des cliques*/
 	private int yb,yv,xb,xv;
 	
-	/** On evoie la partie associee a la fenetre pour pouvoir la modifier*/
+	/** On evoie la partie associee a la fenetre pour pouvoir la modifier 
+	* @param p La partie sur laquel se deroule les actions.
+	*/
 	public ClickAction(Partie p){
-		//Initialisation des variables
-		this.joueur=joueur;
 		nbClick = 1;
 		this.plateau = p.plateau;
 		this.partie = p;
 	}
 	
 	/**
-	* On surcharge la methode mouseClicked pour quelle recupere et envoie le numero des billes selectionnee
+	* On surcharge la methode mouseClicked pour quelle recupere et envoie le numero des billes selectionnees.
 	*/
 	public void mouseClicked(MouseEvent event){
 		if(nbClick == 1){
@@ -113,7 +110,10 @@ public class ClickAction extends MouseAdapter {
 	
 	
 	/**
-	*Cette fonction permet de passer des coordonnees graphiques ( sur le panel) en numero de cases
+	*Cette fonction permet de passer des coordonnees graphiques ( sur le panel) et de recuperer le numero de case correspondant
+	* @param xx L'abcisse du clique.
+	* @param yy L'ordonne du clique.
+	* @return Le numero de la case correspondant a l'endroit du clique.
 	*/
 	public int transcription(int xx,int yy){
 		int caseSelected =0;

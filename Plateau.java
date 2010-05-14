@@ -63,16 +63,14 @@ public class Plateau {
 	/**  Initialiser le plateau de jeu en posant les billes de depart
 	*
 	*/
-	
-
 	public void initialiser(){
 		//On place les 14 pions de chaques couleurs sur le plateau et on indique les cases vides
 		for (byte i = 1; i < NB_CASES ; i++){
 		       if (i < 17 && i != 12 && i != 13){
-		          cases[i].setBille(new Bille(Bille.BLANC));
+		          cases[i].setContenu(Case.BLANC);
 						}		       
 						else if (i > 45 && i != 50 && i != 49)
-		          cases[i].setBille(new Bille(Bille.NOIR));
+		          cases[i].setContenu(Case.NOIR);
 		       else
 		          cases[i].setContenu(Case.VIDE);//Met la case a Case.VIDE
 		}
@@ -80,23 +78,6 @@ public class Plateau {
 		//On initialise la case TROU
 		cases[TROU].setContenu(Case.NEANT);
 	}
-	
-	/** Rendre effectif un mouvement sur le plateau.
-	* 
-	* @param m le mouvement a effectuer
-	* 
-	 */
-	/*public boolean joue(Mouvement m) {
-		int i = 0;
-		while(i < m.length) { // on veut appliquer le mouvement a chaque bille.
-			cases[m[i].getCoordonneesArrivee()].contiensBille();
-			cases[m[i].getCoordonneesArrivee()].setBille(cases[m[i].getCoordonnesDepart()].getBille());
-			cases[m[i].getCoordonnesDepart()].contiensVide();
-		}
-// inutile : le traitement juste au-dessus gere tous les mouvements.
-// this.mettreAJour(); // permet de gerer n'importe quel type de deplacement : bille.appliquerCoordonnees() change le champ position de la bille et mettreAJour() va chercher les positions de chaque bille pour se mettre a jour.		
-		return true;
-	}*/
 
 	/** Effectuer un mouvement sur le plateau
 	* @param m Le mouvement a effctuer
@@ -210,9 +191,9 @@ public class Plateau {
 				
 			for(int j=0; (j< (5+i) && i<5) || (j < (13-i) && i>=5 ) ; j++ ){
 				
-				if (this.cases[numCase].getContenu() == Bille.NOIR)
+				if (this.cases[numCase].getContenu() == Case.NOIR)
 					System.out.print("N   ");
-				else if (this.cases[numCase].getContenu() == Bille.BLANC)
+				else if (this.cases[numCase].getContenu() == Case.BLANC)
 					System.out.print("B   ");
 				else
 					System.out.print("V   ");

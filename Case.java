@@ -3,20 +3,22 @@ import java.util.*;
 
 public class Case {
 /**
- * On va initialiser une bille sans aucune caracteristique sur chaque case, s'il n'est pas possible de faire autrement.
- * Ce seront de fausses billes, des billes qu'on utilisera pas.
- * D'ou l'utilite de la propriete contientBille.
- */
-	private Bille bille;
-/**
  * contientBille permet de savoir si la case contient effectivement une bille jouable.
  * C'est lui qui doit etre mis à jour.	
  */
-	private boolean contientBille;
+	//private boolean contientBille;
 /**
  * 	le numero de cette case
  */
 	private byte numero;
+	
+ /** La couleur de la bille, NOIR ou BLANC ou VIDE*/
+	protected byte contenu;
+	
+	/** Constante pour une bille noir*/
+	public final static byte NOIR = 1;
+	/** Constante pour une bille blanche*/
+	public final static byte BLANC = 2;
 
 	/**
 	 * 	le numero de la ligne de cette case
@@ -41,126 +43,129 @@ public class Case {
 	public static final byte HG = 5;	
 	
 	/**
-	 *on garde en memoire les coordonnees des cases adjacentes	
+	 *on garde en memoire les coordonnees des cases adjacentes	de la case
 	 */	
 	byte[] vecteurs;
 
 	
- /** Constructeur par defaut*/	
+ /** Initialisation de a case*/	
 	public Case(byte num){
 		this.numero = num;
-		this.contientBille = false;
+		//this.contientBille = false;
 		this.vecteurs = new byte[6];
 		this.calculerNumLigne(num);
 	}
 	
 /**	fausse bille : false*/
-	public Case(byte num, boolean placerBille) {
-		this.numero = num;
-		this.contientBille = placerBille;
-		this.vecteurs = new byte[6];
-		this.calculerNumLigne(num);		
-		if(placerBille) {
-			contientBille = true;
-			bille = new Bille(this.numero);
-		}
-		else {
-			contientBille = false;
-			bille = new Bille(this.numero); // fausse bille
-		}
-	}
+	// public Case(byte num, boolean placerBille) {
+	// 	this.numero = num;
+	// 	this.contientBille = placerBille;
+	// 	this.vecteurs = new byte[6];
+	// 	this.calculerNumLigne(num);		
+	// 	if(placerBille) {
+	// 		contientBille = true;
+	// 		bille = new Bille(this.numero);
+	// 	}
+	// 	else {
+	// 		contientBille = false;
+	// 		bille = new Bille(this.numero); // fausse bille
+	// 	}
+	// }
 
+	//-------------------------------------------ACCESSEURS----------------------------------------
+			/** Recupere le contenu d'une case (vide ou bille blanche ou bille noire)
+			* @return VIDE si la case est vide, NOIR si c'est une bille noir, BLANC si c'est une bille blanche
+			*/
+			public byte getContenu(){
+					return this.contenu;
+			}
 	
-	/** Recupere le contenu d'une case (vide ou bille blanche ou bille noire)
-	* @return VIDE si la case est vide, Bille.NOIR si c'est une bille noir, Bille.BLANC si c'est une bille blanche
-	*/
-	public byte getContenu(){
-		if (!contientBille)
-			return this.VIDE;
-		else 
-			return this.bille.getCouleur();
-	}
-	
-	/** Change le contenu d'une case (vide, bille blanche, bille noire)
-	* Pas de parametre: on met une case vide
-	*/
-	public void setContenu(byte etat){
-		if(etat == VIDE)
-			this.contientBille = false;
-		else{//On change la bille sur la case
-			this.contientBille = true;
-			this.setBille(new Bille(etat));
-		}
+			/** Change le contenu d'une case (vide, bille blanche, bille noire)
+			* Pas de parametre: on met une case vide
+			*/
+			public void setContenu(byte etat){
+				this.contenu = etat;
+				// if(etat == VIDE)
+				// 					this.contientBille = false;
+				// 				else{//On change la bille sur la case
+				// 					this.contientBille = true;
+				// 					this.setBille(new Bille(etat));
+				// 				}
 			
-	}
+			}
+	    
+	    /** Change la bille qui est sur la case
+	    * @param b La bille a placer sur la case.
+	    */
+			// public void setBille(Bille b) {
+			// 				this.bille = b;
+			// 				this.contientBille = true;
+			// 			}
+	    
+	    /** @return la bille sur la case */
+			// public Bille getBille() {
+			// 					return this.bille;
+			// 			}
+	    /** @return le numero de la case*/
+			public byte getNumero() {
+				return this.numero;
+			}
+	   /** Change l'etat de la case (vide ou rempli)
+	    * @param contient vrai si la case contient une bille, faux sinon
+	    */
+			// public void setContientBille(boolean contient) {
+			// 			this.contientBille = contient;
+			// 		}
+	   /** @return l'etat du case (false = vide, trou = contient une bille)*/
+			// public boolean getContientBille() {
+			// 			return this.contientBille;
+			// 		}
 	
-	public void setBille(Bille b) {
-		this.bille = b;
-		this.contientBille = true;
-	}
-	
-	public Bille getBille() {
-			return this.bille;
-	}
-	
-	public byte getNumero() {
-		return this.numero;
-	}
-	
-	public void setNumero(byte num) {
-		this.numero = num;
-	}
-	
-	public void setContientBille(boolean contient) {
-		this.contientBille = contient;
-	}
-	
-	public boolean getContientBille() {
-		return this.contientBille;
-	}
-	
-	/** Retourne le numero de la case qui est adjacente a this par le vecteur envoyee.
-	*
-	* @param vecteur de quelle case adjacente on veut savoir le numero
-	* @return le numero de la bonne case adjacente
-	*/
-	public byte getAdjacent(byte direction){
-		return vecteurs[direction];
-	}
+			/** Retourne le numero de la case qui est adjacente a this par le vecteur envoyee.
+			*
+			* @param direction de quelle case adjacente on veut savoir le numero
+			* @return le numero de la bonne case adjacente
+			*/
+			public byte getAdjacent(byte direction){
+				return vecteurs[direction];
+			}
 
-	
-	public byte getNumLigne() {
-		return this.numLigne;
-	}
-/*	
-	public void appliquerVecteur(Mouvement m) {
-// il faut traduire le Mouvement : on applique donc un vecteur sur une coordonnee : c'est une simple recherche de la caseAdjacente correspondante
-		bille.setCoordonnees(1); // il suffit ensuite d'inscrire les coordonnees qu'on a recupere dans caseAdjacente.
-	}
-*/	
-	
+	    /** @return Le numero de la ligne ou est situee la case*/
+			public byte getNumLigne() {
+				return this.numLigne;
+			}
 	
 	/**
-	 * @return int le numero de la case opposee.
+	 * Retourne le numero de case oppose a celui donne en parametre
+	 * @param numCase Le numero de la case dont on veut obtenir son numero oppose
+	 * @return le numero de la case opposee.
 	 */
 	private byte getNumOpposee(byte numCase) {
 		if(numCase > 0 && numCase < 62)
 			return (byte)(62 - numCase);
 		return 0; // ou throws OutOfPlateauException ?
 	}	
-	
+	/** Retourne le vecteur oppose (de sens inverse) a celui passe en parametre
+	* @param v le vecteur de reference.
+	*  @return le vecteur oppose a v.
+	*/
 	private byte getVecteurOppose(byte v) {
 		if(v<=2)
 			return (byte) (v+3);
 		return (byte) (v-3);
 	}	
-	
+	/** Initialise les cases adjacentes a une case qui sont en fait le trou 
+	* @param v La liste des vecteur qui menent au trou
+	*/
 	public void setVecteursNuls(byte[] v) { // length = 2 => bord. length = 3 => coin
 		for(byte b : v) {
 			vecteurs[b] = 0;
 		}
 	}
 	
+	/** Initialise les cases adjacentes a une case qui sont en fait le trou. 
+	* @param v La liste des vecteur dont les opposes menent au trou.
+	*/
 	public void setVecteursNulsOpposes(byte[] v) {
 		for(byte b : v) {
 			vecteurs[getVecteurOppose(b)] = 0;
@@ -169,9 +174,7 @@ public class Case {
 	
 	/**
 	 * Calcul le numero d'une ligne a partir du numero d'une case.
-	 * 
 	 * @param num Le numero de la case
-	 * 
 	 */
 	private void calculerNumLigne (byte num) {
 		if(num > 0 && num <= 5)

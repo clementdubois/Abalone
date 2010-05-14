@@ -72,13 +72,13 @@ public class Partie {
 			public void setScore(){
 				//Des qu'une bille est tombee incremente le score
 				//Si une bille blanche est dans le trou, on incrémente le score du joueur noir
-				if(this.plateau.cases[Plateau.TROU].getContenu() == Bille.BLANC) {
+				if(this.plateau.cases[Plateau.TROU].getContenu() == Case.BLANC) {
 					if((this.score[NOIR-1] += 1) == this.NB_BILLES_EJECTER) {
 						this.terminee = true;
 						this.gagnant = NOIR;
 					}
 							
-				}else	if(this.plateau.cases[Plateau.TROU].getContenu() == Bille.NOIR) {
+				}else	if(this.plateau.cases[Plateau.TROU].getContenu() == Case.NOIR) {
 						if((this.score[BLANC-1] += 1) == this.NB_BILLES_EJECTER) {
 							this.terminee = true;
 							this.gagnant = BLANC;
@@ -90,7 +90,7 @@ public class Partie {
 				this.plateau.cases[Plateau.TROU].setContenu(Case.NEANT);
 			}
 		
-			/** Renvoie le numero du coup en cour*/
+			/**@return Le numero du coup en cour*/
 			public int getNumCoup(){
 				return numCoup;
 			}
