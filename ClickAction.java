@@ -39,6 +39,7 @@ public class ClickAction extends MouseAdapter {
 			xb = event.getX();
 			deuxieme = transcription(event.getY(),event.getX());
 			System.out.println("deuxieme-clicked: " + deuxieme);
+			//on recupere la bille intermediaire aux 2 billes selectionnees
 			intermediaire = this.plateau.caseIntermediaire((byte)premiere, (byte)deuxieme);
 			partie.f.rafraichirBS2(deuxieme,intermediaire);
 			nbClick = 3;
@@ -61,27 +62,25 @@ public class ClickAction extends MouseAdapter {
 			
 			System.out.println("vecteur-clicked: " + vecteur);
 			
-			System.out.println("xb: " + xb);
-			System.out.println("xv: " + xv);
-			System.out.println("yb: " + yb);
-			System.out.println("yv: " + yv);
+			// System.out.println("xb: " + xb);
+			// System.out.println("xv: " + xv);
+			// System.out.println("yb: " + yb);
+			// System.out.println("yv: " + yv);
 			
 			//Le mouvement est effectuee seulement si la position et le numero du vecteur est valide
 			if(xv - xb > Panneau.TAILLEIM * 1.9 || yv - yb > Panneau.TAILLEIM * 1.9){
 				deroulementMouvement(premiere,deuxieme,vecteur); // ICI ON PEUT VOIR QUE LE MOUVEMENT SERA CORRECTEMENT EFFECTUE SI JE LE FORCE A LE JOUER (je n'ai pas encore regard� pourquoi...) !
-				System.out.println(premiere+"-"+deuxieme+"Mouvement invalide !\n");
+				System.out.println(premiere+"-"+deuxieme+"\nMouvement invalide !\n");
 				partie.f.rafraichir(plateau);
 			}
 			else if(vecteur<=5){
 				deroulementMouvement(premiere,deuxieme,vecteur);
 			}
 			else{
-				System.out.println(premiere+""+deuxieme+"Mouvement invalide !\n");
+				System.out.println(premiere+""+deuxieme+"\nMouvement invalide !\n");
 				partie.f.rafraichir(plateau);
 			}	
-			System.out.println("nbClick avant: " + nbClick);
 			nbClick = 1;
-			System.out.println("nbClick apres: " + nbClick);
 			System.out.println(premiere+"-"+deuxieme);
 		}
 		
@@ -90,7 +89,7 @@ public class ClickAction extends MouseAdapter {
 		{	            	
  			nbClick = 1;
 			partie.f.rafraichir(plateau);
-			System.out.println("Mouvement réinitialisé !");
+			System.out.println("Mouvement reinitialise !");
 		}
 		
 	}

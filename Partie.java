@@ -41,7 +41,7 @@ public class Partie {
 		score[BLANC-1] = 0;
 		plateau = new Plateau(); // initialise les valeurs des vecteurs
 		listener = new ClickAction(this);
-		f = new FenetreJeu(plateau,listener);
+		f = new FenetreJeu(this,listener);
 	}
 	//--------------------------------------ACCESSEURS-----------------------------------
 			/** Renvoie le numero du joueur en cour

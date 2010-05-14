@@ -29,8 +29,7 @@ Partie p = new Partie();
 			}
 			System.out.println();
 			System.out.println();
-			
-			System.out.print("numLigne : "+p.plateau.cases[i].getNumLigne());
+			System.out.print("numLigne : "+p.plateau.cases[i].getNumLigne()+"\n");
 
 			
 		}
