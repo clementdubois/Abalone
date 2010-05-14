@@ -15,7 +15,7 @@ public class ClickAction extends MouseAdapter {
 	private int premiere,deuxieme,vecteur,balise,intermediaire;
 	private int yb,yv,xb,xv;
 	
-	/** On evoie la partie associé a la fenetre pour pouvoir la modifier*/
+	/** On evoie la partie associee a la fenetre pour pouvoir la modifier*/
 	public ClickAction(Partie p){
 		//Initialisation des variables
 		this.joueur=joueur;
@@ -129,11 +129,11 @@ public class ClickAction extends MouseAdapter {
 		return caseSelected;		
 	}
 	
-	/** Gère le déroulement d'un mouvement à partir des coordonnées envoyé par l'interface
+	/** Gere le deroulement d'un mouvement a� partir des coordonnees envoyees par l'interface
 	*
 	* @param premiere numero de case de la premiere bille
 	* @param deuxieme numero de case de a deuxieme bille
-	* @param vecteur sens du déplacement
+	* @param vecteur sens du deplacement
 	*/
 
 	public void deroulementMouvement(int premiere, int deuxieme, int vecteur){
@@ -141,7 +141,7 @@ public class ClickAction extends MouseAdapter {
 		
 		Mouvement m = new Mouvement((byte)premiere, (byte)deuxieme, (byte)vecteur);
 		
-		// On vérifie le mouvement 
+		// On verifie le mouvement 
 		is_valid = m.valider(plateau);
 		//Si c'est valide on l'effectue
 		if(is_valid){
@@ -150,7 +150,7 @@ public class ClickAction extends MouseAdapter {
 			plateau.effectuer(m);
 			//On affiche en console
 			plateau.afficher();
-			//On modifie l'état de la partie
+			//On modifie l'etat de la partie
 				//On change le joueur courant
 				partie.setJoueur();
 				//On incremente le nombre de coups

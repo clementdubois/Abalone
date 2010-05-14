@@ -386,7 +386,7 @@ public class Plateau {
 	* @return la liste des mouvements que je joueur peut faire
 	*/
 	public Vector<Mouvement> mouvementsValides(int joueurActuel){
-		//Liste des mouvements valide à retourner
+		//Liste des mouvements valide a retourner
 		Vector<Mouvement> mouvements = new Vector<Mouvement>();
 		//Mouvement en cours de test de validite
 		Mouvement m;
@@ -457,8 +457,11 @@ public class Plateau {
 		return mouvements;
 	}
 	
-	/** Cherche la liste des numero de cases ou sont placees les billes d'un joueur*/
-	private Vector<Byte> chercheBilles(int joueurActuel){
+	/** Cherche la liste des numero de cases ou sont placees les billes d'un joueur.
+	* @param joueurActuel le numero du joueur en cours.
+	* @return un vecteur de billes qui contient le numero de toutes les billes du joueur demande.
+	*/
+	public Vector<Byte> chercheBilles(int joueurActuel){
 	 	Vector<Byte> billes = new Vector<Byte>();
 		
 		for(byte i=1; i<NB_CASES; i++){
