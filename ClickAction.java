@@ -30,19 +30,30 @@ public class ClickAction extends MouseAdapter {
 	public void mouseClicked(MouseEvent event){
 		if(nbClick == 1){
 			premiere = transcription(event.getY(),event.getX());
-			System.out.println("premiere-clicked: " + premiere);
-			partie.f.rafraichirBS1(premiere);
-			nbClick = 2;
+			if(plateau.chercheBilles(partie.getJoueurActuel()).contains((byte)premiere)){
+				System.out.println("premiere-clicked: " + premiere);
+				partie.f.rafraichirBS1(premiere);
+				nbClick = 2;
+			}
+			else{
+				System.out.println("Attention, ne cliquez que sur vos billes ! \n");
+			}	
 		}
 		else if(nbClick == 2){
 			yb = event.getY();
 			xb = event.getX();
 			deuxieme = transcription(event.getY(),event.getX());
-			System.out.println("deuxieme-clicked: " + deuxieme);
-			//on recupere la bille intermediaire aux 2 billes selectionnees
-			intermediaire = this.plateau.caseIntermediaire((byte)premiere, (byte)deuxieme);
-			partie.f.rafraichirBS2(deuxieme,intermediaire);
-			nbClick = 3;
+			//On verifie que le joueur ne selectionne pas les billes adverses
+			if(plateau.chercheBilles(partie.getJoueurActuel()).contains((byte)deuxieme)){
+				System.out.println("deuxieme-clicked: " + deuxieme);
+				//on recupere la bille intermediaire aux 2 billes selectionnees
+				intermediaire = this.plateau.caseIntermediaire((byte)premiere, (byte)deuxieme);
+				partie.f.rafraichirBS2(deuxieme,intermediaire);
+				nbClick = 3;
+			}
+			else{
+				System.out.println("Attention, ne cliquez que sur vos billes ! \n");
+			}	
 		}
 		else if(nbClick == 3){
 			xv = event.getX();

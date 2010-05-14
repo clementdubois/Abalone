@@ -69,6 +69,8 @@ public class FenetreJeu extends JFrame{
 	JTextField scoreJ1,scoreJ2;
 	//scores
 	int entScoreJ1,entScoreJ2;
+	//joueur actuel
+	int joueurActuel;
 
 	/**
 	* C'est le constructeur de la fenetre
@@ -92,6 +94,8 @@ public class FenetreJeu extends JFrame{
             //On affecte les écouteurs
             stop.addActionListener(stopPartie);
     		launch.addActionListener(startPartie);
+
+			joueurActuel = partie.getJoueurActuel();
 
 			Box scoreBox = Box.createHorizontalBox();
 			

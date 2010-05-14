@@ -458,7 +458,7 @@ public class Plateau {
 	}
 	
 	/** Cherche la liste des numero de cases ou sont placees les billes d'un joueur*/
-	private Vector<Byte> chercheBilles(int joueurActuel){
+	public Vector<Byte> chercheBilles(int joueurActuel){
 	 	Vector<Byte> billes = new Vector<Byte>();
 		
 		for(byte i=1; i<NB_CASES; i++){
