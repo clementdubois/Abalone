@@ -164,7 +164,7 @@ public class Case {
 	public void setVecteursNulsOpposes(byte[] v) {
 		for(byte b : v) {
 			vecteurs[getVecteurOppose(b)] = 0;
-		}	
+		}
 	}
 	
 	/**
@@ -174,7 +174,7 @@ public class Case {
 	 * 
 	 */
 	private void calculerNumLigne (byte num) {
-		if(num > 0 && num < 5)
+		if(num > 0 && num <= 5)
 			this.numLigne = 0;
 		else if(num <= (5+6))
 			this.numLigne = 1;

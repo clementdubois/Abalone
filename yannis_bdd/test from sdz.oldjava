@@ -1,3 +1,4 @@
+/*
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Enumeration;
@@ -11,7 +12,7 @@ public class Connect {
 			Class.forName("org.postgresql.Driver");
 			System.out.println("DRIVER OK ! ");
 			
-			String url = "jdbc:postgresql://localhost:5432/Ecole";
+			String url = "jdbc:postgresql://localhost:5432/abalone";
 			String user = "postgres";
 			String passwd = "postgres";
 			
@@ -23,3 +24,4 @@ public class Connect {
 		}		
 	}
 }
+*/

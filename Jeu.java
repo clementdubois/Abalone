@@ -15,7 +15,7 @@ public class Jeu {
 	public static void main(String args[]){
 
 		
-		Partie p = new Partie();
+Partie p = new Partie();
 		
 		
 		//Liste des adjacences
@@ -30,12 +30,12 @@ public class Jeu {
 							
 						}
 		
+
 		
 		// try{Thread.sleep(3000);}catch(Exception e){}
 		// p.listener.deroulementMouvement(1,1,3);
 		// try{Thread.sleep(3000);}catch(Exception e){}
 		// p.listener.deroulementMouvement(61,61,5);
-	
 		
 
 	}
