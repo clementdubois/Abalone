@@ -10,7 +10,7 @@ public static final int TAILLEIM = 62;
 
 Plateau plateau;
 ClickAction listener;
-Image neant,casevide,pionN,pionB,pionBS,pionNS;
+Image neant,casevide,pionN,pionB,pionBS,pionNS,pionBP,pionNP;
 int bille1,bille2,bille3;
 
 	/**
@@ -21,6 +21,7 @@ int bille1,bille2,bille3;
 			this.plateau = plateau;
 			this.bille1 = 0;
 			this.bille2 = 0;
+			this.bille3 = 0;
 			//permet de gérer la gestion des click dans la classe ClickAction
 			addMouseListener(listener);
 			//chargement des images
@@ -32,6 +33,8 @@ int bille1,bille2,bille3;
 			this.pionN    = kit.getImage("images/pionN.jpg");
 			this.pionBS   = kit.getImage("images/pionBS.jpg");
 			this.pionNS   = kit.getImage("images/pionNS.jpg");
+			this.pionBP   = kit.getImage("images/pionBP.jpg");
+			this.pionNP   = kit.getImage("images/pionNP.jpg");
 			tracker.addImage(neant,0);
 			tracker.addImage(casevide,0);
 			tracker.addImage(pionB,0);
@@ -72,9 +75,11 @@ int bille1,bille2,bille3;
 				else if(plateau.cases[taillePlateau].getContenu() == Bille.NOIR && i%2 == 1 && taillePlateau < 62){
 					//si une bille est selectionnée, on l'a met en surbrillance
 					if(plateau.cases[taillePlateau].getNumero() == bille1 || plateau.cases[taillePlateau].getNumero() == bille2 || plateau.cases[taillePlateau].getNumero() == bille3){
-						g.drawImage(this.pionNS,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
-					//sinon on l'affiche normalement	
-					}else{
+						if(bille1 != bille2) g.drawImage(this.pionNS,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
+						else g.drawImage(this.pionNP,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
+					}
+					//sinon on l'affiche normalement
+					else{
 						g.drawImage(this.pionN,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
 					}	
 					taillePlateau += 1;
@@ -82,8 +87,10 @@ int bille1,bille2,bille3;
 
 				else if(plateau.cases[taillePlateau].getContenu() == Bille.NOIR && i%2 == 0 && taillePlateau < 62){
 					if(plateau.cases[taillePlateau].getNumero() == bille1 || plateau.cases[taillePlateau].getNumero() == bille2 || plateau.cases[taillePlateau].getNumero() == bille3){
-						g.drawImage(this.pionNS,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
-					}else{
+						if(bille1 != bille2) g.drawImage(this.pionNS,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
+						else g.drawImage(this.pionNP,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
+					}
+					else{
 						g.drawImage(this.pionN,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
 					}
 					taillePlateau += 1;
@@ -91,8 +98,10 @@ int bille1,bille2,bille3;
 				
 				else if(plateau.cases[taillePlateau].getContenu() == Bille.BLANC && i%2 == 1 && taillePlateau < 62){
 					if(plateau.cases[taillePlateau].getNumero() == bille1 || plateau.cases[taillePlateau].getNumero() == bille2 || plateau.cases[taillePlateau].getNumero() == bille3){
-						g.drawImage(this.pionBS,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
-					}else{
+						if(bille1 != bille2) g.drawImage(this.pionBS,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
+						else g.drawImage(this.pionBP,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
+					}
+					else{
 						g.drawImage(this.pionB,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
 					}
 					taillePlateau += 1;
@@ -100,8 +109,10 @@ int bille1,bille2,bille3;
 
 				else if(plateau.cases[taillePlateau].getContenu() == Bille.BLANC && i%2 == 0 && taillePlateau < 62){
 					if(plateau.cases[taillePlateau].getNumero() == bille1 || plateau.cases[taillePlateau].getNumero() == bille2 || plateau.cases[taillePlateau].getNumero() == bille3){
-						g.drawImage(this.pionBS,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
-					}else{
+						if(bille1 != bille2) g.drawImage(this.pionBS,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
+						else g.drawImage(this.pionBP,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
+					}
+					else{
 						g.drawImage(this.pionB,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
 					}
 					taillePlateau += 1;

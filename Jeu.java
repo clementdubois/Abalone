@@ -20,17 +20,16 @@ Partie p = new Partie();
 		
 		//Liste des adjacences
 				
-				for(byte i=1; i<62; i++){
-							System.out.println("Case Adjacente de la CASE : "+i);
-							for(byte j=0; j<6; j++){
-								System.out.print(j+" : "+p.plateau.cases[i].getAdjacent(j)+"| ");
-							}
-							System.out.println();
-							System.out.println();
-							
-						}
+		for(byte i=1; i<62; i++){
+					System.out.println("Case Adjacente de la CASE : "+i);
+					for(byte j=0; j<6; j++){
+						System.out.print(j+" : "+p.plateau.cases[i].getAdjacent(j)+"| ");
+					}
+					System.out.println();
+					System.out.println();
+					
+		}
 		
-
 		
 		// try{Thread.sleep(3000);}catch(Exception e){}
 		// p.listener.deroulementMouvement(1,1,3);

@@ -6,6 +6,7 @@ import javax.swing.*;
 public class FenetreJeu extends JFrame{
 
 	Plateau plateau;
+	Partie partie;
 	ClickAction listener;
 	private Panneau pan;
     private JPanel container = new JPanel();
@@ -17,15 +18,15 @@ public class FenetreJeu extends JFrame{
 
 	//Les deux variables de taille de fenetre
 	private final static int LARGEUR=558;
-	private final static int HAUTEUR=650;
+	private final static int HAUTEUR=675;
 
     // La declaration pour le menu de la JMenuBar.    
 	private JMenuBar menuBar = new JMenuBar();
 
-    private JMenu partie = new JMenu("Partie"),
-    		forme     	 = new JMenu("Niveaux"),
-    		difficulte   = new JMenu("Difficulte"),
-    		aPropos      = new JMenu("Info");
+    private JMenu lancement  = new JMenu("Lancement"),
+    		      forme      = new JMenu("Niveaux"),
+    			  difficulte = new JMenu("Difficulte"),
+    		      aPropos    = new JMenu("Info");
 
     private JMenuItem 	lancer 		= new JMenuItem("Lancer la partie"),
 	    				arreter 	= new JMenuItem("Arreter la partie"),
@@ -64,18 +65,20 @@ public class FenetreJeu extends JFrame{
 
     private Color fondBouton = Color.white;
 	private Color couleurFond = new Color(63,92,106);
-
-	// public static void main(String[] args){
-	// 	FenetreJeu f = new FenetreJeu();
-	// 	f.setVisible(true);	
-	// }
+	//fenetres des scores
+	JTextField scoreJ1,scoreJ2;
+	//scores
+	int entScoreJ1,entScoreJ2;
+	//joueur actuel
+	int joueurActuel;
 
 	/**
 	* C'est le constructeur de la fenetre
 	*/
-    public FenetreJeu(Plateau plateau,ClickAction listener){
+    public FenetreJeu(Partie partie,ClickAction listener){
 			super();
-			this.plateau = plateau;
+			this.partie = partie;
+			this.plateau = partie.plateau;
             this.setTitle("Abalone");
             this.setSize(LARGEUR,HAUTEUR);
 			this.setResizable(false);
@@ -92,27 +95,33 @@ public class FenetreJeu extends JFrame{
             stop.addActionListener(stopPartie);
     		launch.addActionListener(startPartie);
 
-			/*
-    		* On cree et on passe l'écouteur pour afficher le menu contextuel
-    		* Creation d'une implementation de MouseAdapter
-    		* avec redefinition de la methode adequate
-            */
-			// pan.addMouseListener(new MouseAdapter(){
-			//             	public void mouseReleased(MouseEvent event){
-			//             		//Seulement s'il s'agit d'un clic droit
-			// 		if(event.getButton() == MouseEvent.BUTTON3)	
-			//             		{	            	
-			// 	            		jpm.add(launch);
-			// 	            		jpm.add(stop);
-			// 
-			// 			/**
-			// 	            		* La methode qui va afficher le menu.
-			// 			*/
-			// 	            		jpm.show(pan, event.getX(), event.getY());
-			//             		}
-			//             	}
-			//             });
+			joueurActuel = partie.getJoueurActuel();
 
+			Box scoreBox = Box.createHorizontalBox();
+			
+			JTextField text1 = new JTextField("Score Joueur 1 :");
+			text1.setEditable(false);
+
+			entScoreJ1 = partie.getScore(1);
+			String score1 = Integer.toString(entScoreJ1); 
+			scoreJ1 = new JTextField(score1);
+			scoreJ1.setEditable(false);
+
+			JTextField text2 = new JTextField("Score Joueur 2 :");
+			text2.setEditable(false);
+
+			entScoreJ2 = partie.getScore(2);
+			String score2 = Integer.toString(entScoreJ2); 
+			scoreJ2 = new JTextField(score2);
+			scoreJ2.setEditable(false);
+
+			scoreBox.add(text1);
+			scoreBox.add(scoreJ1);
+			scoreBox.add(text2);
+			scoreBox.add(scoreJ2);
+
+			//initialisation finale de la fenetre
+			container.add(scoreBox,BorderLayout.SOUTH);
             container.add(pan, BorderLayout.CENTER);
 			this.getContentPane().add(container);
             this.setContentPane(container);
@@ -128,6 +137,10 @@ public class FenetreJeu extends JFrame{
 	public void rafraichir(Plateau plateau){
 		pan.rafraichir(plateau);
 		pan.repaint();
+		entScoreJ1 = partie.getScore(1);
+		entScoreJ2 = partie.getScore(2);
+		scoreJ1.setText(Integer.toString(entScoreJ1));
+		scoreJ2.setText(Integer.toString(entScoreJ2));
         this.initMenu();
 	}
 	
@@ -188,7 +201,7 @@ public class FenetreJeu extends JFrame{
     	//On attribue l'accélerateur c
     	lancer.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L,
     												KeyEvent.CTRL_MASK));
-    	partie.add(lancer);
+    	lancement.add(lancer);
 
 
     	// Ajout du listener pour arrêter la partie
@@ -198,15 +211,15 @@ public class FenetreJeu extends JFrame{
     	arreter.setEnabled(false);
     	arreter.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A,
     												  KeyEvent.CTRL_DOWN_MASK + KeyEvent.SHIFT_DOWN_MASK));
-    	partie.add(arreter);
+    	lancement.add(arreter);
 
-    	partie.addSeparator();
+    	lancement.addSeparator();
     	quitter.addActionListener(new ActionListener(){
     		public void actionPerformed(ActionEvent event){
     			System.exit(0);
     		}
     	});
-    	partie.add(quitter);
+    	lancement.add(quitter);
 
 		bg.add(facile);
     	bg.add(difficile);
@@ -240,8 +253,8 @@ public class FenetreJeu extends JFrame{
 
     	// Ajout des menus dans la barre de menus.
 
-    	partie.setMnemonic('P');
-    	menuBar.add(partie);
+    	lancement.setMnemonic('L');
+    	menuBar.add(lancement);
 
     	forme.setMnemonic('N');
     	menuBar.add(forme);
