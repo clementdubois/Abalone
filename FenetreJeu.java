@@ -71,6 +71,7 @@ public class FenetreJeu extends JFrame{
 	int entScoreJ1,entScoreJ2;
 	//joueur actuel
 	int joueurActuel;
+	JTextField text1,text2;
 
 	/**
 	* C'est le constructeur de la fenetre
@@ -99,7 +100,10 @@ public class FenetreJeu extends JFrame{
 
 			Box scoreBox = Box.createHorizontalBox();
 			
-			JTextField text1 = new JTextField("Score Joueur 1 :");
+			text1 = new JTextField("Score Joueur 1 (N):");
+			if(joueurActuel == 1){
+				text1.setForeground(Color.GREEN);
+			}
 			text1.setEditable(false);
 
 			entScoreJ1 = partie.getScore(1);
@@ -107,7 +111,10 @@ public class FenetreJeu extends JFrame{
 			scoreJ1 = new JTextField(score1);
 			scoreJ1.setEditable(false);
 
-			JTextField text2 = new JTextField("Score Joueur 2 :");
+			text2 = new JTextField("Score Joueur 2 (B):");
+			if(joueurActuel == 2){
+				text1.setForeground(Color.GREEN);
+			}
 			text2.setEditable(false);
 
 			entScoreJ2 = partie.getScore(2);
@@ -137,6 +144,17 @@ public class FenetreJeu extends JFrame{
 	public void rafraichir(Plateau plateau){
 		pan.rafraichir(plateau);
 		pan.repaint();
+		joueurActuel = partie.getJoueurActuel();
+		if(joueurActuel == 1){
+			text1.setForeground(Color.GREEN);
+		}else{
+			text1.setForeground(Color.BLACK);
+		}
+		if(joueurActuel == 2){
+			text2.setForeground(Color.GREEN);
+		}else{
+			text2.setForeground(Color.BLACK);
+		}
 		entScoreJ1 = partie.getScore(1);
 		entScoreJ2 = partie.getScore(2);
 		scoreJ1.setText(Integer.toString(entScoreJ1));

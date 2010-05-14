@@ -79,7 +79,13 @@ public class ClickAction extends MouseAdapter {
 			// System.out.println("yv: " + yv);
 			
 			//Le mouvement est effectuee seulement si la position et le numero du vecteur est valide
-			if(xv - xb > Panneau.TAILLEIM * 1.9 || yv - yb > Panneau.TAILLEIM * 1.9){
+			int difX = xv - xb;
+			int difY = yv - yb;
+			
+			if(difX <= 0) difX = - difX;
+			if(difY <= 0) difY = - difY;
+			
+			if(difX > Panneau.TAILLEIM * 1.9 || difY > Panneau.TAILLEIM * 1.9){
 				deroulementMouvement(premiere,deuxieme,vecteur); // ICI ON PEUT VOIR QUE LE MOUVEMENT SERA CORRECTEMENT EFFECTUE SI JE LE FORCE A LE JOUER (je n'ai pas encore regardé pourquoi...) !
 				System.out.println(premiere+"-"+deuxieme+"\nMouvement invalide !\n");
 				partie.f.rafraichir(plateau);
