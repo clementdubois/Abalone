@@ -73,13 +73,13 @@ public class Partie {
 				//Des qu'une bille est tombee incremente le score
 				//Si une bille blanche est dans le trou, on incrémente le score du joueur noir
 				if(this.plateau.cases[Plateau.TROU].getContenu() == Bille.BLANC) {
-					if((this.score[NOIR] += 1) == this.NB_BILLES_EJECTER) {
+					if((this.score[NOIR-1] += 1) == this.NB_BILLES_EJECTER) {
 						this.terminee = true;
 						this.gagnant = NOIR;
 					}
 							
 				}else	if(this.plateau.cases[Plateau.TROU].getContenu() == Bille.NOIR) {
-						if((this.score[BLANC] += 1) == this.NB_BILLES_EJECTER) {
+						if((this.score[BLANC-1] += 1) == this.NB_BILLES_EJECTER) {
 							this.terminee = true;
 							this.gagnant = BLANC;
 						}
