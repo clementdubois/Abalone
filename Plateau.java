@@ -294,19 +294,22 @@ public class Plateau {
 		assByteVersOfficielle 	= new Hashtable<Byte, String>(NB_CASES); 
 		for(byte i=0;i<5;i++) { // de i à e
 			for(byte j=0;j<longueurLigne[i];j++) {
+				k++;
 				assOfficielleVersByte.put((lettreLigne[i]+""+(longueurLigne[i]-i*(longueurLigne[i]-lastLength)+j-i)), k); // on associe la notation officielle aux numeros de billes
-				assByteVersOfficielle.put(k++, (lettreLigne[i]+""+(longueurLigne[i]-i*(longueurLigne[i]-lastLength)+j-i))); // et vice versa
+				assByteVersOfficielle.put(k, (lettreLigne[i]+""+(longueurLigne[i]-i*(longueurLigne[i]-lastLength)+j-i))); // et vice versa
 			}
 			lastLength = longueurLigne[i];
 		}
 		// la valeur de k est conservée !
 		for(int i=5;i<9;i++) { // de d à a
 			for(int j=0;j<longueurLigne[i];j++) {
+				k++;
 				assOfficielleVersByte.put((lettreLigne[i]+""+(j+1)), k); // on associe la notation officielle aux numeros de billes
-				assByteVersOfficielle.put(k++, (lettreLigne[i]+""+(j+1))); // et vice versa				
+				assByteVersOfficielle.put(k, (lettreLigne[i]+""+(j+1))); // et vice versa	
 			}
 			lastLength = longueurLigne[i];
 		}			
+				System.out.println("e1->"+assOfficielleVersByte.get("e1"));		
 	}
 
 /**
@@ -329,17 +332,18 @@ public class Plateau {
 		cases[this.getNumCaseOpposee((byte)5)].setVecteursNulsOpposes(tempVecteurs2); // son opposé
 		
 		byte[] tempVecteurs3 = {HG, GG, BG};
-		cases[(Byte)assOfficielleVersByte.get("e1")].setVecteursNuls(tempVecteurs3); // e1
-		cases[this.getNumCaseOpposee((Byte)assOfficielleVersByte.get("e1"))].setVecteursNulsOpposes(tempVecteurs3); // son opposé		
+		cases[(Byte)assOfficielleVersByte.get("e1")].setVecteursNuls(tempVecteurs3); // 27
+		cases[getNumCaseOpposee((Byte)assOfficielleVersByte.get("e1"))].setVecteursNulsOpposes(tempVecteurs3); // son opposé		
 		
-		byte i = 2;
-		for(byte numCase = 6 ; numCase < 19 ; numCase += longueurLigne[i++]) { // le bord haut gauche
+		byte i = 1;
+		for(byte numCase = 6 ; numCase <= 19 ; numCase += longueurLigne[i++]) { // le bord haut gauche
 			byte[] tempVecteurs4 = {HG, GG};
 			cases[numCase].setVecteursNuls(tempVecteurs4);
 			cases[getNumCaseOpposee(numCase)].setVecteursNulsOpposes(tempVecteurs4); // son opposé
 		}
-		i = 2;
-		for(byte numCase = 11 ; numCase < 26 ; numCase += (longueurLigne[++i])) { // le bord haut droit
+		i = 1;
+		for(byte numCase = 11 ; numCase <= 26 ; numCase += (longueurLigne[++i])) { // le bord haut droit
+			System.out.println(numCase);
 			byte[] tempVecteurs4 = {HD, DD};
 			cases[numCase].setVecteursNuls(tempVecteurs4);
 			cases[getNumCaseOpposee(numCase)].setVecteursNulsOpposes(tempVecteurs4); // son opposé
@@ -361,7 +365,7 @@ public class Plateau {
 		return (byte)(62 - v);
 	}
 	
-	private byte multiplicateurVecteur (byte numVecteur, byte numLigne) {
+	private byte multiplicateurVecteur(byte numVecteur, byte numLigne) {
 		if(numVecteur == DD)
 			return 1;
 		if(numVecteur == GG)

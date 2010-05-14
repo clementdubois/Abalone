@@ -68,19 +68,21 @@ public class ClickAction extends MouseAdapter {
 			
 			//Le mouvement est effectuee seulement si la position et le numero du vecteur est valide
 			if(xv - xb > Panneau.TAILLEIM * 1.9 || yv - yb > Panneau.TAILLEIM * 1.9){
-				System.out.println("Mouvement invalide !\n");
+				deroulementMouvement(premiere,deuxieme,vecteur); // ICI ON PEUT VOIR QUE LE MOUVEMENT SERA CORRECTEMENT EFFECTUE SI JE LE FORCE A LE JOUER (je n'ai pas encore regardé pourquoi...) !
+				System.out.println(premiere+"-"+deuxieme+"Mouvement invalide !\n");
 				partie.f.rafraichir(plateau);
 			}
 			else if(vecteur<=5){
 				deroulementMouvement(premiere,deuxieme,vecteur);
 			}
 			else{
-				System.out.println("Mouvement invalide !\n");
+				System.out.println(premiere+""+deuxieme+"Mouvement invalide !\n");
 				partie.f.rafraichir(plateau);
 			}	
 			System.out.println("nbClick avant: " + nbClick);
 			nbClick = 1;
 			System.out.println("nbClick apres: " + nbClick);
+			System.out.println(premiere+"-"+deuxieme);
 		}
 		
 		//Un clique droit reinitialise la selection des billes
