@@ -71,7 +71,9 @@ public class Case {
 	}
 
 	
-	/** Récupère le contenu d'une case (vide ou bille blanche ou bille noire)*/
+	/** Recupere le contenu d'une case (vide ou bille blanche ou bille noire)
+	* @return VIDE si la case est vide, Bille.NOIR si c'est une bille noir, Bille.BLANC si c'est une bille blanche
+	*/
 	public byte getContenu(){
 		if (!contientBille)
 			return this.VIDE;
