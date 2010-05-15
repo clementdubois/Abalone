@@ -1,6 +1,9 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import java.io.*;
+import java.util.*;
+import javax.swing.filechooser.FileFilter;
 
 
 public class FenetreJeu extends JFrame{
@@ -29,8 +32,9 @@ public class FenetreJeu extends JFrame{
     			  difficulte = new JMenu("Difficulte"),
     		    aPropos    = new JMenu("Info");
 
-    private JMenuItem m_sauvegarder = new JMenuItem("Sauvegarder"),
-              m_charger = new JMenuItem("Charger"),
+    private JMenuItem enregistrer = new JMenuItem("Enregistrer"),
+							enregistrerSous = new JMenuItem("Enregistrer Sous"),
+              ouvrir = new JMenuItem("Charger"),
               lancer 		= new JMenuItem("Lancer la partie"),
 	    				arreter 	= new JMenuItem("Arreter la partie"),
 	    				quitter 	= new JMenuItem("Quitter"),
@@ -54,6 +58,15 @@ public class FenetreJeu extends JFrame{
     // creation des listener globaux.
     private StopPartieListener  stopPartie  = new StopPartieListener();
     private StartPartieListener startPartie = new StartPartieListener();
+    
+		//Pour le JFileChooser
+			//Les partie seront sauvegardees dans le dossier sauvegarde
+			JFileChooser fileChooser = new JFileChooser("sauvegarde/");
+			//Les filtres
+			AbFileFilter zFiltre = new AbFileFilter();
+			AbFileFilter filtre = new AbFileFilter(".ab", "Fichier Abalone");
+			File file;
+		
 
 
     // Création de notre barre d'outils.
@@ -66,15 +79,15 @@ public class FenetreJeu extends JFrame{
     					player = new JButton(new ImageIcon("images/joueur.jpg")),
     					stat   = new JButton(new ImageIcon("images/stat.jpg"));
 
-    private Color fondBouton = Color.white;
-	private Color couleurFond = new Color(63,92,106);
-	//fenetres des scores
-	JTextField scoreJ1,scoreJ2;
-	//scores
-	int entScoreJ1,entScoreJ2;
-	//joueur actuel
-	int joueurActuel;
-	JTextField text1,text2;
+  	private Color fondBouton = Color.white;
+		private Color couleurFond = new Color(63,92,106);
+		//fenetres des scores
+		JTextField scoreJ1,scoreJ2;
+		//scores
+		int entScoreJ1,entScoreJ2;
+		//joueur actuel
+		int joueurActuel;
+		JTextField text1,text2;
 
 	/**
 	* C'est le constructeur de la fenetre
@@ -93,16 +106,20 @@ public class FenetreJeu extends JFrame{
 			this.pan = new Panneau(plateau,listener);
 			pan.repaint();
 
-            //On initialise le menu stop
-            stop.setEnabled(false);
-            //On affecte les écouteurs
-            stop.addActionListener(stopPartie);
+				//On ajoute nos filtres sur la partie
+						this.fileChooser.addChoosableFileFilter(zFiltre);
+						this.fileChooser.addChoosableFileFilter(filtre);
+				
+        //On initialise le menu stop
+        stop.setEnabled(false);
+        //On affecte les écouteurs
+        stop.addActionListener(stopPartie);
     		launch.addActionListener(startPartie);
 
 			joueurActuel = partie.getJoueurActuel();
 
 			Box scoreBox = Box.createHorizontalBox();
-			
+			//Affiche le score du joueur NOIR
 			text1 = new JTextField("Score Joueur 1 (N):");
 			if(joueurActuel == 1){
 				text1.setForeground(Color.GREEN);
@@ -114,12 +131,12 @@ public class FenetreJeu extends JFrame{
 			scoreJ1 = new JTextField(score1);
 			scoreJ1.setEditable(false);
 
+			//Affiche le score du joueur BLANC
 			text2 = new JTextField("Score Joueur 2 (B):");
 			if(joueurActuel == 2){
 				text1.setForeground(Color.GREEN);
 			}
 			text2.setEditable(false);
-
 			entScoreJ2 = partie.getScore(2);
 			String score2 = Integer.toString(entScoreJ2); 
 			scoreJ2 = new JTextField(score2);
@@ -162,7 +179,6 @@ public class FenetreJeu extends JFrame{
 		entScoreJ2 = partie.getScore(2);
 		scoreJ1.setText(Integer.toString(entScoreJ1));
 		scoreJ2.setText(Integer.toString(entScoreJ2));
-        this.initMenu();
 	}
 	
 	/**
@@ -171,12 +187,10 @@ public class FenetreJeu extends JFrame{
 	public void rafraichirBS1(int bille1){
 		pan.rafraichirBS1(bille1);
 		pan.repaint();
-        this.initMenu();
 	}
 	public void rafraichirBS2(int bille2, int bille3){
 		pan.rafraichirBS2(bille2,bille3);
 		pan.repaint();
-        this.initMenu();
 	}
 
 
@@ -215,9 +229,64 @@ public class FenetreJeu extends JFrame{
 	*/
     private void initMenu(){
 
-    	//Menu partie
-    	//Ajout du listener pour lancer la partie
-    	//Attention, le listener est global
+    	//------------Menu partie---------------
+        enregistrer.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
+				enregistrer.addActionListener(new ActionListener(){
+
+							public void actionPerformed(ActionEvent arg0) {
+								ObjectOutputStream oos ;
+								//S'il ne s'agit pas du premier enregistrement !
+								System.out.println("Avant");
+								if(file != null){
+									System.out.println("Pas le premier");
+									try {
+
+										oos = new ObjectOutputStream(new FileOutputStream(file));
+										oos.writeObject(partie);
+										oos.close();
+
+									} catch (FileNotFoundException e) {
+										e.printStackTrace();
+									} catch (IOException e) {
+										e.printStackTrace();
+									}
+								}
+								//Sinon on demande le nom du fichier
+								else{
+									if(fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION){
+										file = fileChooser.getSelectedFile();
+										//Si l'extension est valide
+										if(fileChooser.getFileFilter().accept(file))
+										{
+											try {
+
+												oos = new ObjectOutputStream(new FileOutputStream(file));
+												oos.writeObject(partie);
+												oos.close();
+
+											} catch (FileNotFoundException e) {
+												e.printStackTrace();
+											} catch (IOException e) {
+												e.printStackTrace();
+											}
+										}						
+										else{
+											//Si extension invalide ! 
+											JOptionPane alert = new JOptionPane();
+											alert.showMessageDialog(null, "Erreur d'extension de fichier ! \nVotre sauvegarde a échoué !", "Erreur", JOptionPane.ERROR_MESSAGE);
+										}						
+									}
+								}
+							}			
+				
+				});
+				//ouvrir.addActionListener(loadPartie);
+				m_partie.add(enregistrer);
+				//m_partie.add(ouvrir);
+
+			//--------------FIN Menu Partie-----------------
+			
+			//Menu Lancement
     	lancer.addActionListener(startPartie);
     	//On attribue l'accélerateur c
     	lancer.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L,
@@ -242,11 +311,12 @@ public class FenetreJeu extends JFrame{
     	});
     	lancement.add(quitter);
 
-		bg.add(facile);
+		  bg.add(facile);
     	bg.add(difficile);
     	bg.add(moyen);
     	bg.add(maitre);
-
+			
+			//Ajouter les niveau de difficultes
     	difficulte.add(facile);
     	difficulte.add(moyen);    	
     	difficulte.add(difficile);
@@ -260,20 +330,22 @@ public class FenetreJeu extends JFrame{
 
     	//Ajout de ce que doit faire le "?"
     	aProposItem.addActionListener(new ActionListener(){
-			public void actionPerformed(ActionEvent arg0) {
-				JOptionPane jop = new JOptionPane();
-				ImageIcon img = new ImageIcon("images/avatar.jpg");
+				public void actionPerformed(ActionEvent arg0) {
+					JOptionPane jop = new JOptionPane();
+					ImageIcon img = new ImageIcon("images/avatar.jpg");
 
-				String mess = "Salut ! \nIci c'est le projet Abalone !\n";
+					String mess = "Salut ! \nIci c'est le projet Abalone !\n";
 
-				jop.showMessageDialog(null, mess, "Info", JOptionPane.INFORMATION_MESSAGE, img);
+					jop.showMessageDialog(null, mess, "Info", JOptionPane.INFORMATION_MESSAGE, img);
 
-			}    		    		
+				}    		    		
     	});
     	aPropos.add(aProposItem);
 
     	// Ajout des menus dans la barre de menus.
-
+			m_partie.setMnemonic('S');
+			menuBar.add(m_partie);
+			
     	lancement.setMnemonic('L');
     	menuBar.add(lancement);
 
@@ -352,6 +424,28 @@ public class FenetreJeu extends JFrame{
 			}
 		}		
 	}	
+	
+	
+	/** Filtre pour le JFileChooser (sauvegarde et chargement de partie)*/
+	public class AbFileFilter extends FileFilter{
+
+		private String extension = ".ab", description = "Fichier Abalone";
+		public AbFileFilter(){}
+		
+		public AbFileFilter(String ext, String descrip){
+			this.extension = ext;
+			this.description = descrip;
+		}
+
+		public boolean accept(File file){
+			return (file.isDirectory() || file.getName().endsWith(this.extension));
+		}
+
+		public String getDescription(){
+			return this.extension + " - " + this.description;
+		}	
+	}
+	
 
 
 	 // Lance le thread.

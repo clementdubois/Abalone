@@ -1,7 +1,7 @@
 import java.io.*;
 
 /** Utile pour la sauvegarde et le chargement de partie.*/
-class Enregistrement{
+public class Enregistrement{
 		
 	/** Les operations de sauvegardes s'effectuent sur une partie*/
 	public Enregistrement(){
@@ -29,11 +29,10 @@ class Enregistrement{
 		
 	}
 	
-	public Partie charger() throws Exception{
+	public static Partie charger() throws Exception{
 		//flux pour charger une objet
 		ObjectInputStream ois;
 		Partie p;
-
 	
 			ois = new ObjectInputStream(
 							new BufferedInputStream(

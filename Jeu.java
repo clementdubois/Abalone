@@ -16,9 +16,7 @@ public class Jeu {
 		
 DemarrerPartie dp = new DemarrerPartie();
 Enregistrement e = new Enregistrement();
-e.sauvegarder(dp.partie);	
-e.charger();
-		
+
 
 		
 		
