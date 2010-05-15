@@ -22,7 +22,10 @@ public class Partie implements Serializable{
 	protected final byte NB_BILLES_EJECTER = 1; 
 	/** Score actuel de chaque joueur*/
 	protected int[] score;
-
+	
+	/** La fenetre de la partie*/
+	public transient FenetreJeu f;
+	
 	/** Joueur 1 : le noir*/
 	public final static int NOIR = 1;
 	/** Joueur 2: le blanc*/
@@ -38,6 +41,8 @@ public class Partie implements Serializable{
 		score[NOIR-1] = 0;
 		score[BLANC-1] = 0;
 		plateau = new Plateau(); // initialise les valeurs des vecteurs
+		//On lance la fenetre graphique
+		f = new FenetreJeu(this);
 	}
 	//--------------------------------------ACCESSEURS-----------------------------------
 			/** Renvoie le numero du joueur en cour

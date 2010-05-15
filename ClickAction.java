@@ -3,12 +3,8 @@ import java.awt.event.*;
 public class ClickAction extends MouseAdapter {
 	/** compteur de click*/
 	private int nbClick;
-	/** Le lanceur de la partie pour acceder a la fenetre graphique*/
-	private DemarrerPartie lanceur;
-	/** Le plateau de jeu*/
-	public Plateau plateau;
-	/** La partie en cour*/
-	public Partie partie;
+	/** La fenetre de jeu sur lequel s'applique le click action*/
+	private FenetreJeu fenetre; 
   /** Les billes selectionner lors de clique*/
 	private int premiere,deuxieme,vecteur,intermediaire;
 	/** Les coordonnees des cliques*/
@@ -17,15 +13,10 @@ public class ClickAction extends MouseAdapter {
 	/** On evoie la partie associee a la fenetre pour pouvoir la modifier 
 	* @param p La partie sur laquel se deroule les actions.
 	*/
-	public ClickAction(DemarrerPartie dp){
+	public ClickAction(FenetreJeu fen){
 		nbClick = 1;
-		//Le lanceur de partie pour acceder a la fenetre de jeu
-		this.lanceur = dp;
-		//La partie en cour
-		this.partie = lanceur.partie;
-		//Le plateau de la partie en cour
-		this.plateau = partie.plateau;
-
+		//La fenetre sur lequel s'applique le clickAction
+		this.fenetre = fen;
 	}
 	
 	/**
@@ -34,9 +25,9 @@ public class ClickAction extends MouseAdapter {
 	public void mouseClicked(MouseEvent event){
 		if(nbClick == 1){
 			premiere = transcription(event.getY(),event.getX());
-			if(plateau.chercheBilles(partie.getJoueurActuel()).contains((byte)premiere)){
+			if(fenetre.plateau.chercheBilles(fenetre.partie.getJoueurActuel()).contains((byte)premiere)){
 				System.out.println("premiere-clicked: " + premiere);
-				lanceur.f.rafraichirBS1(premiere);
+				fenetre.rafraichirBS1(premiere);
 				nbClick = 2;
 			}
 			else{
@@ -48,11 +39,11 @@ public class ClickAction extends MouseAdapter {
 			xb = event.getX();
 			deuxieme = transcription(event.getY(),event.getX());
 			//On verifie que le joueur ne selectionne pas les billes adverses
-			if(plateau.chercheBilles(partie.getJoueurActuel()).contains((byte)deuxieme)){
+			if(fenetre.plateau.chercheBilles(fenetre.partie.getJoueurActuel()).contains((byte)deuxieme)){
 				System.out.println("deuxieme-clicked: " + deuxieme);
 				//on recupere la bille intermediaire aux 2 billes selectionnees
-				intermediaire = this.plateau.caseIntermediaire((byte)premiere, (byte)deuxieme);
-				lanceur.f.rafraichirBS2(deuxieme,intermediaire);
+				intermediaire = fenetre.plateau.caseIntermediaire((byte)premiere, (byte)deuxieme);
+				fenetre.rafraichirBS2(deuxieme,intermediaire);
 				nbClick = 3;
 			}
 			else{
@@ -92,14 +83,14 @@ public class ClickAction extends MouseAdapter {
 			if(difX > Panneau.TAILLEIM * 1.9 || difY > Panneau.TAILLEIM * 1.9){
 				deroulementMouvement(premiere,deuxieme,vecteur); // ICI ON PEUT VOIR QUE LE MOUVEMENT SERA CORRECTEMENT EFFECTUE SI JE LE FORCE A LE JOUER (je n'ai pas encore regardé pourquoi...) !
 				System.out.println(premiere+"-"+deuxieme+"\nMouvement invalide !\n");
-				lanceur.f.rafraichir(plateau);
+				fenetre.rafraichir(fenetre.plateau);
 			}
 			else if(vecteur<=5){
 				deroulementMouvement(premiere,deuxieme,vecteur);
 			}
 			else{
 				System.out.println(premiere+""+deuxieme+"\nMouvement invalide !\n");
-				lanceur.f.rafraichir(plateau);
+				fenetre.rafraichir(fenetre.plateau);
 			}	
 			nbClick = 1;
 			System.out.println(premiere+"-"+deuxieme);
@@ -109,7 +100,7 @@ public class ClickAction extends MouseAdapter {
 		if(event.getButton() == MouseEvent.BUTTON3)	
 		{	            	
  			nbClick = 1;
-			lanceur.f.rafraichir(plateau);
+			fenetre.rafraichir(fenetre.plateau);
 			System.out.println("Mouvement reinitialise !");
 		}
 		
@@ -165,28 +156,28 @@ public class ClickAction extends MouseAdapter {
 		Mouvement m = new Mouvement((byte)premiere, (byte)deuxieme, (byte)vecteur);
 		
 		// On verifie le mouvement 
-		is_valid = m.valider(plateau);
+		is_valid = m.valider(fenetre.plateau);
 		//Si c'est valide on l'effectue
 		if(is_valid){
 			System.out.println("Mouvement Valide");
 			//On effectue le mouvement
-			plateau.effectuer(m);
+			fenetre.plateau.effectuer(m);
 			//On affiche en console
-			plateau.afficher();
+			fenetre.plateau.afficher();
 			//On modifie l'etat de la partie
 				//On change le joueur courant
-				partie.setJoueur();
+				fenetre.partie.setJoueur();
 				//On incremente le nombre de coups
-				partie.setNumCoup();
-				//On vÃ©rifie si il faut incrementer le score de la partie
-				partie.setScore();
-			System.out.println(partie);
+				fenetre.partie.setNumCoup();
+				//On verifie si il faut incrementer le score de la partie
+				fenetre.partie.setScore();
+			System.out.println(fenetre.partie);
 		}else{
 			System.out.println("Mouvement Ivalide");
 		}
 		
 		//On rafraichie graphiquement
-		lanceur.f.rafraichir(plateau);
+		fenetre.rafraichir(fenetre.plateau);
 		
 		
 	}

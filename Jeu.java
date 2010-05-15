@@ -14,8 +14,7 @@ public class Jeu {
 	public static void main(String args[])throws Exception{
 
 		
-DemarrerPartie dp = new DemarrerPartie();
-Enregistrement e = new Enregistrement();
+Partie p = new Partie();
 
 
 		

@@ -8,8 +8,8 @@ import javax.swing.filechooser.FileFilter;
 
 public class FenetreJeu extends JFrame{
 
-	Plateau plateau;
-	Partie partie;
+	public Plateau plateau;
+	public Partie partie;
 	ClickAction listener;
 	private Panneau pan;
     private JPanel container = new JPanel();
@@ -93,7 +93,7 @@ public class FenetreJeu extends JFrame{
 	/**
 	* C'est le constructeur de la fenetre
 	*/
-    public FenetreJeu(Partie partie,ClickAction listener){
+    public FenetreJeu(Partie partie){
 			super();
 			this.partie = partie;
 			this.plateau = partie.plateau;
@@ -104,6 +104,7 @@ public class FenetreJeu extends JFrame{
             this.setLocationRelativeTo(null);
 			container.setBackground(couleurFond);
             container.setLayout(new BorderLayout());
+						this.listener = new ClickAction(this);
 			this.pan = new Panneau(plateau,listener);
 			pan.setBackground(couleurFond);
 			pan.repaint();
@@ -323,6 +324,7 @@ public class FenetreJeu extends JFrame{
 									ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
 									//On charge la partie
 									partie = ((Partie)ois.readObject());
+									plateau = partie.plateau;
 									ois.close();
 									//On rafraichit pour voir la partie chargee
 									rafraichir(partie.plateau);
