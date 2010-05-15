@@ -23,6 +23,7 @@ public class Partie {
 	protected int[] score;
 	/** MODE SANS SERVEUR*/
 	public FenetreJeu f;
+	public FinFrame fin;
 	/** Joueur 1 : le noir*/
 	public final static int NOIR = 1;
 	/** Joueur 2: le blanc*/
@@ -110,7 +111,7 @@ public class Partie {
 		//On indique le gagnant de la partie
 		if(numJ == NOIR){this.gagnant = BLANC;}
 		else if(numJ == BLANC){this.gagnant =  NOIR;}
-		
+		fin = new FinFrame(gagnant);
 	}		
 			
 	

@@ -30,7 +30,7 @@ public class FenetreJeu extends JFrame{
 
     private JMenuItem 	lancer 		= new JMenuItem("Lancer la partie"),
 	    				arreter 	= new JMenuItem("Arreter la partie"),
-	    				quitter 	= new JMenuItem("Quitter"),
+	    				quitter 	= new JMenuItem("Abandonner"),
 	    				aProposItem = new JMenuItem("?");
 
 
@@ -88,6 +88,7 @@ public class FenetreJeu extends JFrame{
 			container.setBackground(couleurFond);
             container.setLayout(new BorderLayout());
 			this.pan = new Panneau(plateau,listener);
+			pan.setBackground(couleurFond);
 			pan.repaint();
 
             //On initialise le menu stop
@@ -231,10 +232,12 @@ public class FenetreJeu extends JFrame{
     												  KeyEvent.CTRL_DOWN_MASK + KeyEvent.SHIFT_DOWN_MASK));
     	lancement.add(arreter);
 
-    	lancement.addSeparator();
+    	// lancement.addSeparator();
     	quitter.addActionListener(new ActionListener(){
     		public void actionPerformed(ActionEvent event){
-    			System.exit(0);
+				joueurActuel = partie.getJoueurActuel();
+				partie.abandonner(joueurActuel);
+    			// System.exit(0);
     		}
     	});
     	lancement.add(quitter);
