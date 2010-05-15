@@ -280,12 +280,40 @@ public class FenetreJeu extends JFrame{
 							}			
 				
 				});
-				//ouvrir.addActionListener(loadPartie);
-				m_partie.add(enregistrer);
-				//m_partie.add(ouvrir);
+				enregistrerSous.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK + KeyEvent.SHIFT_DOWN_MASK));
+				enregistrerSous.addActionListener(new ActionListener(){
 
+					public void actionPerformed(ActionEvent arg0) {
+						if(fileChooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION){
+							file = fileChooser.getSelectedFile();
+							//Si l'extension est valide
+							if(fileChooser.getFileFilter().accept(file))
+							{
+								try {
+
+									ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file));
+									oos.writeObject(partie);
+									oos.close();
+
+								} catch (FileNotFoundException e) {
+									e.printStackTrace();
+								} catch (IOException e) {
+									e.printStackTrace();
+								}
+							}
+							else{
+								//Si vous n'avez pas spécifié une extension valide ! 
+								JOptionPane alert = new JOptionPane();
+								alert.showMessageDialog(null, "Erreur d'extension de fichier ! \nVotre sauvegarde a échoué !", "Erreur", JOptionPane.ERROR_MESSAGE);
+							}
+						}
+					}			
+				});
+				
+				m_partie.add(enregistrer);
+				m_partie.add(ouvrir);
+				m_partie.add(enregistrerSous);
 			//--------------FIN Menu Partie-----------------
-			
 			//Menu Lancement
     	lancer.addActionListener(startPartie);
     	//On attribue l'accélerateur c
