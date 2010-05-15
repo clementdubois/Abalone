@@ -22,7 +22,7 @@ public class Partie implements Serializable{
 	protected final byte NB_BILLES_EJECTER = 1; 
 	/** Score actuel de chaque joueur*/
 	protected int[] score;
-	
+
 	/** Joueur 1 : le noir*/
 	public final static int NOIR = 1;
 	/** Joueur 2: le blanc*/
@@ -106,7 +106,6 @@ public class Partie implements Serializable{
 		//On indique le gagnant de la partie
 		if(numJ == NOIR){this.gagnant = BLANC;}
 		else if(numJ == BLANC){this.gagnant =  NOIR;}
-		
 	}		
 			
 	

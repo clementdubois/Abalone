@@ -37,6 +37,7 @@ public class FenetreJeu extends JFrame{
               charger = new JMenuItem("Charger"),
               lancer 		= new JMenuItem("Lancer la partie"),
 	    				arreter 	= new JMenuItem("Arreter la partie"),
+							abandonner= new JMenuItem("Abandonner la partie"),
 	    				quitter 	= new JMenuItem("Quitter"),
 	    				aProposItem = new JMenuItem("?");
 
@@ -69,7 +70,7 @@ public class FenetreJeu extends JFrame{
 		
 
 
-    // Création de notre barre d'outils.
+    // CrÃ©ation de notre barre d'outils.
     private JToolBar toolBar = new JToolBar();
 
     //Les boutons
@@ -104,6 +105,7 @@ public class FenetreJeu extends JFrame{
 			container.setBackground(couleurFond);
             container.setLayout(new BorderLayout());
 			this.pan = new Panneau(plateau,listener);
+			pan.setBackground(couleurFond);
 			pan.repaint();
 
 				//On ajoute nos filtres sur la partie
@@ -112,7 +114,7 @@ public class FenetreJeu extends JFrame{
 				
         //On initialise le menu stop
         stop.setEnabled(false);
-        //On affecte les écouteurs
+        //On affecte les Ã©couteurs
         stop.addActionListener(stopPartie);
     		launch.addActionListener(startPartie);
 
@@ -273,7 +275,7 @@ public class FenetreJeu extends JFrame{
 										else{
 											//Si extension invalide ! 
 											JOptionPane alert = new JOptionPane();
-											alert.showMessageDialog(null, "Erreur d'extension de fichier ! \nVotre sauvegarde a échoué !", "Erreur", JOptionPane.ERROR_MESSAGE);
+											alert.showMessageDialog(null, "Erreur d'extension de fichier ! \nVotre sauvegarde a Ã©chouÃ© !", "Erreur", JOptionPane.ERROR_MESSAGE);
 										}						
 									}
 								}
@@ -302,9 +304,9 @@ public class FenetreJeu extends JFrame{
 								}
 							}
 							else{
-								//Si vous n'avez pas spécifié une extension valide ! 
+								//Si vous n'avez pas spÃ©cifiÃ© une extension valide ! 
 								JOptionPane alert = new JOptionPane();
-								alert.showMessageDialog(null, "Erreur d'extension de fichier ! \nVotre sauvegarde a échoué !", "Erreur", JOptionPane.ERROR_MESSAGE);
+								alert.showMessageDialog(null, "Erreur d'extension de fichier ! \nVotre sauvegarde a Ã©chouÃ© !", "Erreur", JOptionPane.ERROR_MESSAGE);
 							}
 						}
 					}			
@@ -335,7 +337,7 @@ public class FenetreJeu extends JFrame{
 							}
 							else{
 								JOptionPane alert = new JOptionPane();
-								alert.showMessageDialog(null, "Erreur d'extension de fichier ! \nVotre chargement a échoué !", "Erreur", JOptionPane.ERROR_MESSAGE);
+								alert.showMessageDialog(null, "Erreur d'extension de fichier ! \nVotre chargement a Ã©chouÃ© !", "Erreur", JOptionPane.ERROR_MESSAGE);
 							}
 						}
 					}
@@ -347,25 +349,45 @@ public class FenetreJeu extends JFrame{
 			//--------------FIN Menu Partie-----------------
 			//Menu Lancement
     	lancer.addActionListener(startPartie);
-    	//On attribue l'accélerateur c
-    	lancer.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L,
-    												KeyEvent.CTRL_MASK));
+    	//On attribue l'accÃ©lerateur c
+    	lancer.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, KeyEvent.CTRL_MASK));
     	lancement.add(lancer);
 
 
-    	// Ajout du listener pour arrêter la partie
+    	// Ajout du listener pour arrÃªter la partie
     	// listener a changer ici aussi
 
     	arreter.addActionListener(stopPartie);
     	arreter.setEnabled(false);
-    	arreter.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A,
-    												  KeyEvent.CTRL_DOWN_MASK + KeyEvent.SHIFT_DOWN_MASK));
+    	arreter.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.CTRL_DOWN_MASK + KeyEvent.SHIFT_DOWN_MASK));
     	lancement.add(arreter);
 
-    	lancement.addSeparator();
+			//Abandonner
+			abandonner.addActionListener(new ActionListener(){
+				public void actionPerformed(ActionEvent arg0) {
+					
+					
+					JOptionPane jop = new JOptionPane();			
+					int option = jop.showConfirmDialog(null, "Voulez-vous vraiment abandonner ?", "", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
+
+					if(option == JOptionPane.OK_OPTION){
+						partie.abandonner(joueurActuel);
+						String message = "La partie se termine par abandon.\n";
+						if(partie.gagnant == Partie.NOIR)
+							message+="Le joueur NOIR remporte la partie";
+						else
+							message+="Le joueur BLANC remporte la partie";
+							
+						jop.showMessageDialog(null, message);
+						System.exit(0);
+					}
+				}
+			});
+			lancement.add(abandonner);
+    	// lancement.addSeparator();
     	quitter.addActionListener(new ActionListener(){
     		public void actionPerformed(ActionEvent event){
-    			System.exit(0);
+    		System.exit(0);
     		}
     	});
     	lancement.add(quitter);
@@ -385,7 +407,7 @@ public class FenetreJeu extends JFrame{
     	
     	forme.add(difficulte);
 
-    	//menu à propos
+    	//menu Ã  propos
 
     	//Ajout de ce que doit faire le "?"
     	aProposItem.addActionListener(new ActionListener(){
@@ -415,7 +437,7 @@ public class FenetreJeu extends JFrame{
     	menuBar.add(aPropos);
 
 
-    	// Ajout de la barre de menus sur la fenêtre.
+    	// Ajout de la barre de menus sur la fenÃªtre.
 
     	this.setJMenuBar(menuBar);
     }
@@ -425,7 +447,7 @@ public class FenetreJeu extends JFrame{
 	// }
 
 	 /**
-	 * Écouteur du menu Lancer.
+	 * Ã‰couteur du menu Lancer.
 	*/
 	public class StartPartieListener implements ActionListener{
 
@@ -454,7 +476,7 @@ public class FenetreJeu extends JFrame{
 	}
 
 	 /**
-	 * Écouteur du menu Quitter.
+	 * Ã‰couteur du menu Quitter.
 	 */
 	class StopPartieListener  implements ActionListener{
 
@@ -469,7 +491,7 @@ public class FenetreJeu extends JFrame{
 				// animated = false;
 
 
-				// On remplace nos boutons par nous MenuItem
+				// On remplace nos boutons par nos MenuItem
 				lancer.setEnabled(true);
 				arreter.setEnabled(false);
 
