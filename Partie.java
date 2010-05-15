@@ -1,12 +1,13 @@
 import java.lang.*;
 import java.util.*;
+import java.io.*;
 
 
 /**
 * Une partie est simplement un serveur qui attend des connexions puis attend les ordres de la part de joueurs et les redistribue a tous les clients (joueurs, ia, spectateurs) Le createur de la partie possede donc le serveur de la partie. Le serveur de partie possede son propre plateau de jeu sur lequel il effectue les modifications.
 */
-public class Partie {
-	protected ArrayList<Joueur> joueurs; // permet de gerer plus de 2 joueurs.
+public class Partie implements Serializable{
+	//protected ArrayList<Joueur> joueurs; // permet de gerer plus de 2 joueurs.
 	/** 61 cases contenant soit une bille soit null (empty)*/
 	public Plateau plateau; 
 	/** Stocke le numero joueur qui doit jouer (1 = NOIR, 2 = BLANC) */
@@ -15,22 +16,19 @@ public class Partie {
  * terminee est effectivement utile car on peut changer les conditions de victoire a l'interieur d'une partie.	
  */
 	protected boolean terminee;
-	protected String variante;
+	//protected String variante;
 	/** Le numero du coup*/
 	protected int numCoup;
 	protected final byte NB_BILLES_EJECTER = 1; 
 	/** Score actuel de chaque joueur*/
 	protected int[] score;
-	/** MODE SANS SERVEUR*/
-	public FenetreJeu f;
+	
 	/** Joueur 1 : le noir*/
 	public final static int NOIR = 1;
 	/** Joueur 2: le blanc*/
 	public final static int BLANC = 2;
 	/** Le gagnant de la partie, a 0 si personne n'a encore gagne*/
 	protected int gagnant = 0;
-	//
-	public ClickAction listener;
 	
 	public Partie() {
 		joueurActuel = 1;
@@ -40,8 +38,6 @@ public class Partie {
 		score[NOIR-1] = 0;
 		score[BLANC-1] = 0;
 		plateau = new Plateau(); // initialise les valeurs des vecteurs
-		listener = new ClickAction(this);
-		f = new FenetreJeu(this,listener);
 	}
 	//--------------------------------------ACCESSEURS-----------------------------------
 			/** Renvoie le numero du joueur en cour

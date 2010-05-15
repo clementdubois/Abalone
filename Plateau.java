@@ -1,9 +1,8 @@
-import java.util.Hashtable;
-import java.util.Vector;
-import java.util.Iterator;
+import java.util.*;
+import java.io.*;
 
 
-public class Plateau {
+public class Plateau implements Serializable{
 	/** la case trou (0) dans la liste des cases, la numero 0 est celle reservee au trou */
 	public final static int TROU = 0;
 

@@ -3,6 +3,8 @@ import java.awt.event.*;
 public class ClickAction extends MouseAdapter {
 	/** compteur de click*/
 	private int nbClick;
+	/** Le lanceur de la partie pour acceder a la fenetre graphique*/
+	private DemarrerPartie lanceur;
 	/** Le plateau de jeu*/
 	private Plateau plateau;
 	/** La partie en cour*/
@@ -15,10 +17,14 @@ public class ClickAction extends MouseAdapter {
 	/** On evoie la partie associee a la fenetre pour pouvoir la modifier 
 	* @param p La partie sur laquel se deroule les actions.
 	*/
-	public ClickAction(Partie p){
+	public ClickAction(DemarrerPartie dp){
 		nbClick = 1;
-		this.plateau = p.plateau;
-		this.partie = p;
+		//Le lanceur de partie pour acceder a la fenetre de jeu
+		this.lanceur = dp;
+		//La partie en cour
+		this.partie = lanceur.partie;
+		//Le plateau de la partie en cour
+		this.plateau = partie.plateau;
 	}
 	
 	/**
@@ -29,7 +35,7 @@ public class ClickAction extends MouseAdapter {
 			premiere = transcription(event.getY(),event.getX());
 			if(plateau.chercheBilles(partie.getJoueurActuel()).contains((byte)premiere)){
 				System.out.println("premiere-clicked: " + premiere);
-				partie.f.rafraichirBS1(premiere);
+				lanceur.f.rafraichirBS1(premiere);
 				nbClick = 2;
 			}
 			else{
@@ -45,7 +51,7 @@ public class ClickAction extends MouseAdapter {
 				System.out.println("deuxieme-clicked: " + deuxieme);
 				//on recupere la bille intermediaire aux 2 billes selectionnees
 				intermediaire = this.plateau.caseIntermediaire((byte)premiere, (byte)deuxieme);
-				partie.f.rafraichirBS2(deuxieme,intermediaire);
+				lanceur.f.rafraichirBS2(deuxieme,intermediaire);
 				nbClick = 3;
 			}
 			else{
@@ -85,14 +91,14 @@ public class ClickAction extends MouseAdapter {
 			if(difX > Panneau.TAILLEIM * 1.9 || difY > Panneau.TAILLEIM * 1.9){
 				deroulementMouvement(premiere,deuxieme,vecteur); // ICI ON PEUT VOIR QUE LE MOUVEMENT SERA CORRECTEMENT EFFECTUE SI JE LE FORCE A LE JOUER (je n'ai pas encore regardé pourquoi...) !
 				System.out.println(premiere+"-"+deuxieme+"\nMouvement invalide !\n");
-				partie.f.rafraichir(plateau);
+				lanceur.f.rafraichir(plateau);
 			}
 			else if(vecteur<=5){
 				deroulementMouvement(premiere,deuxieme,vecteur);
 			}
 			else{
 				System.out.println(premiere+""+deuxieme+"\nMouvement invalide !\n");
-				partie.f.rafraichir(plateau);
+				lanceur.f.rafraichir(plateau);
 			}	
 			nbClick = 1;
 			System.out.println(premiere+"-"+deuxieme);
@@ -102,7 +108,7 @@ public class ClickAction extends MouseAdapter {
 		if(event.getButton() == MouseEvent.BUTTON3)	
 		{	            	
  			nbClick = 1;
-			partie.f.rafraichir(plateau);
+			lanceur.f.rafraichir(plateau);
 			System.out.println("Mouvement reinitialise !");
 		}
 		
@@ -179,7 +185,7 @@ public class ClickAction extends MouseAdapter {
 		}
 		
 		//On rafraichie graphiquement
-		partie.f.rafraichir(plateau);
+		lanceur.f.rafraichir(plateau);
 		
 		
 	}

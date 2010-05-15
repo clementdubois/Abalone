@@ -1,7 +1,8 @@
 import java.lang.*;
 import java.util.*;
+import java.io.*;
 
-public class Case {
+public class Case implements Serializable{
 /**
  * contientBille permet de savoir si la case contient effectivement une bille jouable.
  * C'est lui qui doit etre mis à jour.	
@@ -56,21 +57,7 @@ public class Case {
 		this.calculerNumLigne(num);
 	}
 	
-/**	fausse bille : false*/
-	// public Case(byte num, boolean placerBille) {
-	// 	this.numero = num;
-	// 	this.contientBille = placerBille;
-	// 	this.vecteurs = new byte[6];
-	// 	this.calculerNumLigne(num);		
-	// 	if(placerBille) {
-	// 		contientBille = true;
-	// 		bille = new Bille(this.numero);
-	// 	}
-	// 	else {
-	// 		contientBille = false;
-	// 		bille = new Bille(this.numero); // fausse bille
-	// 	}
-	// }
+
 
 	//-------------------------------------------ACCESSEURS----------------------------------------
 			/** Recupere le contenu d'une case (vide ou bille blanche ou bille noire)
@@ -85,42 +72,14 @@ public class Case {
 			*/
 			public void setContenu(byte etat){
 				this.contenu = etat;
-				// if(etat == VIDE)
-				// 					this.contientBille = false;
-				// 				else{//On change la bille sur la case
-				// 					this.contientBille = true;
-				// 					this.setBille(new Bille(etat));
-				// 				}
 			
 			}
 	    
-	    /** Change la bille qui est sur la case
-	    * @param b La bille a placer sur la case.
-	    */
-			// public void setBille(Bille b) {
-			// 				this.bille = b;
-			// 				this.contientBille = true;
-			// 			}
-	    
-	    /** @return la bille sur la case */
-			// public Bille getBille() {
-			// 					return this.bille;
-			// 			}
 	    /** @return le numero de la case*/
 			public byte getNumero() {
 				return this.numero;
 			}
-	   /** Change l'etat de la case (vide ou rempli)
-	    * @param contient vrai si la case contient une bille, faux sinon
-	    */
-			// public void setContientBille(boolean contient) {
-			// 			this.contientBille = contient;
-			// 		}
-	   /** @return l'etat du case (false = vide, trou = contient une bille)*/
-			// public boolean getContientBille() {
-			// 			return this.contientBille;
-			// 		}
-	
+	  
 			/** Retourne le numero de la case qui est adjacente a this par le vecteur envoyee.
 			*
 			* @param direction de quelle case adjacente on veut savoir le numero

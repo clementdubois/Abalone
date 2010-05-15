@@ -23,12 +23,15 @@ public class FenetreJeu extends JFrame{
     // La declaration pour le menu de la JMenuBar.    
 	private JMenuBar menuBar = new JMenuBar();
 
-    private JMenu lancement  = new JMenu("Lancement"),
-    		      forme      = new JMenu("Niveaux"),
+    private JMenu m_partie = new JMenu("Partie"),
+						lancement  = new JMenu("Lancement"),
+    		    forme      = new JMenu("Niveaux"),
     			  difficulte = new JMenu("Difficulte"),
-    		      aPropos    = new JMenu("Info");
+    		    aPropos    = new JMenu("Info");
 
-    private JMenuItem 	lancer 		= new JMenuItem("Lancer la partie"),
+    private JMenuItem m_sauvegarder = new JMenuItem("Sauvegarder"),
+              m_charger = new JMenuItem("Charger"),
+              lancer 		= new JMenuItem("Lancer la partie"),
 	    				arreter 	= new JMenuItem("Arreter la partie"),
 	    				quitter 	= new JMenuItem("Quitter"),
 	    				aProposItem = new JMenuItem("?");
