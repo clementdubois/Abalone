@@ -34,7 +34,7 @@ public class FenetreJeu extends JFrame{
 
     private JMenuItem enregistrer = new JMenuItem("Enregistrer"),
 							enregistrerSous = new JMenuItem("Enregistrer Sous"),
-              ouvrir = new JMenuItem("Charger"),
+              charger = new JMenuItem("Charger"),
               lancer 		= new JMenuItem("Lancer la partie"),
 	    				arreter 	= new JMenuItem("Arreter la partie"),
 	    				quitter 	= new JMenuItem("Quitter"),
@@ -117,7 +117,6 @@ public class FenetreJeu extends JFrame{
     		launch.addActionListener(startPartie);
 
 			joueurActuel = partie.getJoueurActuel();
-
 			Box scoreBox = Box.createHorizontalBox();
 			//Affiche le score du joueur NOIR
 			text1 = new JTextField("Score Joueur 1 (N):");
@@ -179,6 +178,7 @@ public class FenetreJeu extends JFrame{
 		entScoreJ2 = partie.getScore(2);
 		scoreJ1.setText(Integer.toString(entScoreJ1));
 		scoreJ2.setText(Integer.toString(entScoreJ2));
+		System.out.println(this.partie);
 	}
 	
 	/**
@@ -309,10 +309,41 @@ public class FenetreJeu extends JFrame{
 						}
 					}			
 				});
+				charger.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
+				charger.addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent e){
+						if(fileChooser.showOpenDialog(null) ==JFileChooser.APPROVE_OPTION){
+							file = fileChooser.getSelectedFile();
+							if(fileChooser.getFileFilter().accept(file))
+							{
+								try {
+
+									ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
+									//On charge la partie
+									partie = ((Partie)ois.readObject());
+									ois.close();
+									//On rafraichit pour voir la partie chargee
+									rafraichir(partie.plateau);
+
+								} catch (FileNotFoundException e1) {
+									e1.printStackTrace();
+								} catch (IOException e1) {
+									e1.printStackTrace();
+								} catch (ClassNotFoundException e2) {
+									e2.printStackTrace();
+								}
+							}
+							else{
+								JOptionPane alert = new JOptionPane();
+								alert.showMessageDialog(null, "Erreur d'extension de fichier ! \nVotre chargement a échoué !", "Erreur", JOptionPane.ERROR_MESSAGE);
+							}
+						}
+					}
+				});
 				
 				m_partie.add(enregistrer);
-				m_partie.add(ouvrir);
 				m_partie.add(enregistrerSous);
+				m_partie.add(charger);
 			//--------------FIN Menu Partie-----------------
 			//Menu Lancement
     	lancer.addActionListener(startPartie);

@@ -1,14 +1,14 @@
 import java.awt.event.*;
-	//Cette classe permet de gerer les clicksouris sur le plateau 
+	/**Cette classe permet de gerer les clicksouris sur le plateau */
 public class ClickAction extends MouseAdapter {
 	/** compteur de click*/
 	private int nbClick;
 	/** Le lanceur de la partie pour acceder a la fenetre graphique*/
 	private DemarrerPartie lanceur;
 	/** Le plateau de jeu*/
-	private Plateau plateau;
+	public Plateau plateau;
 	/** La partie en cour*/
-	private Partie partie;
+	public Partie partie;
   /** Les billes selectionner lors de clique*/
 	private int premiere,deuxieme,vecteur,intermediaire;
 	/** Les coordonnees des cliques*/
@@ -25,6 +25,7 @@ public class ClickAction extends MouseAdapter {
 		this.partie = lanceur.partie;
 		//Le plateau de la partie en cour
 		this.plateau = partie.plateau;
+
 	}
 	
 	/**
