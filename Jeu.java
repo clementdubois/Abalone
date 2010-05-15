@@ -11,12 +11,13 @@ public class Jeu {
 	
 	private static Partie[] p;
 	
-	public static void main(String args[]){
+	public static void main(String args[])throws Exception{
 
 		
-DemarrerPartie p = new DemarrerPartie();
-//Enregistrement e = new Enregistrement();
-//e.sauvegarder(p);	
+DemarrerPartie dp = new DemarrerPartie();
+Enregistrement e = new Enregistrement();
+e.sauvegarder(dp.partie);	
+e.charger();
 		
 
 		
