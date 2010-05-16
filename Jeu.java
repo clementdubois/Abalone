@@ -16,9 +16,6 @@ public class Jeu {
 		
 Partie p = new Partie();
 
-
-		
-		
 		
 		// try{Thread.sleep(3000);}catch(Exception e){}
 		// p.listener.deroulementMouvement(1,1,3);

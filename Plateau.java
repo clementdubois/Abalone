@@ -6,8 +6,9 @@ public class Plateau implements Serializable{
 	/** la case trou (0) dans la liste des cases, la numero 0 est celle reservee au trou */
 	public final static int TROU = 0;
 
-	public Case[] cases; // dans Case on retrouvera les cases adjacentes
-
+	/** La liste des cases du plateau (avec leur ocntenu)*/
+	public Case[] cases; 
+	
 	/** Vecteur en haut a gauche*/
 	public static final byte HD = 0;
 	/** Vecteur a droite*/
@@ -449,7 +450,7 @@ public class Plateau implements Serializable{
 				billes.add(i);
 			}          
 		}
-		
+				
 		return billes;
 	}
 	
