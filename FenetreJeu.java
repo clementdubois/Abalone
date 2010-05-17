@@ -8,7 +8,7 @@ import javax.swing.filechooser.FileFilter;
 
 public class FenetreJeu extends JFrame{
 
-	public Plateau plateau;
+	// public Plateau plateau;
 	public Partie partie;
 	ClickAction listener;
 	private Panneau pan;
@@ -96,7 +96,6 @@ public class FenetreJeu extends JFrame{
     public FenetreJeu(Partie partie){
 			super();
 			this.partie = partie;
-			this.plateau = partie.plateau;
             this.setTitle("Abalone");
             this.setSize(LARGEUR,HAUTEUR);
 			this.setResizable(false);
@@ -105,7 +104,7 @@ public class FenetreJeu extends JFrame{
 			container.setBackground(couleurFond);
             container.setLayout(new BorderLayout());
 						this.listener = new ClickAction(this);
-			this.pan = new Panneau(plateau,listener);
+			this.pan = new Panneau(partie.plateau,listener);
 			pan.setBackground(couleurFond);
 			pan.repaint();
 
@@ -119,7 +118,7 @@ public class FenetreJeu extends JFrame{
         stop.addActionListener(stopPartie);
     		launch.addActionListener(startPartie);
 
-			joueurActuel = plateau.getJoueurActuel();
+			joueurActuel = partie.plateau.getJoueurActuel();
 			Box scoreBox = Box.createHorizontalBox();
 			//Affiche le score du joueur NOIR
 			text1 = new JTextField("Score Joueur 1 (N):");
@@ -128,7 +127,7 @@ public class FenetreJeu extends JFrame{
 			}
 			text1.setEditable(false);
 
-			entScoreJ1 = plateau.getScore(1);
+			entScoreJ1 = partie.plateau.getScore(1);
 			String score1 = Integer.toString(entScoreJ1); 
 			scoreJ1 = new JTextField(score1);
 			scoreJ1.setEditable(false);
@@ -139,7 +138,7 @@ public class FenetreJeu extends JFrame{
 				text1.setForeground(Color.GREEN);
 			}
 			text2.setEditable(false);
-			entScoreJ2 = plateau.getScore(2);
+			entScoreJ2 = partie.plateau.getScore(2);
 			String score2 = Integer.toString(entScoreJ2); 
 			scoreJ2 = new JTextField(score2);
 			scoreJ2.setEditable(false);
@@ -161,7 +160,7 @@ public class FenetreJeu extends JFrame{
     }
 
 	/**
-	* methode pour rafrachir le plateau avec le nouveau tableau
+	* methode pour rafrachir plateau avec le nouveau tableau
 	*/
 	public void rafraichir(Plateau plateau){
 		pan.rafraichir(plateau);
@@ -181,7 +180,6 @@ public class FenetreJeu extends JFrame{
 		entScoreJ2 = plateau.getScore(2);
 		scoreJ1.setText(Integer.toString(entScoreJ1));
 		scoreJ2.setText(Integer.toString(entScoreJ2));
-		System.out.println(this.plateau);
 	}
 	
 	/**
@@ -324,7 +322,6 @@ public class FenetreJeu extends JFrame{
 									ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
 									//On charge la partie
 									partie = ((Partie)ois.readObject());
-									plateau = partie.plateau;
 									ois.close();
 									//On rafraichit pour voir la partie chargee
 									rafraichir(partie.plateau);
