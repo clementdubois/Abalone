@@ -37,10 +37,15 @@ int bille1,bille2,bille3;
 			this.pionNS   = kit.getImage("images/pionNS.jpg");
 			this.pionBP   = kit.getImage("images/pionBP.jpg");
 			this.pionNP   = kit.getImage("images/pionNP.jpg");
+			//les trackers c'est la vie !
 			tracker.addImage(neant,0);
 			tracker.addImage(casevide,0);
 			tracker.addImage(pionB,0);
 			tracker.addImage(pionN,0);
+			tracker.addImage(pionNS,0);
+			tracker.addImage(pionNP,0);
+			tracker.addImage(pionBS,0);
+			tracker.addImage(pionBP,0);
 			try {tracker.waitForID(0);}
 			catch(InterruptedException e){}
 
@@ -77,8 +82,12 @@ int bille1,bille2,bille3;
 				else if(plateau.cases[taillePlateau].getContenu() == Case.NOIR && i%2 == 1 && taillePlateau < 62){
 					//si une bille est selectionnée, on l'a met en surbrillance
 					if(plateau.cases[taillePlateau].getNumero() == bille1 || plateau.cases[taillePlateau].getNumero() == bille2 || plateau.cases[taillePlateau].getNumero() == bille3){
-						if(bille1 != bille2) g.drawImage(this.pionNS,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
-						else g.drawImage(this.pionNP,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
+						if(bille1 != bille2){
+							boolean b = g.drawImage(this.pionNS,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
+						}
+						else{
+							g.drawImage(this.pionNP,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
+						}
 					}
 					//sinon on l'affiche normalement
 					else{
@@ -89,8 +98,12 @@ int bille1,bille2,bille3;
 
 				else if(plateau.cases[taillePlateau].getContenu() == Case.NOIR && i%2 == 0 && taillePlateau < 62){
 					if(plateau.cases[taillePlateau].getNumero() == bille1 || plateau.cases[taillePlateau].getNumero() == bille2 || plateau.cases[taillePlateau].getNumero() == bille3){
-						if(bille1 != bille2) g.drawImage(this.pionNS,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
-						else g.drawImage(this.pionNP,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
+						if(bille1 != bille2){
+							g.drawImage(this.pionNS,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
+						}
+						else{
+							g.drawImage(this.pionNP,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
+							}
 					}
 					else{
 						g.drawImage(this.pionN,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
@@ -100,8 +113,12 @@ int bille1,bille2,bille3;
 				
 				else if(plateau.cases[taillePlateau].getContenu() == Case.BLANC && i%2 == 1 && taillePlateau < 62){
 					if(plateau.cases[taillePlateau].getNumero() == bille1 || plateau.cases[taillePlateau].getNumero() == bille2 || plateau.cases[taillePlateau].getNumero() == bille3){
-						if(bille1 != bille2) g.drawImage(this.pionBS,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
-						else g.drawImage(this.pionBP,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
+						if(bille1 != bille2){
+							g.drawImage(this.pionBS,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
+						}
+						else{
+							g.drawImage(this.pionBP,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
+						}
 					}
 					else{
 						g.drawImage(this.pionB,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
@@ -111,8 +128,12 @@ int bille1,bille2,bille3;
 
 				else if(plateau.cases[taillePlateau].getContenu() == Case.BLANC && i%2 == 0 && taillePlateau < 62){
 					if(plateau.cases[taillePlateau].getNumero() == bille1 || plateau.cases[taillePlateau].getNumero() == bille2 || plateau.cases[taillePlateau].getNumero() == bille3){
-						if(bille1 != bille2) g.drawImage(this.pionBS,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
-						else g.drawImage(this.pionBP,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
+						if(bille1 != bille2){
+							g.drawImage(this.pionBS,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
+						}
+						else{
+							g.drawImage(this.pionBP,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
+						}
 					}
 					else{
 						g.drawImage(this.pionB,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
@@ -132,9 +153,6 @@ int bille1,bille2,bille3;
 				
 			}
 		}
-
-		repaint();	
-
 	}
 
 	/**
@@ -146,6 +164,7 @@ int bille1,bille2,bille3;
 		this.bille1 = 0;
 		this.bille2 = 0;
 		this.bille3 = 0;
+		this.repaint();
 	}
 	
 	/**
@@ -154,6 +173,7 @@ int bille1,bille2,bille3;
 	*/
 	public void rafraichirBS1(int bille1){
 		this.bille1 = bille1;
+		this.repaint();
 	}
 	
 	/**
@@ -162,6 +182,7 @@ int bille1,bille2,bille3;
 	public void rafraichirBS2(int bille2, int bille3){
 		this.bille2 = bille2;
 		this.bille3 = bille3;
+		this.repaint();
 	} 
 
 }

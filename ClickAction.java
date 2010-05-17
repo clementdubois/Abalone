@@ -52,11 +52,20 @@ public class ClickAction extends MouseAdapter {
 		}
 		else if(nbClick == 3){
 			xv = event.getX();
-			xv = (xv - (xv % Panneau.TAILLEIM)) + Panneau.TAILLEIM/2;
 			yv = event.getY();
-			yv = (yv - (yv % Panneau.TAILLEIM)) + Panneau.TAILLEIM/2;
 			vecteur = transcription(event.getY(),event.getX());
 			
+			//Le plateau d'abalone a des lignes decales, ils faut donc verifier les coordonnees pour tester le vecteur avec les bonnes donnees 
+			if(((yb - (yb % Panneau.TAILLEIM))/Panneau.TAILLEIM)%2 == 0){
+				//dans un soucis de precision, on prend comme coordonnee le centre de la bille
+				xb = (xb - (xb % Panneau.TAILLEIM)) + Panneau.TAILLEIM/2;
+			}
+			else{
+				//et donc, le decalage a effectuer est different pour une ligne pair ou impair
+				xb = (xb - (xb % Panneau.TAILLEIM)) + Panneau.TAILLEIM;
+			}
+			yb = (yb - (yb % Panneau.TAILLEIM)) + Panneau.TAILLEIM/2;	
+				
 			//En comparant la position du 2eme et 3eme clique, on peut savoir le numero du vecteur engendre
 			if(vecteur == deuxieme - 1) vecteur = 4; //deplacement a gauche
 			else if(vecteur == deuxieme + 1) vecteur = 1; //deplacement a droite
@@ -80,16 +89,15 @@ public class ClickAction extends MouseAdapter {
 			if(difX <= 0) difX = - difX;
 			if(difY <= 0) difY = - difY;
 			
-			if(difX > Panneau.TAILLEIM * 1.9 || difY > Panneau.TAILLEIM * 1.9){
-				deroulementMouvement(premiere,deuxieme,vecteur); // ICI ON PEUT VOIR QUE LE MOUVEMENT SERA CORRECTEMENT EFFECTUE SI JE LE FORCE A LE JOUER (je n'ai pas encore regardé pourquoi...) !
-				System.out.println(premiere+"-"+deuxieme+"\nMouvement invalide !\n");
+			if(difX > Panneau.TAILLEIM * 1.5 || difY > Panneau.TAILLEIM * 1.5){
+				System.out.println("\nMouvement invalide, ne cliquez pas trop loin de vos billes !\n");
 				fenetre.rafraichir(fenetre.plateau);
 			}
 			else if(vecteur<=5){
 				deroulementMouvement(premiere,deuxieme,vecteur);
 			}
 			else{
-				System.out.println(premiere+""+deuxieme+"\nMouvement invalide !\n");
+				System.out.println("\nMouvement invalide !\n");
 				fenetre.rafraichir(fenetre.plateau);
 			}	
 			nbClick = 1;
