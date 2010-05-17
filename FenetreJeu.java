@@ -119,7 +119,7 @@ public class FenetreJeu extends JFrame{
         stop.addActionListener(stopPartie);
     		launch.addActionListener(startPartie);
 
-			joueurActuel = partie.getJoueurActuel();
+			joueurActuel = plateau.getJoueurActuel();
 			Box scoreBox = Box.createHorizontalBox();
 			//Affiche le score du joueur NOIR
 			text1 = new JTextField("Score Joueur 1 (N):");
@@ -128,7 +128,7 @@ public class FenetreJeu extends JFrame{
 			}
 			text1.setEditable(false);
 
-			entScoreJ1 = partie.getScore(1);
+			entScoreJ1 = plateau.getScore(1);
 			String score1 = Integer.toString(entScoreJ1); 
 			scoreJ1 = new JTextField(score1);
 			scoreJ1.setEditable(false);
@@ -139,7 +139,7 @@ public class FenetreJeu extends JFrame{
 				text1.setForeground(Color.GREEN);
 			}
 			text2.setEditable(false);
-			entScoreJ2 = partie.getScore(2);
+			entScoreJ2 = plateau.getScore(2);
 			String score2 = Integer.toString(entScoreJ2); 
 			scoreJ2 = new JTextField(score2);
 			scoreJ2.setEditable(false);
@@ -166,7 +166,7 @@ public class FenetreJeu extends JFrame{
 	public void rafraichir(Plateau plateau){
 		pan.rafraichir(plateau);
 		pan.repaint();
-		joueurActuel = partie.getJoueurActuel();
+		joueurActuel = plateau.getJoueurActuel();
 		if(joueurActuel == 1){
 			text1.setForeground(Color.GREEN);
 		}else{
@@ -177,11 +177,11 @@ public class FenetreJeu extends JFrame{
 		}else{
 			text2.setForeground(Color.BLACK);
 		}
-		entScoreJ1 = partie.getScore(1);
-		entScoreJ2 = partie.getScore(2);
+		entScoreJ1 = plateau.getScore(1);
+		entScoreJ2 = plateau.getScore(2);
 		scoreJ1.setText(Integer.toString(entScoreJ1));
 		scoreJ2.setText(Integer.toString(entScoreJ2));
-		System.out.println(this.partie);
+		System.out.println(this.plateau);
 	}
 	
 	/**
@@ -276,7 +276,7 @@ public class FenetreJeu extends JFrame{
 										else{
 											//Si extension invalide ! 
 											JOptionPane alert = new JOptionPane();
-											alert.showMessageDialog(null, "Erreur d'extension de fichier ! \nVotre sauvegarde a échoué !", "Erreur", JOptionPane.ERROR_MESSAGE);
+											alert.showMessageDialog(null, "Erreur: votre fichier doit avoir l'extension .ab! \nVotre sauvegarde a échoué !", "Erreur", JOptionPane.ERROR_MESSAGE);
 										}						
 									}
 								}
@@ -307,7 +307,7 @@ public class FenetreJeu extends JFrame{
 							else{
 								//Si vous n'avez pas spécifié une extension valide ! 
 								JOptionPane alert = new JOptionPane();
-								alert.showMessageDialog(null, "Erreur d'extension de fichier ! \nVotre sauvegarde a échoué !", "Erreur", JOptionPane.ERROR_MESSAGE);
+								alert.showMessageDialog(null, "Erreur: votre fichier doit avoir l'extension .ab! \nVotre sauvegarde a échoué !", "Erreur", JOptionPane.ERROR_MESSAGE);
 							}
 						}
 					}			

@@ -6,7 +6,7 @@ public class Arbre {
 	/** Le premier noeud de l'arbre*/
 	public Element racine;
 	
-	public Arbre(Partie p){
+	public Arbre(Plateau p){
 		//Le noeud racine est forcement la partie a coup 1 (au lancement de la partie).
 		racine = new Element(p);
 	}
@@ -25,13 +25,13 @@ public class Arbre {
 /** Les elements de l'arbre qui represente une partie(peut etre un noeud ou une feuille)*/
 class Element{
 	/** Un noeud contient un etat de la partie en cours*/
-	public Partie contenu;
+	public Plateau contenu;
 	/** Permet de savoir s'il s'agit d'un noeud ou d'une feuille*/
 	private boolean estFeuille;
 	/** s'il s'agit d'un noeud, l'element a un ou plusieur element fils()*/
 	public Vector<Element> fils;
 	
-	public Element(Partie p){
+	public Element(Plateau p){
 		estFeuille = true;
 		contenu = p;
 	}
@@ -40,7 +40,7 @@ class Element{
 	* @param p la partie a mettre comme element fils
 	* @return l'element fils creer
 	*/
-	public Element ajouterFils(Partie p){
+	public Element ajouterFils(Plateau p){
 		//Si c'est le premier fils qu'on ajoute, on indique que ce n'est plus une feuille, on initialise le vector
 		if(estFeuille){
 			estFeuille = false;

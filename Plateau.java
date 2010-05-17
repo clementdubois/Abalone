@@ -21,7 +21,17 @@ public class Plateau implements Serializable{
 	public static final byte GG = 4;
 	/** Vecteur en haut a gauche*/
 	public static final byte HG = 5;
+	/** Joueur 1 : le noir*/
+	public final static int NOIR = 1;
+	/** Joueur 2: le blanc*/
+	public final static int BLANC = 2;
 	
+	/** Stocke le numero joueur qui doit jouer (1 = NOIR, 2 = BLANC) */
+	protected int joueurActuel;
+	/** Le numero du coup*/
+	protected int numCoup;
+	/** Score actuel de chaque joueur*/
+	protected int[] score;
 	
 	
 	/**
@@ -46,6 +56,15 @@ public class Plateau implements Serializable{
 		public static final int NB_CASES = 62;	
 
 	public Plateau() {
+		//Initialisation du joueur en cour
+		joueurActuel = 1;
+		//Initialisation du num de coup
+		numCoup = 1;
+		//Initialisation du score
+		score = new int[2];
+		score[NOIR-1] = 0;
+		score[BLANC-1] = 0;
+		
 		//On initialise le tableau de cases
 		this.cases = new Case[NB_CASES];
 		//On indique un numero a chaque case (en deux etapes obligatoire car sinon cases = NULL et cases[i] est donc impossible)
@@ -55,9 +74,81 @@ public class Plateau implements Serializable{
 		//On remplit les cases
 		initialiser();
 		associerNotations();
-		
 		//Pour chaque pion on enregistre ses points adjacents
 		casesAdjacentes();
+	}
+	
+	//--------------------------------------ACCESSEURS-----------------------------------
+			/** Renvoie le numero du joueur en cour
+			* @return le numero du jouer actuel (1 pour le J1 NOIR et 2 pour le J2 BLANC)
+			*/
+			public int getJoueurActuel(){
+				return joueurActuel;
+			}
+			/** Change le jouer actuel pour savoir qui doit jouer*/
+			public void setJoueur(){
+				if(joueurActuel == NOIR)
+					joueurActuel = BLANC;
+				else
+					joueurActuel = NOIR;
+			}
+	
+			/** Renvoie le score du joueur demande
+			* @param numJ le numero du joueur dont l'on veut connaitre le score
+			* @return le score du joueur demande
+			*/
+			public int getScore(int numJ){
+				if(numJ == NOIR)
+					return score[NOIR-1];
+				else
+					return score[BLANC-1];
+			}
+			/** Vérifie le plateau pour savoir si une bille est tombe au dernier coup et incremente le score*/
+			public void setScore(){
+				//Des qu'une bille est tombee incremente le score
+				//Si une bille blanche est dans le trou, on incremente le score du joueur noir
+				if(this.cases[TROU].getContenu() == Case.BLANC) {
+					this.score[NOIR-1] += 1;
+							
+				}else	if(this.cases[TROU].getContenu() == Case.NOIR) {
+					this.score[BLANC-1] += 1;
+				}
+				
+				//On revide la case trou comme le score a ete pris en compte
+				this.cases[TROU].setContenu(Case.NEANT);
+			}
+		
+			/**@return Le numero du coup en cour*/
+			public int getNumCoup(){
+				return numCoup;
+			}
+			/** Ajoute un coup au compteur*/
+			public void setNumCoup(){
+				numCoup++;
+			}
+			/** Modifier Le plateau de jeu.
+			* 
+			* @param p Le plateau de jeu qui sera copie dans plateau
+			*/
+			public boolean setPlateau(Plateau p){
+				for(int courante = 0; courante <= 61; courante++) {
+					this.cases[courante] = p.cases[courante];
+				}
+
+				return true;
+			}
+	//------------------------------------------------------------------------------------------------
+	
+	/** Affiche une partie en console avec le System*/
+	public String toString(){
+		String afficher="";
+		
+		afficher += "Joueur Actuel : "+joueurActuel+"\n";
+		afficher += "Numero du coup : "+numCoup+"\n";
+		afficher += "Score du joueur 1 : "+score[NOIR-1]+"\n";
+		afficher += "Score du joueur 2 : "+score[BLANC-1]+"\n";
+		
+		return afficher;
 	}
 
 	/**  Initialiser le plateau de jeu en posant les billes de depart
@@ -212,17 +303,7 @@ public class Plateau implements Serializable{
 	}
 
 	
-	/** Modifier Le plateau de jeu.
-	* 
-	* @param p Le plateau de jeu qui sera copie dans plateau
-	*/
-	public boolean setPlateau(Plateau p){
-		for(int courante = 0; courante <= 61; courante++) {
-			this.cases[courante] = p.cases[courante];
-		}
-		
-		return true;
-	}
+
 /*	
 	private void mettreAJour() {
 		for(Case courante : this.cases) {

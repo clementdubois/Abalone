@@ -25,7 +25,7 @@ public class ClickAction extends MouseAdapter {
 	public void mouseClicked(MouseEvent event){
 		if(nbClick == 1){
 			premiere = transcription(event.getY(),event.getX());
-			if(fenetre.plateau.chercheBilles(fenetre.partie.getJoueurActuel()).contains((byte)premiere)){
+			if(fenetre.plateau.chercheBilles(fenetre.plateau.getJoueurActuel()).contains((byte)premiere)){
 				System.out.println("premiere-clicked: " + premiere);
 				fenetre.rafraichirBS1(premiere);
 				nbClick = 2;
@@ -39,7 +39,7 @@ public class ClickAction extends MouseAdapter {
 			xb = event.getX();
 			deuxieme = transcription(event.getY(),event.getX());
 			//On verifie que le joueur ne selectionne pas les billes adverses
-			if(fenetre.plateau.chercheBilles(fenetre.partie.getJoueurActuel()).contains((byte)deuxieme)){
+			if(fenetre.plateau.chercheBilles(fenetre.plateau.getJoueurActuel()).contains((byte)deuxieme)){
 				System.out.println("deuxieme-clicked: " + deuxieme);
 				//on recupere la bille intermediaire aux 2 billes selectionnees
 				intermediaire = fenetre.plateau.caseIntermediaire((byte)premiere, (byte)deuxieme);
@@ -166,12 +166,12 @@ public class ClickAction extends MouseAdapter {
 			fenetre.plateau.afficher();
 			//On modifie l'etat de la partie
 				//On change le joueur courant
-				fenetre.partie.setJoueur();
+				fenetre.plateau.setJoueur();
 				//On incremente le nombre de coups
-				fenetre.partie.setNumCoup();
+				fenetre.plateau.setNumCoup();
 				//On verifie si il faut incrementer le score de la partie
-				fenetre.partie.setScore();
-			System.out.println(fenetre.partie);
+				fenetre.plateau.setScore();
+			System.out.println(fenetre.plateau);
 		}else{
 			System.out.println("Mouvement Ivalide");
 		}
