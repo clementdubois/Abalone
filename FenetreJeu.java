@@ -27,19 +27,19 @@ public class FenetreJeu extends JFrame{
 	private JMenuBar menuBar = new JMenuBar();
 
     private JMenu m_partie = new JMenu("Partie"),
-						lancement  = new JMenu("Lancement"),
-    		    forme      = new JMenu("Niveaux"),
+				  lancement  = new JMenu("Lancement"),
+    		      forme      = new JMenu("Niveaux"),
     			  difficulte = new JMenu("Difficulte"),
-    		    aPropos    = new JMenu("Info");
+    		      aPropos    = new JMenu("Info");
 
     private JMenuItem enregistrer = new JMenuItem("Enregistrer"),
-							enregistrerSous = new JMenuItem("Enregistrer Sous"),
-              charger = new JMenuItem("Charger"),
-              lancer 		= new JMenuItem("Lancer la partie"),
-	    				arreter 	= new JMenuItem("Arreter la partie"),
-							abandonner= new JMenuItem("Abandonner la partie"),
-	    				quitter 	= new JMenuItem("Quitter"),
-	    				aProposItem = new JMenuItem("?");
+					  enregistrerSous = new JMenuItem("Enregistrer Sous"),
+              		  charger = new JMenuItem("Charger"),
+                      lancer = new JMenuItem("Lancer la partie"),
+	    			  arreter 	= new JMenuItem("Arreter la partie"),
+					  abandonner= new JMenuItem("Abandonner la partie"),
+	    			  quitter 	= new JMenuItem("Quitter"),
+	    			  aProposItem = new JMenuItem("?");
 
 
     private JRadioButtonMenuItem 	facile    = new JRadioButtonMenuItem("Facile"),
@@ -103,8 +103,9 @@ public class FenetreJeu extends JFrame{
             this.setLocationRelativeTo(null);
 			container.setBackground(couleurFond);
             container.setLayout(new BorderLayout());
-						this.listener = new ClickAction(this);
+			this.listener = new ClickAction(this);
 			this.pan = new Panneau(partie.plateau,listener);
+
 			pan.setBackground(couleurFond);
 			pan.repaint();
 
@@ -166,6 +167,7 @@ public class FenetreJeu extends JFrame{
 		pan.rafraichir(plateau);
 		pan.repaint();
 		joueurActuel = plateau.getJoueurActuel();
+
 		if(joueurActuel == 1){
 			text1.setForeground(Color.GREEN);
 		}else{
@@ -187,11 +189,9 @@ public class FenetreJeu extends JFrame{
 	*/
 	public void rafraichirBS1(int bille1){
 		pan.rafraichirBS1(bille1);
-		pan.repaint();
 	}
 	public void rafraichirBS2(int bille2, int bille3){
 		pan.rafraichirBS2(bille2,bille3);
-		pan.repaint();
 	}
 
 
@@ -376,8 +376,8 @@ public class FenetreJeu extends JFrame{
 							message+="Le joueur NOIR remporte la partie";
 						else
 							message+="Le joueur BLANC remporte la partie";
-							
-						jop.showMessageDialog(null, message);
+					 	
+						jop.showMessageDialog(null, message); 						
 						System.exit(0);
 					}
 				}
@@ -391,7 +391,7 @@ public class FenetreJeu extends JFrame{
     	});
     	lancement.add(quitter);
 
-		  bg.add(facile);
+		bg.add(facile);
     	bg.add(difficile);
     	bg.add(moyen);
     	bg.add(maitre);
