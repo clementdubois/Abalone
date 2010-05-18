@@ -2,7 +2,7 @@ import java.lang.*;
 import java.util.*;
 import java.io.*;
 
-public class Case implements Serializable{
+public class Case implements Serializable, Cloneable{
 /**
  * contientBille permet de savoir si la case contient effectivement une bille jouable.
  * C'est lui qui doit etre mis à jour.	
@@ -49,10 +49,18 @@ public class Case implements Serializable{
 	byte[] vecteurs;
 
 	
- /** Initialisation de a case*/	
+ /** Initialisation de la case*/	
 	public Case(byte num){
 		this.numero = num;
 		//this.contientBille = false;
+		this.vecteurs = new byte[6];
+		this.calculerNumLigne(num);
+	}
+	
+	/** Chargement d'une case */
+	public Case(byte num, byte cont){
+		this.numero = num;
+		this.contenu = cont;
 		this.vecteurs = new byte[6];
 		this.calculerNumLigne(num);
 	}
@@ -154,6 +162,15 @@ public class Case implements Serializable{
 			this.numLigne = 7;
 		else if(num <= 61)
 			this.numLigne = 8;
+	}
+	
+	public String toString(){
+		String message="";
+		
+		message += "Numero : "+numero+" ;;";
+		message += "Contenu : "+contenu;
+		
+		return message;
 	}
 	
 }

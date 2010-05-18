@@ -19,8 +19,10 @@ public class FenetreJeu extends JFrame{
     private int x,y ;
     // private Thread t;
 
+	//L'arbre de coups
+	public JTree arbre;
 	//Les deux variables de taille de fenetre
-	private final static int LARGEUR=558;
+	private final static int LARGEUR=758;
 	private final static int HAUTEUR=675;
 
     // La declaration pour le menu de la JMenuBar.    
@@ -91,7 +93,7 @@ public class FenetreJeu extends JFrame{
 		JTextField text1,text2;
 
 	/**
-	* C'est le constructeur de la fenetre
+	* Constructeur de la fenetre
 	*/
     public FenetreJeu(Partie partie){
 			super();
@@ -148,10 +150,14 @@ public class FenetreJeu extends JFrame{
 			scoreBox.add(scoreJ1);
 			scoreBox.add(text2);
 			scoreBox.add(scoreJ2);
-
+			
+			//On initialise le JTree avec le TreeModele de la partie
+			arbre = new JTree(partie.coups);
+				
 			//initialisation finale de la fenetre
+			container.add(new JScrollPane(arbre), BorderLayout.EAST);
 			container.add(scoreBox,BorderLayout.SOUTH);
-            container.add(pan, BorderLayout.CENTER);
+      container.add(pan, BorderLayout.CENTER);
 			this.getContentPane().add(container);
             this.setContentPane(container);
             this.initMenu();
@@ -325,6 +331,8 @@ public class FenetreJeu extends JFrame{
 									ois.close();
 									//On rafraichit pour voir la partie chargee
 									rafraichir(partie.plateau);
+									arbre.setModel(partie.coups);
+									partie.coups.reload();
 
 								} catch (FileNotFoundException e1) {
 									e1.printStackTrace();

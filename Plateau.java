@@ -2,7 +2,7 @@ import java.util.*;
 import java.io.*;
 
 
-public class Plateau implements Serializable{
+public class Plateau implements Serializable, Cloneable{
 	/** la case trou (0) dans la liste des cases, la numero 0 est celle reservee au trou */
 	public final static int TROU = 0;
 
@@ -59,7 +59,7 @@ public class Plateau implements Serializable{
 		//Initialisation du joueur en cour
 		joueurActuel = 1;
 		//Initialisation du num de coup
-		numCoup = 1;
+		numCoup = 0;
 		//Initialisation du score
 		score = new int[2];
 		score[NOIR-1] = 0;
@@ -78,6 +78,21 @@ public class Plateau implements Serializable{
 		casesAdjacentes();
 	}
 	
+	/** Constructeur de chargement de plateau
+	* @param c cases
+	* @param ja joueurActuel
+	* @param nc numCoup
+	* @param s score
+	*/
+	public Plateau(Case[] c, int ja, int nc, int[] s){
+		cases = c;
+		joueurActuel = ja;
+		numCoup = nc;
+		score = s;
+		associerNotations();
+		//Pour chaque pion on enregistre ses points adjacents
+		casesAdjacentes();
+	}
 	//--------------------------------------ACCESSEURS-----------------------------------
 			/** Renvoie le numero du joueur en cour
 			* @return le numero du jouer actuel (1 pour le J1 NOIR et 2 pour le J2 BLANC)
@@ -262,6 +277,8 @@ public class Plateau implements Serializable{
 		}
 		
 	}
+	
+
 	
 	/** Affiche l'etat du plateau en console*/
 	public void afficher(){
@@ -536,3 +553,84 @@ public class Plateau implements Serializable{
 	}
 	
  }
+
+/** Representation codee d'un plateau*/
+class Codage{
+	/** Les 32 premieres cases du plateau (64 bits)*/
+	private long cases32;
+	/** Les cases 33 a 61 du plateau (58bits cases + 3bits score J1 + 3bits score J2 )*/
+	private long cases61;
+	/** Le numero du coup (7bits numCoup + 1bit joueurActuel)*/
+	private byte numCoup;
+	
+	/** Creer la version codee du plateau en argument*/
+	public Codage(Plateau p){
+		cases32 = 0;
+		cases61 = 0;
+		numCoup = 0;
+		
+		//On commence par les 32 premiere cases (2bits par case)
+		for(int i=1; i<=31; i++){
+			cases32 += p.cases[i].getContenu() & 3;
+			cases32 <<= 2;
+		}
+		cases32 += p.cases[32].getContenu() & 3;
+		//Ensuite les dernieres cases
+		for(int i=33; i<=61; i++){
+			cases61 += p.cases[i].getContenu() & 3;
+			cases61 <<= 2;
+		}
+		//On ajoute le score du joueur 1 (decalage de 1 car deja un decalage de 2 avant)
+		cases61 <<= 1;
+		cases61 += p.getScore(1) & 7;
+		cases61 <<= 3;
+		cases61 += p.getScore(2) & 7;
+		//On ajoute le score actuel
+		numCoup += p.getNumCoup() & 127;
+		//On ajoute le joueur actuel (on decale de 1 pour tenir sur 1 bit)
+		numCoup <<= 1;
+		numCoup += (p.getJoueurActuel()-1) & 1;
+	}
+	
+	/** Decode un plateau*/
+	public Plateau decodage(){
+		byte contenu;
+		
+		//Apres transcription
+		Case[] cases;
+		int joueurActuel;
+		int nbCoup;
+		int[] score;
+		
+		//On commence par recuperer les cases
+	  cases = new Case[Plateau.NB_CASES];
+			//La case 0 est le trou
+			cases[0] = new Case((byte)0);
+			//Les autres cases sont chargees depuis les attributs de codage
+			for(byte i=32; i>=1; i--){
+				contenu = (byte)((cases32 >> 2*( -(i-32) )) & 3);
+				cases[i] = new Case(i, contenu);
+			}
+			for(byte i=61; i>=33; i--){
+				contenu = (byte)((cases61 >> (2*(-(i-61)) + 6 ) ) & 3);
+				cases[i] = new Case(i, contenu);
+			}
+		//Puis le score
+		score = new int[2];
+			score[1] = (int)(cases61 & 3);
+			score[0] = (int)((cases61 >> 3) & 3);
+		//Puis le numero du coup
+		nbCoup = (numCoup >> 1) & 7;
+		//Enfin le joueur Actuel
+		joueurActuel = numCoup & 1; //On récupere 0 ou 1
+		joueurActuel++; //On ajoute un pour faire correspondre au fonctionnement de joueurActuel du plateau
+			
+		Plateau p = new Plateau(cases, joueurActuel, nbCoup, score);
+		return p;
+	}
+	
+	/** L'affichage du titre*/
+	public String toString(){
+		return ""+(numCoup>>1);
+	}
+}

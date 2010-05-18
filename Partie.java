@@ -8,8 +8,10 @@ import javax.swing.tree.*;
 * Une partie est simplement un serveur qui attend des connexions puis attend les ordres de la part de joueurs et les redistribue a tous les clients (joueurs, ia, spectateurs) Le createur de la partie possede donc le serveur de la partie. Le serveur de partie possede son propre plateau de jeu sur lequel il effectue les modifications.
 */
 public class Partie implements Serializable{
-	/** Contient la liste des coups joues(model pour le JTree dans le JFrame)*/
-	public transient DefaultTreeModel coups;
+	/** Contient la liste des coups joues(modele pour le JTree dans le JFrame)*/
+	public DefaultTreeModel coups;
+	/** Le code du coup en cours*/
+	public DefaultMutableTreeNode dernierCoup;
 	
 	/** 61 cases contenant soit une bille soit null (empty)*/
 	public Plateau plateau; 
@@ -35,7 +37,8 @@ public class Partie implements Serializable{
 		terminee = false;
 		plateau = new Plateau(); 
 		//On initialise l'arbre de coups avec le premier plateau (ca sera la racine)
-		coups = new DefaultTreeModel(new DefaultMutableTreeNode(plateau));
+		dernierCoup = new DefaultMutableTreeNode(new Codage(plateau));
+		coups = new DefaultTreeModel(dernierCoup);
 
 		//On lance la fenetre graphique
 		f = new FenetreJeu(this);

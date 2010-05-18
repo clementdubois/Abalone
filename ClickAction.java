@@ -1,4 +1,6 @@
 import java.awt.event.*;
+import javax.swing.tree.*;
+
 	/**Cette classe permet de gerer les clicksouris sur le plateau */
 public class ClickAction extends MouseAdapter {
 	/** compteur de click*/
@@ -169,7 +171,6 @@ public class ClickAction extends MouseAdapter {
 		is_valid = m.valider(fenetre.partie.plateau);
 		//Si c'est valide on l'effectue
 		if(is_valid){
-			System.out.println("Mouvement Valide");
 			//On effectue le mouvement
 			fenetre.partie.plateau.effectuer(m);
 			//On affiche en console
@@ -181,9 +182,17 @@ public class ClickAction extends MouseAdapter {
 				fenetre.partie.plateau.setNumCoup();
 				//On verifie si il faut incrementer le score de la partie
 				fenetre.partie.plateau.setScore();
-			System.out.println(fenetre.partie.plateau);
-		}else{
-			System.out.println("Mouvement Ivalide");
+			
+			//On ajoute le nouveau plateau comme fils
+			DefaultMutableTreeNode last = new DefaultMutableTreeNode(new Codage(fenetre.partie.plateau));
+			fenetre.partie.dernierCoup.add(last);
+			fenetre.partie.coups.reload();
+			fenetre.partie.dernierCoup = last;
+			
+			//On teste pour voir le parent et lui meme
+			// System.out.println("Nouveau Fils = "+((Codage)(noeuFils.getUserObject())).decodage() );
+			// 			System.out.println("Le parent = "+((Codage)(((DefaultMutableTreeNode)(noeuFils.getParent())).getUserObject())).decodage());
+			
 		}
 		
 		//On rafraichie graphiquement
