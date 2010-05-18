@@ -1,9 +1,12 @@
 import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
+import javax.swing.event.*;
 import java.io.*;
 import java.util.*;
 import javax.swing.filechooser.FileFilter;
+import javax.swing.tree.*;
+
 
 
 public class FenetreJeu extends JFrame{
@@ -153,6 +156,8 @@ public class FenetreJeu extends JFrame{
 			
 			//On initialise le JTree avec le TreeModele de la partie
 			arbre = new JTree(partie.coups);
+			arbre.addTreeSelectionListener(new ChoixCoupArbre());
+			
 				
 			//initialisation finale de la fenetre
 			container.add(new JScrollPane(arbre), BorderLayout.EAST);
@@ -513,6 +518,18 @@ public class FenetreJeu extends JFrame{
 		}		
 	}	
 	
+	/** Ecouteur de l'arbre*/
+	class ChoixCoupArbre implements TreeSelectionListener{
+		public void valueChanged(TreeSelectionEvent event) {
+						if(arbre.getLastSelectedPathComponent() != null){
+							partie.dernierCoup = (DefaultMutableTreeNode)(arbre.getLastSelectedPathComponent());							
+							partie.plateau = ((Codage)(partie.dernierCoup).getUserObject()).decodage();
+
+							rafraichir(partie.plateau);
+						}
+					}
+		
+	}
 	
 	/** Filtre pour le JFileChooser (sauvegarde et chargement de partie)*/
 	public class AbFileFilter extends FileFilter{

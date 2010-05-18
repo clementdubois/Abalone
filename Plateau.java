@@ -555,7 +555,7 @@ public class Plateau implements Serializable, Cloneable{
  }
 
 /** Representation codee d'un plateau*/
-class Codage{
+class Codage implements Serializable{
 	/** Les 32 premieres cases du plateau (64 bits)*/
 	private long cases32;
 	/** Les cases 33 a 61 du plateau (58bits cases + 3bits score J1 + 3bits score J2 )*/
