@@ -12,12 +12,9 @@ public class FenetreJeu extends JFrame{
 	public Partie partie;
 	ClickAction listener;
 	private Panneau pan;
+	private Menu menu;
     private JPanel container = new JPanel();
-    // private int compteur = 0;
-    // private boolean animated = true;
-    // private boolean backX, backY;
     private int x,y ;
-    // private Thread t;
 
 	//Les deux variables de taille de fenetre
 	private final static int LARGEUR=558;
@@ -60,14 +57,13 @@ public class FenetreJeu extends JFrame{
     private StopPartieListener  stopPartie  = new StopPartieListener();
     private StartPartieListener startPartie = new StartPartieListener();
     
-		//Pour le JFileChooser
-			//Les partie seront sauvegardees dans le dossier sauvegarde
-			JFileChooser fileChooser = new JFileChooser("sauvegarde/");
-			//Les filtres
-			AbFileFilter zFiltre = new AbFileFilter();
-			AbFileFilter filtre = new AbFileFilter(".ab", "Fichier Abalone");
-			File file;
-		
+	//Pour le JFileChooser
+	//Les partie seront sauvegardees dans le dossier sauvegarde
+	JFileChooser fileChooser = new JFileChooser("sauvegarde/");
+	//Les filtres
+	AbFileFilter zFiltre = new AbFileFilter();
+	AbFileFilter filtre = new AbFileFilter(".ab", "Fichier Abalone");
+	File file;
 
 
     // Création de notre barre d'outils.
@@ -81,14 +77,14 @@ public class FenetreJeu extends JFrame{
     					stat   = new JButton(new ImageIcon("images/stat.jpg"));
 
   	private Color fondBouton = Color.white;
-		private Color couleurFond = new Color(63,92,106);
-		//fenetres des scores
-		JTextField scoreJ1,scoreJ2;
-		//scores
-		int entScoreJ1,entScoreJ2;
-		//joueur actuel
-		int joueurActuel;
-		JTextField text1,text2;
+	private Color couleurFond = new Color(63,92,106);
+	//fenetres des scores
+	JTextField scoreJ1,scoreJ2;
+	//scores
+	int entScoreJ1,entScoreJ2;
+	//joueur actuel
+	int joueurActuel;
+	JTextField text1,text2;
 
 	/**
 	* C'est le constructeur de la fenetre
@@ -107,16 +103,15 @@ public class FenetreJeu extends JFrame{
 			this.pan = new Panneau(partie.plateau,listener);
 
 			pan.setBackground(couleurFond);
-			pan.repaint();
 
-				//On ajoute nos filtres sur la partie
-						this.fileChooser.addChoosableFileFilter(zFiltre);
-						this.fileChooser.addChoosableFileFilter(filtre);
-				
-        //On initialise le menu stop
-        stop.setEnabled(false);
-        //On affecte les écouteurs
-        stop.addActionListener(stopPartie);
+			//On ajoute nos filtres sur la partie
+			this.fileChooser.addChoosableFileFilter(zFiltre);
+			this.fileChooser.addChoosableFileFilter(filtre);
+			
+        	//On initialise le menu stop
+            stop.setEnabled(false);
+            //On affecte les écouteurs
+            stop.addActionListener(stopPartie);
     		launch.addActionListener(startPartie);
 
 			joueurActuel = partie.plateau.getJoueurActuel();
@@ -151,7 +146,7 @@ public class FenetreJeu extends JFrame{
 
 			//initialisation finale de la fenetre
 			container.add(scoreBox,BorderLayout.SOUTH);
-            container.add(pan, BorderLayout.CENTER);
+			container.add(pan, BorderLayout.CENTER);
 			this.getContentPane().add(container);
             this.setContentPane(container);
             this.initMenu();
@@ -441,9 +436,6 @@ public class FenetreJeu extends JFrame{
     	this.setJMenuBar(menuBar);
     }
 
-	// private void go(){
-	// 	 
-	// }
 
 	 /**
 	 * Écouteur du menu Lancer.
@@ -526,15 +518,6 @@ public class FenetreJeu extends JFrame{
 		}	
 	}
 	
-
-
-	 // Lance le thread.
-	// class PlayPartie implements Runnable{
-	// 	public void run() {
-	// 		go();			
-	// 	}		
-	// }	
-
 
 }
 

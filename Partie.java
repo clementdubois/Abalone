@@ -22,6 +22,7 @@ public class Partie implements Serializable{
 	
 	/** La fenetre de la partie*/
 	public transient FenetreJeu f;
+	public FenetreMenu fm;
 	
 	/** Joueur 1 : le noir*/
 	public final static int NOIR = 1;
@@ -38,7 +39,7 @@ public class Partie implements Serializable{
 		coups = new DefaultTreeModel(new DefaultMutableTreeNode(plateau));
 
 		//On lance la fenetre graphique
-		f = new FenetreJeu(this);
+		fm = new FenetreMenu(this);
 	}
 	
 	/** Un joueur abandonne la partie, la partie est terminee et l'autre joueur gagne

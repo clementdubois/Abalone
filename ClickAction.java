@@ -9,6 +9,7 @@ public class ClickAction extends MouseAdapter {
 	private int premiere,deuxieme,vecteur,intermediaire;
 	/** Les coordonnees des cliques*/
 	private int yb,yv,xb,xv;
+	int x,y;
 	
 	/** On evoie la partie associee a la fenetre pour pouvoir la modifier 
 	* @param p La partie sur laquel se deroule les actions.
@@ -55,16 +56,22 @@ public class ClickAction extends MouseAdapter {
 			yv = event.getY();
 			vecteur = transcription(event.getY(),event.getX());
 			
+			x = (xb - (xb % Panneau.TAILLEIM));
+			y = (yb - (yb % Panneau.TAILLEIM));
+			
 			//Le plateau d'abalone a des lignes decales, ils faut donc verifier les coordonnees pour tester le vecteur avec les bonnes donnees 
-			if(((yb - (yb % Panneau.TAILLEIM))/Panneau.TAILLEIM)%2 == 0){
+			if((y/Panneau.TAILLEIM)%2 == 1){
 				//dans un soucis de precision, on prend comme coordonnee le centre de la bille
-				xb = (xb - (xb % Panneau.TAILLEIM)) + Panneau.TAILLEIM/2;
+				if(xb % Panneau.TAILLEIM <= Panneau.TAILLEIM/2)
+					xb = x;
+				else
+					xb = x + Panneau.TAILLEIM;
 			}
 			else{
 				//et donc, le decalage a effectuer est different pour une ligne pair ou impair
-				xb = (xb - (xb % Panneau.TAILLEIM)) + Panneau.TAILLEIM;
+				xb = x + Panneau.TAILLEIM/2;
 			}
-			yb = (yb - (yb % Panneau.TAILLEIM)) + Panneau.TAILLEIM/2;	
+			yb = y + Panneau.TAILLEIM/2;	
 				
 			//En comparant la position du 2eme et 3eme clique, on peut savoir le numero du vecteur engendre
 			if(vecteur == deuxieme - 1) vecteur = 4; //deplacement a gauche
@@ -77,10 +84,10 @@ public class ClickAction extends MouseAdapter {
 			
 			System.out.println("vecteur-clicked: " + vecteur);
 			
-			// System.out.println("xb: " + xb);
-			// System.out.println("xv: " + xv);
-			// System.out.println("yb: " + yb);
-			// System.out.println("yv: " + yv);
+			System.out.println("xb: " + xb);
+			System.out.println("xv: " + xv);
+			System.out.println("yb: " + yb);
+			System.out.println("yv: " + yv);
 			
 			//Le mouvement est effectuee seulement si la position et le numero du vecteur est valide
 			int difX = xv - xb;
@@ -90,7 +97,7 @@ public class ClickAction extends MouseAdapter {
 			if(difY <= 0) difY = - difY;
 			
 
-			if(difX > Panneau.TAILLEIM * 1.5 || difY > Panneau.TAILLEIM * 1.5){
+			if(difX > Panneau.TAILLEIM * 1.9 || difY > Panneau.TAILLEIM * 1.9){
 				System.out.println("\nMouvement invalide, ne cliquez pas trop loin de vos billes !\n");
 				fenetre.rafraichir(fenetre.partie.plateau);
 			}
@@ -103,7 +110,6 @@ public class ClickAction extends MouseAdapter {
 
 			}	
 			nbClick = 1;
-			System.out.println(premiere+"-"+deuxieme);
 		}
 		
 		//Un clique droit reinitialise la selection des billes
@@ -125,8 +131,8 @@ public class ClickAction extends MouseAdapter {
 	*/
 	public int transcription(int xx,int yy){
 		int caseSelected =0;
-		int x = xx;
-		int y = yy;
+		x = xx;
+		y = yy;
 		
 		x = (x-(x%Panneau.TAILLEIM))/Panneau.TAILLEIM;
 		
