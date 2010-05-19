@@ -13,14 +13,13 @@ public class FenetreJeu extends JFrame{
 
 	// public Plateau plateau;
 	public Partie partie;
+	public FenetreMenu fm;
 	ClickAction listener;
 	private Panneau pan;
+	private Menu menu;
     private JPanel container = new JPanel();
-    // private int compteur = 0;
-    // private boolean animated = true;
-    // private boolean backX, backY;
+	private JPanel treePanel = new JPanel();
     private int x,y ;
-    // private Thread t;
 
 	//L'arbre de coups
 	public JTree arbre;
@@ -78,7 +77,6 @@ public class FenetreJeu extends JFrame{
 			File file;
 		
 
-
     // Création de notre barre d'outils.
     private JToolBar toolBar = new JToolBar();
 
@@ -90,14 +88,14 @@ public class FenetreJeu extends JFrame{
     					stat   = new JButton(new ImageIcon("images/stat.jpg"));
 
   	private Color fondBouton = Color.white;
-		private Color couleurFond = new Color(63,92,106);
-		//fenetres des scores
-		JTextField scoreJ1,scoreJ2;
-		//scores
-		int entScoreJ1,entScoreJ2;
-		//joueur actuel
-		int joueurActuel;
-		JTextField text1,text2;
+	private Color couleurFond = new Color(63,92,106);
+	//fenetres des scores
+	JTextField scoreJ1,scoreJ2;
+	//scores
+	int entScoreJ1,entScoreJ2;
+	//joueur actuel
+	int joueurActuel;
+	JTextField text1,text2;
 
 	/**
 	* Constructeur de la fenetre
@@ -116,7 +114,6 @@ public class FenetreJeu extends JFrame{
 			this.pan = new Panneau(partie.plateau,listener);
 
 			pan.setBackground(couleurFond);
-			pan.repaint();
 
 				//On ajoute nos filtres sur la partie
 						this.fileChooser.addChoosableFileFilter(filtre);
@@ -127,6 +124,7 @@ public class FenetreJeu extends JFrame{
         stop.setEnabled(false);
         //On affecte les écouteurs
         stop.addActionListener(stopPartie);
+
     		launch.addActionListener(startPartie);
 
 			joueurActuel = partie.plateau.getJoueurActuel();
@@ -162,12 +160,13 @@ public class FenetreJeu extends JFrame{
 			//On initialise le JTree avec le TreeModele de la partie
 			arbre = new JTree(partie.coups);
 			arbre.addTreeSelectionListener(new ChoixCoupArbre());
-			
-				
+			arbre.setPreferredSize(new Dimension(100,50));
+			treePanel.add(new JScrollPane(arbre)); 	
+			treePanel.setPreferredSize(new Dimension(150,300));
 			//initialisation finale de la fenetre
-			container.add(new JScrollPane(arbre), BorderLayout.EAST);
+			container.add(treePanel, BorderLayout.EAST);
 			container.add(scoreBox,BorderLayout.SOUTH);
-      container.add(pan, BorderLayout.CENTER);
+      		container.add(pan, BorderLayout.CENTER);	
 			this.getContentPane().add(container);
             this.setContentPane(container);
             this.initMenu();
@@ -449,9 +448,9 @@ public class FenetreJeu extends JFrame{
 			abandonner.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent arg0) {
 					
-					
+					ImageIcon image = new ImageIcon("images/abandon.jpg");
 					JOptionPane jop = new JOptionPane();			
-					int option = jop.showConfirmDialog(null, "Voulez-vous vraiment abandonner ?", "", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
+					int option = jop.showConfirmDialog(null, "Voulez-vous vraiment abandonner ?", "", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, image);
 
 					if(option == JOptionPane.OK_OPTION){
 						partie.abandonner(joueurActuel);
@@ -461,8 +460,10 @@ public class FenetreJeu extends JFrame{
 						else
 							message+="Le joueur BLANC remporte la partie";
 					 	
-						jop.showMessageDialog(null, message); 						
-						System.exit(0);
+						jop.showMessageDialog(null, message); 
+						//retour au menu	
+						Partie p = new Partie();
+						dispose();					
 					}
 				}
 			});
@@ -525,9 +526,6 @@ public class FenetreJeu extends JFrame{
     	this.setJMenuBar(menuBar);
     }
 
-	// private void go(){
-	// 	 
-	// }
 
 	 /**
 	 * Écouteur du menu Lancer.
@@ -622,15 +620,6 @@ public class FenetreJeu extends JFrame{
 		}	
 	}
 	
-
-
-	 // Lance le thread.
-	// class PlayPartie implements Runnable{
-	// 	public void run() {
-	// 		go();			
-	// 	}		
-	// }	
-
 
 }
 

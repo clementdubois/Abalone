@@ -11,6 +11,7 @@ public class ClickAction extends MouseAdapter {
 	private int premiere,deuxieme,vecteur,intermediaire;
 	/** Les coordonnees des cliques*/
 	private int yb,yv,xb,xv;
+	int x,y;
 	
 	/** On evoie la partie associee a la fenetre pour pouvoir la modifier 
 	* @param p La partie sur laquel se deroule les actions.
@@ -21,10 +22,85 @@ public class ClickAction extends MouseAdapter {
 		this.fenetre = fen;
 	}
 	
+	
+/**
+* 
+
+	private Plateau chercherMeilleurCoup(Vector<Mouvement> mouvementsValides, int profondeur) {
+		// on evalue chaque plateau.
+		
+		float meilleurScore = 0;
+		float scoreActuel = 0;
+		for(int i = 0; i < mouvementsValides.size(); i++) {
+			scoreActuel = evaluerPlateau();
+			if(scoreActuel > meilleurScore) {
+				meilleurScore = scoreActuel;
+				meilleur = mouvementsValides.get(i);
+			}
+		}
+		return meilleur;
+	}
+	
+	
+	private float evaluerPlateau() {
+		return 1;
+		// evaluer les differents criteres
+	}
+	
+	private void deroulementMouvement(Plateau p) {
+		// On verifie le mouvement 
+		is_valid = m.valider(fenetre.partie.plateau);
+		//Si c'est valide on l'effectue
+		if(is_valid){
+			//On effectue le mouvement
+			fenetre.partie.plateau.effectuer(m);
+			//On affiche en console
+			fenetre.partie.plateau.afficher();
+			//On modifie l'etat de la partie
+				//On change le joueur courant
+				fenetre.partie.plateau.setJoueur();
+				
+				//On incremente le nombre de coups
+				fenetre.partie.plateau.setNumCoup();
+				//On verifie si il faut incrementer le score de la partie
+				fenetre.partie.plateau.setScore();
+			
+			//On ajoute le nouveau plateau comme fils
+			DefaultMutableTreeNode last = new DefaultMutableTreeNode(new Codage(fenetre.partie.plateau));
+			fenetre.partie.dernierCoup.add(last);
+			fenetre.partie.coups.reload();
+			fenetre.partie.dernierCoup = last;
+			
+			//On teste pour voir le parent et lui meme
+			// System.out.println("Nouveau Fils = "+((Codage)(noeuFils.getUserObject())).decodage() );
+			// 			System.out.println("Le parent = "+((Codage)(((DefaultMutableTreeNode)(noeuFils.getParent())).getUserObject())).decodage());
+			
+		}
+		
+		//On rafraichie graphiquement
+		fenetre.rafraichir(fenetre.partie.plateau);
+		
+					
+	}
+*/	
+	
 	/**
 	* On surcharge la methode mouseClicked pour quelle recupere et envoie le numero des billes selectionnees.
 	*/
 	public void mouseClicked(MouseEvent event){
+/* 
+	on doit cliquer pour faire jouer l'ia
+*/
+			// int profondeur = 1;
+			// if(this.fenetre.partie.plateau.getJoueurActuel() == 1) {
+			// 	deroulementMouvement(chercherMeilleurCoup(mouvementsValides(1), profondeur));
+			// }
+/*			
+	fin ia
+*/
+
+
+		
 		if(nbClick == 1){
 			premiere = transcription(event.getY(),event.getX());
 			if(fenetre.partie.plateau.chercheBilles(fenetre.partie.plateau.getJoueurActuel()).contains((byte)premiere)){
@@ -57,16 +133,22 @@ public class ClickAction extends MouseAdapter {
 			yv = event.getY();
 			vecteur = transcription(event.getY(),event.getX());
 			
+			x = (xb - (xb % Panneau.TAILLEIM));
+			y = (yb - (yb % Panneau.TAILLEIM));
+			
 			//Le plateau d'abalone a des lignes decales, ils faut donc verifier les coordonnees pour tester le vecteur avec les bonnes donnees 
-			if(((yb - (yb % Panneau.TAILLEIM))/Panneau.TAILLEIM)%2 == 0){
+			if((y/Panneau.TAILLEIM)%2 == 1){
 				//dans un soucis de precision, on prend comme coordonnee le centre de la bille
-				xb = (xb - (xb % Panneau.TAILLEIM)) + Panneau.TAILLEIM/2;
+				if(xb % Panneau.TAILLEIM <= Panneau.TAILLEIM/2)
+					xb = x;
+				else
+					xb = x + Panneau.TAILLEIM;
 			}
 			else{
 				//et donc, le decalage a effectuer est different pour une ligne pair ou impair
-				xb = (xb - (xb % Panneau.TAILLEIM)) + Panneau.TAILLEIM;
+				xb = x + Panneau.TAILLEIM/2;
 			}
-			yb = (yb - (yb % Panneau.TAILLEIM)) + Panneau.TAILLEIM/2;	
+			yb = y + Panneau.TAILLEIM/2;	
 				
 			//En comparant la position du 2eme et 3eme clique, on peut savoir le numero du vecteur engendre
 			if(vecteur == deuxieme - 1) vecteur = 4; //deplacement a gauche
@@ -79,10 +161,10 @@ public class ClickAction extends MouseAdapter {
 			
 			System.out.println("vecteur-clicked: " + vecteur);
 			
-			// System.out.println("xb: " + xb);
-			// System.out.println("xv: " + xv);
-			// System.out.println("yb: " + yb);
-			// System.out.println("yv: " + yv);
+			System.out.println("xb: " + xb);
+			System.out.println("xv: " + xv);
+			System.out.println("yb: " + yb);
+			System.out.println("yv: " + yv);
 			
 			//Le mouvement est effectuee seulement si la position et le numero du vecteur est valide
 			int difX = xv - xb;
@@ -92,7 +174,7 @@ public class ClickAction extends MouseAdapter {
 			if(difY <= 0) difY = - difY;
 			
 
-			if(difX > Panneau.TAILLEIM * 1.5 || difY > Panneau.TAILLEIM * 1.5){
+			if(difX > Panneau.TAILLEIM * 1.9 || difY > Panneau.TAILLEIM * 1.9){
 				System.out.println("\nMouvement invalide, ne cliquez pas trop loin de vos billes !\n");
 				fenetre.rafraichir(fenetre.partie.plateau);
 			}
@@ -105,7 +187,6 @@ public class ClickAction extends MouseAdapter {
 
 			}	
 			nbClick = 1;
-			System.out.println(premiere+"-"+deuxieme);
 		}
 		
 		//Un clique droit reinitialise la selection des billes
@@ -127,8 +208,8 @@ public class ClickAction extends MouseAdapter {
 	*/
 	public int transcription(int xx,int yy){
 		int caseSelected =0;
-		int x = xx;
-		int y = yy;
+		x = xx;
+		y = yy;
 		
 		x = (x-(x%Panneau.TAILLEIM))/Panneau.TAILLEIM;
 		
@@ -178,6 +259,7 @@ public class ClickAction extends MouseAdapter {
 			//On modifie l'etat de la partie
 				//On change le joueur courant
 				fenetre.partie.plateau.setJoueur();
+				
 				//On incremente le nombre de coups
 				fenetre.partie.plateau.setNumCoup();
 				//On verifie si il faut incrementer le score de la partie
@@ -200,6 +282,9 @@ public class ClickAction extends MouseAdapter {
 		
 		
 	}
+	
+	
+	
 	
 
 }
