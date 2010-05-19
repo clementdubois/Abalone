@@ -1,4 +1,6 @@
 import java.awt.event.*;
+import javax.swing.tree.*;
+
 	/**Cette classe permet de gerer les clicksouris sur le plateau */
 public class ClickAction extends MouseAdapter {
 	/** compteur de click*/
@@ -20,10 +22,85 @@ public class ClickAction extends MouseAdapter {
 		this.fenetre = fen;
 	}
 	
+	
+/**
+* 
+
+	private Plateau chercherMeilleurCoup(Vector<Mouvement> mouvementsValides, int profondeur) {
+		// on evalue chaque plateau.
+		
+		float meilleurScore = 0;
+		float scoreActuel = 0;
+		for(int i = 0; i < mouvementsValides.size(); i++) {
+			scoreActuel = evaluerPlateau();
+			if(scoreActuel > meilleurScore) {
+				meilleurScore = scoreActuel;
+				meilleur = mouvementsValides.get(i);
+			}
+		}
+		return meilleur;
+	}
+	
+	
+	private float evaluerPlateau() {
+		return 1;
+		// evaluer les differents criteres
+	}
+	
+	private void deroulementMouvement(Plateau p) {
+		// On verifie le mouvement 
+		is_valid = m.valider(fenetre.partie.plateau);
+		//Si c'est valide on l'effectue
+		if(is_valid){
+			//On effectue le mouvement
+			fenetre.partie.plateau.effectuer(m);
+			//On affiche en console
+			fenetre.partie.plateau.afficher();
+			//On modifie l'etat de la partie
+				//On change le joueur courant
+				fenetre.partie.plateau.setJoueur();
+				
+				//On incremente le nombre de coups
+				fenetre.partie.plateau.setNumCoup();
+				//On verifie si il faut incrementer le score de la partie
+				fenetre.partie.plateau.setScore();
+			
+			//On ajoute le nouveau plateau comme fils
+			DefaultMutableTreeNode last = new DefaultMutableTreeNode(new Codage(fenetre.partie.plateau));
+			fenetre.partie.dernierCoup.add(last);
+			fenetre.partie.coups.reload();
+			fenetre.partie.dernierCoup = last;
+			
+			//On teste pour voir le parent et lui meme
+			// System.out.println("Nouveau Fils = "+((Codage)(noeuFils.getUserObject())).decodage() );
+			// 			System.out.println("Le parent = "+((Codage)(((DefaultMutableTreeNode)(noeuFils.getParent())).getUserObject())).decodage());
+			
+		}
+		
+		//On rafraichie graphiquement
+		fenetre.rafraichir(fenetre.partie.plateau);
+		
+					
+	}
+*/	
+	
 	/**
 	* On surcharge la methode mouseClicked pour quelle recupere et envoie le numero des billes selectionnees.
 	*/
 	public void mouseClicked(MouseEvent event){
+/* 
+	on doit cliquer pour faire jouer l'ia
+*/
+			int profondeur = 1;
+			if(this.fenetre.partie.plateau.getJoueurActuel() == 1) {
+				deroulementMouvement(chercherMeilleurCoup(mouvementsValides(1), profondeur));
+			}
+/*			
+	fin ia
+*/
+
+
+		
 		if(nbClick == 1){
 			premiere = transcription(event.getY(),event.getX());
 			if(fenetre.partie.plateau.chercheBilles(fenetre.partie.plateau.getJoueurActuel()).contains((byte)premiere)){
@@ -175,7 +252,6 @@ public class ClickAction extends MouseAdapter {
 		is_valid = m.valider(fenetre.partie.plateau);
 		//Si c'est valide on l'effectue
 		if(is_valid){
-			System.out.println("Mouvement Valide");
 			//On effectue le mouvement
 			fenetre.partie.plateau.effectuer(m);
 			//On affiche en console
@@ -183,13 +259,22 @@ public class ClickAction extends MouseAdapter {
 			//On modifie l'etat de la partie
 				//On change le joueur courant
 				fenetre.partie.plateau.setJoueur();
+				
 				//On incremente le nombre de coups
 				fenetre.partie.plateau.setNumCoup();
 				//On verifie si il faut incrementer le score de la partie
 				fenetre.partie.plateau.setScore();
-			System.out.println(fenetre.partie.plateau);
-		}else{
-			System.out.println("Mouvement Ivalide");
+			
+			//On ajoute le nouveau plateau comme fils
+			DefaultMutableTreeNode last = new DefaultMutableTreeNode(new Codage(fenetre.partie.plateau));
+			fenetre.partie.dernierCoup.add(last);
+			fenetre.partie.coups.reload();
+			fenetre.partie.dernierCoup = last;
+			
+			//On teste pour voir le parent et lui meme
+			// System.out.println("Nouveau Fils = "+((Codage)(noeuFils.getUserObject())).decodage() );
+			// 			System.out.println("Le parent = "+((Codage)(((DefaultMutableTreeNode)(noeuFils.getParent())).getUserObject())).decodage());
+			
 		}
 		
 		//On rafraichie graphiquement
@@ -197,6 +282,9 @@ public class ClickAction extends MouseAdapter {
 		
 		
 	}
+	
+	
+	
 	
 
 }
