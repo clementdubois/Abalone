@@ -606,6 +606,16 @@ public class FenetreJeu extends JFrame{
 		
 	}
 	
+	
+	/** Derouler l'arbre*/
+	public void expandAll(JTree tree) {
+	    int row = 0;
+	    while (row < tree.getRowCount()) {
+	      tree.expandRow(row);
+	      row++;
+	      }
+	    }
+	
 	/** Filtre pour le JFileChooser (sauvegarde et chargement de partie)*/
 	public class AbFileFilter extends FileFilter{
 

@@ -270,6 +270,7 @@ public class ClickAction extends MouseAdapter {
 			fenetre.partie.dernierCoup.add(last);
 			fenetre.partie.coups.reload();
 			fenetre.partie.dernierCoup = last;
+			fenetre.expandAll(fenetre.arbre);
 			
 			//On teste pour voir le parent et lui meme
 			// System.out.println("Nouveau Fils = "+((Codage)(noeuFils.getUserObject())).decodage() );
@@ -282,8 +283,6 @@ public class ClickAction extends MouseAdapter {
 		
 		
 	}
-	
-	
 	
 	
 
