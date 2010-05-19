@@ -87,6 +87,10 @@ public class FenetreJeu extends JFrame{
     					player = new JButton(new ImageIcon("images/joueur.jpg")),
     					stat   = new JButton(new ImageIcon("images/stat.jpg"));
 
+	 //Icones de l'arbre
+	 private ImageIcon miniN = new ImageIcon("images/miniN.jpg");
+	 private ImageIcon miniB = new ImageIcon("images/miniB.jpg");
+
   	private Color fondBouton = Color.white;
 	private Color couleurFond = new Color(63,92,106);
 	//fenetres des scores
@@ -161,6 +165,8 @@ public class FenetreJeu extends JFrame{
 			arbre = new JTree(partie.coups);
 			arbre.addTreeSelectionListener(new ChoixCoupArbre());
 			arbre.setPreferredSize(new Dimension(100,50));
+			arbre.setCellRenderer(new MonRenderer());
+			
 			treePanel.add(new JScrollPane(arbre)); 	
 			treePanel.setPreferredSize(new Dimension(150,300));
 			//initialisation finale de la fenetre
@@ -605,7 +611,7 @@ public class FenetreJeu extends JFrame{
 
 		private String extension = ".ab", description = "Fichier Abalone";
 		public AbFileFilter(){}
-		
+
 		public AbFileFilter(String ext, String descrip){
 			this.extension = ext;
 			this.description = descrip;
@@ -620,6 +626,46 @@ public class FenetreJeu extends JFrame{
 		}	
 	}
 	
+	/** Permet de redefinir le DefaultTreeCellRenderer et d'avoir une modification d'icones de l'arbre personnalisee*/
+	private class MonRenderer extends DefaultTreeCellRenderer {
+
+	        public MonRenderer() {}
+
+	        public Component getTreeCellRendererComponent(
+	                            JTree tree,
+	                            Object value,
+	                            boolean sel,
+	                            boolean expanded,
+	                            boolean leaf,
+	                            int row,
+	                            boolean hasFocus) {
+
+	            super.getTreeCellRendererComponent(
+	                            tree, value, sel,
+	                            expanded, leaf, row,
+	                            hasFocus);
+	            if (estBilleNoir(value)) {
+	                setIcon(miniN);
+	            } else {
+	                setIcon(miniB);
+	            }
+
+	            return this;
+	        }
+
+	        protected boolean estBilleNoir(Object value) {
+	            DefaultMutableTreeNode noeud = (DefaultMutableTreeNode)value;
+	            Plateau infoNoeud = ((Codage)(noeud.getUserObject())).decodage();
+	            int numCoup = infoNoeud.numCoup;
+	            if (numCoup % 2 == 0) {
+	                return true;
+	            } 
+
+	            return false;
+	        }
+	    }
+	
+
 
 }
 

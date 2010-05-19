@@ -1,9 +1,11 @@
-class Regles implements Serializable{
-	private:
+import java.util.*;
+import java.io.*;
+
+public class Regles implements Serializable{
 		/** S'agit-il d'un mode ou l'on peut naviguer dans la liste des coups*/
-		boolean navigeable;
+		private boolean navigeable;
 		/** Combien de billes faut-il ejecter pour remporter la partie*/
-		byte nbBilleAEjecter;
+		private byte nbBilleAEjecter;
 		/**  S'agit t'il d'un mode d'édition (menu supplémentaire d'édition et possibilite d'avoir un plateau de depart vide)*/
-		boolean edition;
+		private boolean edition;
 }
