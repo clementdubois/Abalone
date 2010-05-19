@@ -13,10 +13,12 @@ public class FenetreJeu extends JFrame{
 
 	// public Plateau plateau;
 	public Partie partie;
+	public FenetreMenu fm;
 	ClickAction listener;
 	private Panneau pan;
 	private Menu menu;
     private JPanel container = new JPanel();
+	private JPanel treePanel = new JPanel();
     private int x,y ;
 
 	//L'arbre de coups
@@ -152,10 +154,11 @@ public class FenetreJeu extends JFrame{
 			//On initialise le JTree avec le TreeModele de la partie
 			arbre = new JTree(partie.coups);
 			arbre.addTreeSelectionListener(new ChoixCoupArbre());
-			
-				
+			arbre.setPreferredSize(new Dimension(100,50));
+			treePanel.add(new JScrollPane(arbre)); 	
+			treePanel.setPreferredSize(new Dimension(150,300));
 			//initialisation finale de la fenetre
-			container.add(new JScrollPane(arbre), BorderLayout.EAST);
+			container.add(treePanel, BorderLayout.EAST);
 			container.add(scoreBox,BorderLayout.SOUTH);
       		container.add(pan, BorderLayout.CENTER);	
 			this.getContentPane().add(container);
@@ -373,9 +376,9 @@ public class FenetreJeu extends JFrame{
 			abandonner.addActionListener(new ActionListener(){
 				public void actionPerformed(ActionEvent arg0) {
 					
-					
+					ImageIcon image = new ImageIcon("images/abandon.jpg");
 					JOptionPane jop = new JOptionPane();			
-					int option = jop.showConfirmDialog(null, "Voulez-vous vraiment abandonner ?", "", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE);
+					int option = jop.showConfirmDialog(null, "Voulez-vous vraiment abandonner ?", "", JOptionPane.YES_NO_OPTION, JOptionPane.PLAIN_MESSAGE, image);
 
 					if(option == JOptionPane.OK_OPTION){
 						partie.abandonner(joueurActuel);
@@ -385,8 +388,10 @@ public class FenetreJeu extends JFrame{
 						else
 							message+="Le joueur BLANC remporte la partie";
 					 	
-						jop.showMessageDialog(null, message); 						
-						System.exit(0);
+						jop.showMessageDialog(null, message); 
+						//retour au menu	
+						Partie p = new Partie();
+						dispose();					
 					}
 				}
 			});

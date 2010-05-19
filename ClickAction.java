@@ -91,10 +91,10 @@ public class ClickAction extends MouseAdapter {
 /* 
 	on doit cliquer pour faire jouer l'ia
 */
-			int profondeur = 1;
-			if(this.fenetre.partie.plateau.getJoueurActuel() == 1) {
-				deroulementMouvement(chercherMeilleurCoup(mouvementsValides(1), profondeur));
-			}
+			// int profondeur = 1;
+			// if(this.fenetre.partie.plateau.getJoueurActuel() == 1) {
+			// 	deroulementMouvement(chercherMeilleurCoup(mouvementsValides(1), profondeur));
+			// }
 /*			
 	fin ia
 */
