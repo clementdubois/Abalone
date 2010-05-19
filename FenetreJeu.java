@@ -40,6 +40,8 @@ public class FenetreJeu extends JFrame{
     private JMenuItem enregistrer = new JMenuItem("Enregistrer"),
 					  enregistrerSous = new JMenuItem("Enregistrer Sous"),
               		  charger = new JMenuItem("Charger"),
+										enregistrerPosition = new JMenuItem("Enregistrer position"),
+										chargerPosition = new JMenuItem("Charger Position"),
                       lancer = new JMenuItem("Lancer la partie"),
 	    			  arreter 	= new JMenuItem("Arreter la partie"),
 					  abandonner= new JMenuItem("Abandonner la partie"),
@@ -68,9 +70,11 @@ public class FenetreJeu extends JFrame{
 		//Pour le JFileChooser
 			//Les partie seront sauvegardees dans le dossier sauvegarde
 			JFileChooser fileChooser = new JFileChooser("sauvegarde/");
+			JFileChooser fileChooserPos = new JFileChooser("positions/");
+			
 			//Les filtres
-			AbFileFilter zFiltre = new AbFileFilter();
 			AbFileFilter filtre = new AbFileFilter(".ab", "Fichier Abalone");
+			AbFileFilter posFiltre = new AbFileFilter(".pos", "Fichier Abalone de position de depart");
 			File file;
 		
 
@@ -101,13 +105,13 @@ public class FenetreJeu extends JFrame{
     public FenetreJeu(Partie partie){
 			super();
 			this.partie = partie;
-            this.setTitle("Abalone");
-            this.setSize(LARGEUR,HAUTEUR);
+			this.setTitle("Abalone");
+			this.setSize(LARGEUR,HAUTEUR);
 			this.setResizable(false);
-            this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            this.setLocationRelativeTo(null);
+			this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			this.setLocationRelativeTo(null);
 			container.setBackground(couleurFond);
-            container.setLayout(new BorderLayout());
+			container.setLayout(new BorderLayout());
 			this.listener = new ClickAction(this);
 			this.pan = new Panneau(partie.plateau,listener);
 
@@ -115,8 +119,9 @@ public class FenetreJeu extends JFrame{
 			pan.repaint();
 
 				//On ajoute nos filtres sur la partie
-						this.fileChooser.addChoosableFileFilter(zFiltre);
 						this.fileChooser.addChoosableFileFilter(filtre);
+						this.fileChooserPos.addChoosableFileFilter(posFiltre);
+						
 				
         //On initialise le menu stop
         stop.setEnabled(false);
@@ -248,9 +253,7 @@ public class FenetreJeu extends JFrame{
 							public void actionPerformed(ActionEvent arg0) {
 								ObjectOutputStream oos ;
 								//S'il ne s'agit pas du premier enregistrement !
-								System.out.println("Avant");
 								if(file != null){
-									System.out.println("Pas le premier");
 									try {
 
 										oos = new ObjectOutputStream(new FileOutputStream(file));
@@ -321,6 +324,36 @@ public class FenetreJeu extends JFrame{
 						}
 					}			
 				});
+				enregistrerPosition.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, KeyEvent.CTRL_DOWN_MASK));
+				enregistrerPosition.addActionListener(new ActionListener(){
+
+					public void actionPerformed(ActionEvent arg0) {
+						if(fileChooserPos.showSaveDialog(null) == JFileChooser.APPROVE_OPTION){
+							file = fileChooserPos.getSelectedFile();
+							//Si l'extension est valide
+							if(fileChooserPos.getFileFilter().accept(file))
+							{
+								try {
+
+									ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(file));
+									//On enregistre uniquement la position des billes du pateau en cours
+									oos.writeObject(partie.plateau.cases);
+									oos.close();
+
+								} catch (FileNotFoundException e) {
+									e.printStackTrace();
+								} catch (IOException e) {
+									e.printStackTrace();
+								}
+							}
+							else{
+								//Si vous n'avez pas spécifié une extension valide ! 
+								JOptionPane alert = new JOptionPane();
+								alert.showMessageDialog(null, "Erreur: votre fichier doit avoir l'extension .pos! \nVotre sauvegarde a échoué !", "Erreur", JOptionPane.ERROR_MESSAGE);
+							}
+						}
+					}			
+				});
 				charger.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
 				charger.addActionListener(new ActionListener(){
 					public void actionPerformed(ActionEvent e){
@@ -354,10 +387,48 @@ public class FenetreJeu extends JFrame{
 						}
 					}
 				});
+				chargerPosition.addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent e){
+						if(fileChooserPos.showOpenDialog(null) ==JFileChooser.APPROVE_OPTION){
+							file = fileChooserPos.getSelectedFile();
+							if(fileChooserPos.getFileFilter().accept(file))
+							{
+								try {
+
+									ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
+									//On charge les nouvelles cases (une position ne change pas l'etat de la partie)
+									partie.plateau.cases = ((Case[])ois.readObject());
+									ois.close();
+									//On rafraichit pour voir la partie chargee
+									rafraichir(partie.plateau);
+									//On remplace le dernier coups par le coups charger
+									partie.dernierCoup.setUserObject(new Codage(partie.plateau));
+									partie.coups.reload();
+					
+
+								} catch (FileNotFoundException e1) {
+									e1.printStackTrace();
+								} catch (IOException e1) {
+									e1.printStackTrace();
+								} catch (ClassNotFoundException e2) {
+									e2.printStackTrace();
+								}
+							}
+							else{
+								JOptionPane alert = new JOptionPane();
+								alert.showMessageDialog(null, "Erreur d'extension de fichier ! \nVotre chargement a échoué !", "Erreur", JOptionPane.ERROR_MESSAGE);
+							}
+						}
+					}
+				});
 				
 				m_partie.add(enregistrer);
 				m_partie.add(enregistrerSous);
+				m_partie.add(enregistrerPosition);
 				m_partie.add(charger);
+				m_partie.add(chargerPosition);
+				
+				
 			//--------------FIN Menu Partie-----------------
 			//Menu Lancement
     	lancer.addActionListener(startPartie);

@@ -44,6 +44,19 @@ public class Partie implements Serializable{
 		f = new FenetreJeu(this);
 	}
 	
+	/** Creer une partie avec une position de depart*/
+	public Partie(Case[] position){
+		terminee = false;
+		//On créer un plateau avec une position de depart
+		plateau = new Plateau(position); 
+		//On initialise l'arbre de coups avec le premier plateau (ca sera la racine)
+		dernierCoup = new DefaultMutableTreeNode(new Codage(plateau));
+		coups = new DefaultTreeModel(dernierCoup);
+
+		//On lance la fenetre graphique
+		f = new FenetreJeu(this);
+	}
+	
 	/** Un joueur abandonne la partie, la partie est terminee et l'autre joueur gagne
 	* @param numJ le numero du joueur qui abandonne (1 ou 2)
 	*/

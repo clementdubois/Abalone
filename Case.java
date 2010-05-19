@@ -2,7 +2,7 @@ import java.lang.*;
 import java.util.*;
 import java.io.*;
 
-public class Case implements Serializable, Cloneable{
+public class Case implements Serializable{
 /**
  * contientBille permet de savoir si la case contient effectivement une bille jouable.
  * C'est lui qui doit etre mis à jour.	

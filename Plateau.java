@@ -2,7 +2,7 @@ import java.util.*;
 import java.io.*;
 
 
-public class Plateau implements Serializable, Cloneable{
+public class Plateau implements Serializable{
 	/** la case trou (0) dans la liste des cases, la numero 0 est celle reservee au trou */
 	public final static int TROU = 0;
 
@@ -92,6 +92,24 @@ public class Plateau implements Serializable, Cloneable{
 		associerNotations();
 		//Pour chaque pion on enregistre ses points adjacents
 		casesAdjacentes();
+	}
+	
+	/** Creer un plateau avec des emplacements de billes deja definis*/
+	public Plateau(Case[] c){
+		//Initialisation du joueur en cour
+		joueurActuel = 1;
+		//Initialisation du num de coup
+		numCoup = 0;
+		//Initialisation du score
+		score = new int[2];
+		score[NOIR-1] = 0;
+		score[BLANC-1] = 0;
+		
+		//On place les billes sur le plateau
+		cases = c;
+		
+		associerNotations();
+
 	}
 	//--------------------------------------ACCESSEURS-----------------------------------
 			/** Renvoie le numero du joueur en cour
