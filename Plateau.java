@@ -441,7 +441,7 @@ public class Plateau implements Serializable{
 		}
 		i = 1;
 		for(byte numCase = 11 ; numCase <= 26 ; numCase += (longueurLigne[++i])) { // le bord haut droit
-			System.out.println(numCase);
+			// System.out.println(numCase);
 			byte[] tempVecteurs4 = {HD, DD};
 			cases[numCase].setVecteursNuls(tempVecteurs4);
 			cases[getNumCaseOpposee(numCase)].setVecteursNulsOpposes(tempVecteurs4); // son opposé

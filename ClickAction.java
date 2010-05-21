@@ -1,5 +1,12 @@
+import java.awt.*;
 import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.event.*;
+import java.io.*;
+import java.util.*;
+import javax.swing.filechooser.FileFilter;
 import javax.swing.tree.*;
+
 
 	/**Cette classe permet de gerer les clicksouris sur le plateau */
 public class ClickAction extends MouseAdapter {
@@ -104,7 +111,7 @@ public class ClickAction extends MouseAdapter {
 		if(nbClick == 1){
 			premiere = transcription(event.getY(),event.getX());
 			if(fenetre.partie.plateau.chercheBilles(fenetre.partie.plateau.getJoueurActuel()).contains((byte)premiere)){
-				System.out.println("premiere-clicked: " + premiere);
+				System.out.println("premiere bille: " + premiere);
 				fenetre.rafraichirBS1(premiere);
 				nbClick = 2;
 			}
@@ -118,7 +125,7 @@ public class ClickAction extends MouseAdapter {
 			deuxieme = transcription(event.getY(),event.getX());
 			//On verifie que le joueur ne selectionne pas les billes adverses
 			if(fenetre.partie.plateau.chercheBilles(fenetre.partie.plateau.getJoueurActuel()).contains((byte)deuxieme)){
-				System.out.println("deuxieme-clicked: " + deuxieme);
+				System.out.println("deuxieme bille: " + deuxieme);
 				//on recupere la bille intermediaire aux 2 billes selectionnees
 				intermediaire = fenetre.partie.plateau.caseIntermediaire((byte)premiere, (byte)deuxieme);
 				fenetre.rafraichirBS2(deuxieme,intermediaire);
@@ -159,12 +166,12 @@ public class ClickAction extends MouseAdapter {
 			else if(vecteur > deuxieme && xv < xb) vecteur = 3; //deplacement bas-gauche
 			
 			
-			System.out.println("vecteur-clicked: " + vecteur);
+			System.out.println("vecteur: " + vecteur);
 			
-			System.out.println("xb: " + xb);
-			System.out.println("xv: " + xv);
-			System.out.println("yb: " + yb);
-			System.out.println("yv: " + yv);
+			// System.out.println("xb: " + xb);
+			// System.out.println("xv: " + xv);
+			// System.out.println("yb: " + yb);
+			// System.out.println("yv: " + yv);
 			
 			//Le mouvement est effectuee seulement si la position et le numero du vecteur est valide
 			int difX = xv - xb;
@@ -245,6 +252,7 @@ public class ClickAction extends MouseAdapter {
 
 	public void deroulementMouvement(int premiere, int deuxieme, int vecteur){
 		boolean is_valid;
+		int gagnant = 0;
 		
 		Mouvement m = new Mouvement((byte)premiere, (byte)deuxieme, (byte)vecteur);
 		
@@ -281,6 +289,19 @@ public class ClickAction extends MouseAdapter {
 		//On rafraichie graphiquement
 		fenetre.rafraichir(fenetre.partie.plateau);
 		
+		gagnant = fenetre.partie.vainqueur();
+		if(gagnant != 0){
+			JOptionPane jop = new JOptionPane();
+			String message = "La partie se termine par K.O.\n";
+			if(gagnant == Partie.NOIR)
+				message+="Le joueur NOIR remporte la partie";
+			else
+				message+="Le joueur BLANC remporte la partie";
+			
+			jop.showMessageDialog(null, message); 	
+			Partie p = new Partie();
+			fenetre.dispose();	
+		}
 		
 	}
 	
