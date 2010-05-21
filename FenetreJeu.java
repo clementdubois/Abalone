@@ -164,13 +164,14 @@ public class FenetreJeu extends JFrame{
 			//On initialise le JTree avec le TreeModele de la partie
 			arbre = new JTree(partie.coups);
 			arbre.addTreeSelectionListener(new ChoixCoupArbre());
-			arbre.setPreferredSize(new Dimension(100,50));
+			arbre.setPreferredSize(new Dimension(150,300));
 			arbre.setCellRenderer(new MonRenderer());
 			
-			treePanel.add(new JScrollPane(arbre)); 	
 			treePanel.setPreferredSize(new Dimension(150,300));
+			treePanel.add(new JScrollPane(arbre), BorderLayout.CENTER); 	
+			
 			//initialisation finale de la fenetre
-			container.add(treePanel, BorderLayout.EAST);
+			container.add(new JScrollPane(treePanel), BorderLayout.EAST);
 			container.add(scoreBox,BorderLayout.SOUTH);
       		container.add(pan, BorderLayout.CENTER);	
 			this.getContentPane().add(container);
