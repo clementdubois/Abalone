@@ -7,18 +7,15 @@ import javax.swing.filechooser.FileFilter;
 
 public class FenetreMenu extends JFrame{
 	
-	public static Partie partie;
-	public FenetreJeu f;
 	private Menu menu;
     private JPanel container = new JPanel();
 	private final static int LARGEUR=558;
 	private final static int HAUTEUR=692;
 	private int x,y,click;
 	
-	public FenetreMenu(Partie partie){
+	public FenetreMenu(){
 		super();
-		this.click = 0;
-		this.partie = partie;
+		// this.click = 0;
         this.setTitle("Abalone");
         this.setSize(LARGEUR,HAUTEUR);
 		this.setResizable(false);
@@ -32,34 +29,41 @@ public class FenetreMenu extends JFrame{
 		            x = event.getX();
 					y = event.getY();
 					
+					//Demarrer une partie
 					 if(x>113 && x<454 && y>146 && y<245 && event.getButton() == MouseEvent.BUTTON1){
-						if(click == 0){
-							menu.rafraichirMenu(1);
-							click = 1;
-						}	
-						else if(click == 1){
-							f = new FenetreJeu(FenetreMenu.partie);
-							click = 0;
+						// if(click == 0){
+						// 							menu.rafraichirMenu(1);
+						// 							click = 1;
+						// 						}	
+						// 						else if(click == 1){
+							Partie p = new Partie();
+							// click = 0;
 							menu.rafraichirMenu(0); 
 							dispose(); 
-						}
+						// }
 					 }
+					//Charger une partie
+					if(x>113 && x<454 && y>350 && y<449 && event.getButton() == MouseEvent.BUTTON1){
+						//File chooser pour choisir une partie à charger
+						//On ouvre la fenetre de jeu avec la partie à charger
+					}
 					
+					//Quitter
 					if(x>113 && x<454 && y>430 && y<529 && event.getButton() == MouseEvent.BUTTON1){
-						if(click == 0){
-							menu.rafraichirMenu(3);
-							click = 1;
-						}	
-						else if(click == 1){
-							click = 0;
+						// if(click == 0){
+						// 							menu.rafraichirMenu(3);
+						// 							click = 1;
+						// 						}	
+						// 						else if(click == 1){
+							// click = 0;
 							menu.rafraichirMenu(0);
 							System.exit(0); 
-						}
+						// }
 					 }
 					
 					if(event.getButton() == MouseEvent.BUTTON3){	
 						menu.rafraichirMenu(0);            	
-			 			click = 0;
+			 			// click = 0;
 					}	
 		     }			
 		

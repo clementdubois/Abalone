@@ -13,12 +13,11 @@ public class Jeu {
 	
 	public static void main(String args[])throws Exception{
 
+
+	 //On lance le menu de jeu
+	FenetreMenu f = new FenetreMenu();
 		
-		Partie p = new Partie();
-		Plateau pla = p.plateau;
-		System.out.println("--------------"+pla);
-		Codage cod = new Codage(pla);
-		System.out.println(cod.decodage());
+		
 		// try{Thread.sleep(3000);}catch(Exception e){}
 		// p.listener.deroulementMouvement(1,1,3);
 		// try{Thread.sleep(3000);}catch(Exception e){}
