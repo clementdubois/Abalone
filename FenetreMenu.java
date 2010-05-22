@@ -13,8 +13,18 @@ public class FenetreMenu extends JFrame{
 	private final static int HAUTEUR=692;
 	private int x,y,click;
 	
+	/** Pour charger une partie*/
+			//Les partie seront chargees dans le dossier sauvegarde
+			JFileChooser fileChooser = new JFileChooser("sauvegarde/");
+			//Les filtres
+			AbFileFilter filtre = new AbFileFilter(".ab", "Fichier Abalone");
+			File file;
+	
 	public FenetreMenu(){
 		super();
+		//Filtre pour le chargement
+		this.fileChooser.addChoosableFileFilter(filtre);
+		
 		// this.click = 0;
         this.setTitle("Abalone");
         this.setSize(LARGEUR,HAUTEUR);
@@ -43,10 +53,44 @@ public class FenetreMenu extends JFrame{
 						// }
 					 }
 					//Charger une partie
-					if(x>113 && x<454 && y>350 && y<449 && event.getButton() == MouseEvent.BUTTON1){
+					if(x>113 && x<454 && y>280 && y<379 && event.getButton() == MouseEvent.BUTTON1){
 						//File chooser pour choisir une partie à charger
 						//On ouvre la fenetre de jeu avec la partie à charger
+						if(fileChooser.showOpenDialog(null) ==JFileChooser.APPROVE_OPTION){
+							file = fileChooser.getSelectedFile();
+							if(fileChooser.getFileFilter().accept(file))
+							{
+								try {
+
+									ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
+									//On charge la partie
+		
+									Partie partie = new Partie((Partie)ois.readObject());
+									ois.close();
+									//On rafraichit pour voir la partie chargee
+									partie.f.rafraichir(partie.plateau);
+									partie.f.arbre.setModel(partie.coups);
+									partie.coups.reload();
+
+
+								} catch (FileNotFoundException e1) {
+									e1.printStackTrace();
+								} catch (IOException e1) {
+									e1.printStackTrace();
+								} catch (ClassNotFoundException e2) {
+									e2.printStackTrace();
+								}
+							}
+							else{
+								JOptionPane alert = new JOptionPane();
+								alert.showMessageDialog(null, "Erreur d'extension de fichier ! \nVotre chargement a échoué !", "Erreur", JOptionPane.ERROR_MESSAGE);
+							}
+						}
+						
+						menu.rafraichirMenu(0); 
+						dispose();
 					}
+				
 					
 					//Quitter
 					if(x>113 && x<454 && y>430 && y<529 && event.getButton() == MouseEvent.BUTTON1){

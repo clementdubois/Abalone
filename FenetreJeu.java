@@ -617,25 +617,7 @@ public class FenetreJeu extends JFrame{
 	      }
 	    }
 	
-	/** Filtre pour le JFileChooser (sauvegarde et chargement de partie)*/
-	public class AbFileFilter extends FileFilter{
-
-		private String extension = ".ab", description = "Fichier Abalone";
-		public AbFileFilter(){}
-
-		public AbFileFilter(String ext, String descrip){
-			this.extension = ext;
-			this.description = descrip;
-		}
-
-		public boolean accept(File file){
-			return (file.isDirectory() || file.getName().endsWith(this.extension));
-		}
-
-		public String getDescription(){
-			return this.extension + " - " + this.description;
-		}	
-	}
+	
 	
 	/** Permet de redefinir le DefaultTreeCellRenderer et d'avoir une modification d'icones de l'arbre personnalisee*/
 	private class MonRenderer extends DefaultTreeCellRenderer {
@@ -678,5 +660,25 @@ public class FenetreJeu extends JFrame{
 	
 
 
+}
+
+/** Filtre pour le JFileChooser (sauvegarde et chargement de partie)*/
+class AbFileFilter extends FileFilter{
+
+	private String extension = ".ab", description = "Fichier Abalone";
+	public AbFileFilter(){}
+
+	public AbFileFilter(String ext, String descrip){
+		this.extension = ext;
+		this.description = descrip;
+	}
+
+	public boolean accept(File file){
+		return (file.isDirectory() || file.getName().endsWith(this.extension));
+	}
+
+	public String getDescription(){
+		return this.extension + " - " + this.description;
+	}	
 }
 

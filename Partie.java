@@ -57,6 +57,18 @@ public class Partie implements Serializable{
 		f = new FenetreJeu(this);
 	}
 	
+	/** Pour le chargement d'une partie*/
+	public Partie(Partie p){
+		terminee = p.terminee;
+		gagnant = p.gagnant;
+		plateau = new Plateau(p.plateau);
+		dernierCoup = p.dernierCoup;
+		coups = new DefaultTreeModel(dernierCoup);
+		coups = p.coups;
+			//On lance la fenetre graphique
+			f = new FenetreJeu(this);
+	}
+	
 	/** Un joueur abandonne la partie, la partie est terminee et l'autre joueur gagne
 	* @param numJ le numero du joueur qui abandonne (1 ou 2)
 	*/

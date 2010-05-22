@@ -111,6 +111,19 @@ public class Plateau implements Serializable{
 		associerNotations();
 
 	}
+	
+	/** Constructeur par copie*/
+	public Plateau(Plateau p){
+			cases = p.cases;
+			joueurActuel = p.getJoueurActuel();
+			numCoup = p.getNumCoup();
+			score = new int[2];
+			score[0] = p.getScore(NOIR);
+			score[1] = p.getScore(BLANC);
+			associerNotations();
+			//Pour chaque pion on enregistre ses points adjacents
+			casesAdjacentes();
+	}
 	//--------------------------------------ACCESSEURS-----------------------------------
 			/** Renvoie le numero du joueur en cour
 			* @return le numero du jouer actuel (1 pour le J1 NOIR et 2 pour le J2 BLANC)
