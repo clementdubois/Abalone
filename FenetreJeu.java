@@ -34,6 +34,7 @@ public class FenetreJeu extends JFrame{
 				  lancement  = new JMenu("Lancement"),
     		      forme      = new JMenu("Niveaux"),
     			  difficulte = new JMenu("Difficulte"),
+						edition		= new JMenu("Edition"),
     		      aPropos    = new JMenu("Info");
 
     private JMenuItem enregistrer = new JMenuItem("Enregistrer"),
@@ -45,6 +46,10 @@ public class FenetreJeu extends JFrame{
 	    			  arreter 	= new JMenuItem("Arreter la partie"),
 					  abandonner= new JMenuItem("Abandonner la partie"),
 	    			  quitter 	= new JMenuItem("Quitter"),
+							viderPlateau = new JMenuItem("Vider plateau"),
+							ajouterBille = new JMenuItem("Ajouter billes"),
+							supprimerBille = new JMenuItem("Supprimer billes"),
+							marquerBille = new JMenuItem("Marquer billes"),
 	    			  aProposItem = new JMenuItem("?");
 
 
@@ -253,6 +258,7 @@ public class FenetreJeu extends JFrame{
     private void initMenu(){
 
     	//------------Menu partie---------------
+				//Enregistrer une partie
         enregistrer.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK));
 				enregistrer.addActionListener(new ActionListener(){
 
@@ -301,6 +307,7 @@ public class FenetreJeu extends JFrame{
 							}			
 				
 				});
+				//Enregistrer une partie sous
 				enregistrerSous.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_S, KeyEvent.CTRL_DOWN_MASK + KeyEvent.SHIFT_DOWN_MASK));
 				enregistrerSous.addActionListener(new ActionListener(){
 
@@ -330,6 +337,7 @@ public class FenetreJeu extends JFrame{
 						}
 					}			
 				});
+				//Enregistrer l'etat d'une plateau comme un position de départ possible pour une partie
 				enregistrerPosition.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, KeyEvent.CTRL_DOWN_MASK));
 				enregistrerPosition.addActionListener(new ActionListener(){
 
@@ -360,6 +368,7 @@ public class FenetreJeu extends JFrame{
 						}
 					}			
 				});
+				//Charger une partie
 				charger.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_O, KeyEvent.CTRL_DOWN_MASK));
 				charger.addActionListener(new ActionListener(){
 					public void actionPerformed(ActionEvent e){
@@ -393,6 +402,8 @@ public class FenetreJeu extends JFrame{
 						}
 					}
 				});
+				//Charger une position
+				charger.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, KeyEvent.CTRL_DOWN_MASK));
 				chargerPosition.addActionListener(new ActionListener(){
 					public void actionPerformed(ActionEvent e){
 						if(fileChooserPos.showOpenDialog(null) ==JFileChooser.APPROVE_OPTION){
@@ -428,6 +439,7 @@ public class FenetreJeu extends JFrame{
 					}
 				});
 				
+				//On ajoute les sous menu au menu partie
 				m_partie.add(enregistrer);
 				m_partie.add(enregistrerSous);
 				m_partie.add(enregistrerPosition);
@@ -436,6 +448,35 @@ public class FenetreJeu extends JFrame{
 				
 				
 			//--------------FIN Menu Partie-----------------
+			//--------------Menu Edition--------------------
+				//Vider le plateau de jeu
+				viderPlateau.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.CTRL_DOWN_MASK));
+				enregistrer.addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent arg0){}
+				});
+				//Mode suppression de billes
+				ajouterBille.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.CTRL_DOWN_MASK));
+				ajouterBille.addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent arg0){}
+				});
+				//Mode ajout de billes
+				supprimerBille.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, KeyEvent.CTRL_DOWN_MASK));
+				supprimerBille.addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent arg0){}
+				});
+				//Mode marquage de billes
+				marquerBille.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, KeyEvent.CTRL_DOWN_MASK));
+				marquerBille.addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent arg0){}
+				});
+				
+				//On ajoute les sous menu au menu edition
+				edition.add(viderPlateau);
+				edition.add(ajouterBille);
+				edition.add(supprimerBille);
+				edition.add(marquerBille);
+				
+			//--------------FIN Menu Edition----------------
 			//Menu Lancement
     	lancer.addActionListener(startPartie);
     	//On attribue l'accélerateur c
@@ -483,7 +524,7 @@ public class FenetreJeu extends JFrame{
     	});
     	lancement.add(quitter);
 
-		bg.add(facile);
+		  bg.add(facile);
     	bg.add(difficile);
     	bg.add(moyen);
     	bg.add(maitre);
@@ -517,6 +558,9 @@ public class FenetreJeu extends JFrame{
     	// Ajout des menus dans la barre de menus.
 			m_partie.setMnemonic('S');
 			menuBar.add(m_partie);
+			
+			edition.setMnemonic('E');
+			menuBar.add(edition);
 			
     	lancement.setMnemonic('L');
     	menuBar.add(lancement);
