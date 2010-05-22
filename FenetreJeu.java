@@ -386,6 +386,7 @@ public class FenetreJeu extends JFrame{
 									rafraichir(partie.plateau);
 									arbre.setModel(partie.coups);
 									partie.coups.reload();
+									expandAll();
 
 								} catch (FileNotFoundException e1) {
 									e1.printStackTrace();
@@ -451,8 +452,16 @@ public class FenetreJeu extends JFrame{
 			//--------------Menu Edition--------------------
 				//Vider le plateau de jeu
 				viderPlateau.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.CTRL_DOWN_MASK));
-				enregistrer.addActionListener(new ActionListener(){
-					public void actionPerformed(ActionEvent arg0){}
+				viderPlateau.addActionListener(new ActionListener(){
+					public void actionPerformed(ActionEvent arg0){
+						//On vide le plateau de jeu
+						partie.plateau.viderPlateau();
+						//On rafraichit les données de l'arbre
+						partie.changementPlateau();
+						//On rafraichit graphiquement
+						rafraichir(partie.plateau);
+						
+					}
 				});
 				//Mode suppression de billes
 				ajouterBille.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.CTRL_DOWN_MASK));

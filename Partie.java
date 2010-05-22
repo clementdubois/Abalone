@@ -101,6 +101,14 @@ public class Partie implements Serializable{
 	  return gagnant;
 	}
 			
+		/** Modifie les données liées à l'arbre lors d'un changement de l'etat du plateau*/
+		public void changementPlateau(){
+			DefaultMutableTreeNode last = new DefaultMutableTreeNode(new Codage(plateau));
+			dernierCoup.add(last);
+			coups.reload();
+			dernierCoup = last;
+			
+		}
 	
 	
 }

@@ -274,19 +274,12 @@ public class ClickAction extends MouseAdapter {
 				fenetre.partie.plateau.setScore();
 			
 			//On ajoute le nouveau plateau comme fils
-			DefaultMutableTreeNode last = new DefaultMutableTreeNode(new Codage(fenetre.partie.plateau));
-			fenetre.partie.dernierCoup.add(last);
-			fenetre.partie.coups.reload();
-			fenetre.partie.dernierCoup = last;
-			fenetre.expandAll(fenetre.arbre);
-			
-			//On teste pour voir le parent et lui meme
-			// System.out.println("Nouveau Fils = "+((Codage)(noeuFils.getUserObject())).decodage() );
-			// 			System.out.println("Le parent = "+((Codage)(((DefaultMutableTreeNode)(noeuFils.getParent())).getUserObject())).decodage());
+			fenetre.partie.changementPlateau();
 			
 		}
 		
 		//On rafraichie graphiquement
+		fenetre.expandAll(fenetre.arbre);
 		fenetre.rafraichir(fenetre.partie.plateau);
 		
 		gagnant = fenetre.partie.vainqueur();

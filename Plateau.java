@@ -183,7 +183,21 @@ public class Plateau implements Serializable{
 
 				return true;
 			}
+			
+			/** Changer les billes sur le plateau*/
+			public void setCases(Case[] c){
+				for(int i=0; i<NB_CASES; i++){
+					this.cases[i].setContenu(c[i].getContenu());
+				}
+			}
 	//------------------------------------------------------------------------------------------------
+	
+	/** Vider le plateau*/
+	public void viderPlateau(){
+		for(int i=1; i<NB_CASES; i++){
+			this.cases[i].setContenu(Case.VIDE);
+		}
+	}
 	
 	/** Affiche une partie en console avec le System*/
 	public String toString(){
