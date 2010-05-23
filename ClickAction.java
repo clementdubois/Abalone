@@ -15,7 +15,7 @@ public class ClickAction extends MouseAdapter {
 	/** La fenetre de jeu sur lequel s'applique le click action*/
 	private FenetreJeu fenetre; 
   /** Les billes selectionner lors de clique*/
-	private int premiere,deuxieme,vecteur,intermediaire;
+	private byte premiere,deuxieme,vecteur, troisieme, intermediaire;
 	/** Les coordonnees des cliques*/
 	private int yb,yv,xb,xv;
 	int x,y;
@@ -115,6 +115,7 @@ public class ClickAction extends MouseAdapter {
 
 		//Si on à juste appuyé sur le clique c'est qu'on veut selectionner une bille pour un mouvement
 		if(event.getButton() == MouseEvent.BUTTON1 && event.getModifiersEx() == 0){
+			//C'est le premier clique pour la sélection en vue d'un mouvement
 			if(nbClick == 1){
 				premiere = transcription(event.getY(),event.getX());
 				if(fenetre.partie.plateau.chercheBilles(fenetre.partie.plateau.getJoueurActuel()).contains((byte)premiere)){
@@ -125,7 +126,7 @@ public class ClickAction extends MouseAdapter {
 				else{
 					System.out.println("Attention, ne cliquez que sur vos billes ! \n");
 				}	
-			}
+			}//C'est le deuxieme clique pour selectionner les autres billes du mouvement
 			else if(nbClick == 2){
 				yb = event.getY();
 				xb = event.getX();
@@ -141,64 +142,16 @@ public class ClickAction extends MouseAdapter {
 				else{
 					System.out.println("Attention, ne cliquez que sur vos billes ! \n");
 				}	
-			}
+			}//C'est le clique qui va determiner dans quel direction on veut déplacer la bille (avant => 53 lignes, après => 11)
 			else if(nbClick == 3){
-				xv = event.getX();
-				yv = event.getY();
-				vecteur = transcription(event.getY(),event.getX());
+				troisieme = transcription(event.getY(),event.getX());
 
-				x = (xb - (xb % Panneau.TAILLEIM));
-				y = (yb - (yb % Panneau.TAILLEIM));
-
-				//Le plateau d'abalone a des lignes decales, ils faut donc verifier les coordonnees pour tester le vecteur avec les bonnes donnees 
-				if((y/Panneau.TAILLEIM)%2 == 1){
-					//dans un soucis de precision, on prend comme coordonnee le centre de la bille
-					if(xb % Panneau.TAILLEIM <= Panneau.TAILLEIM/2)
-						xb = x;
-					else
-						xb = x + Panneau.TAILLEIM;
-				}
-				else{
-					//et donc, le decalage a effectuer est different pour une ligne pair ou impair
-					xb = x + Panneau.TAILLEIM/2;
-				}
-				yb = y + Panneau.TAILLEIM/2;	
-
-				//En comparant la position du 2eme et 3eme clique, on peut savoir le numero du vecteur engendre
-				if(vecteur == deuxieme - 1) vecteur = 4; //deplacement a gauche
-				else if(vecteur == deuxieme + 1) vecteur = 1; //deplacement a droite
-				else if(vecteur < deuxieme && xv > xb) vecteur = 0; //deplacement haut-droite 
-				else if(vecteur < deuxieme && xv < xb) vecteur = 5; //deplacement haut-gauche
-				else if(vecteur > deuxieme && xv > xb) vecteur = 2; //deplacement bas-droite
-				else if(vecteur > deuxieme && xv < xb) vecteur = 3; //deplacement bas-gauche
-
-
-				System.out.println("vecteur: " + vecteur);
-
-				// System.out.println("xb: " + xb);
-				// System.out.println("xv: " + xv);
-				// System.out.println("yb: " + yb);
-				// System.out.println("yv: " + yv);
-
-				//Le mouvement est effectuee seulement si la position et le numero du vecteur est valide
-				int difX = xv - xb;
-				int difY = yv - yb;
-
-				if(difX <= 0) difX = - difX;
-				if(difY <= 0) difY = - difY;
-
-
-				if(difX > Panneau.TAILLEIM * 1.9 || difY > Panneau.TAILLEIM * 1.9){
-					System.out.println("\nMouvement invalide, ne cliquez pas trop loin de vos billes !\n");
-					fenetre.rafraichir(fenetre.partie.plateau);
-				}
-				else if(vecteur<=5){
+				//On vérifie que la deuxieme selectionnee a un vecteur par rapport a la troisieme
+			  if((vecteur = fenetre.partie.plateau.cases[deuxieme].vecteurAdjacent(troisieme) )!= -1){
 					deroulementMouvement(premiere,deuxieme,vecteur);
 				}
 				else{
-					System.out.println("Mouvement invalide !\n");
 					fenetre.rafraichir(fenetre.partie.plateau);
-
 				}	
 				nbClick = 1;
 			}
@@ -246,7 +199,7 @@ public class ClickAction extends MouseAdapter {
 	* @param yy L'ordonne du clique.
 	* @return Le numero de la case correspondant a l'endroit du clique.
 	*/
-	public int transcription(int xx,int yy){
+	public byte transcription(int xx,int yy){
 		int caseSelected =0;
 		x = xx;
 		y = yy;
@@ -273,7 +226,7 @@ public class ClickAction extends MouseAdapter {
 		else if(x==7) caseSelected = y + 51 - 2;
 		else if(x==8) caseSelected = y + 57 - 2; 
 			
-		return caseSelected;		
+		return (byte)caseSelected;		
 	}
 	
 	/** Gere le deroulement d'un mouvement a  partir des coordonnees envoyees par l'interface
@@ -283,11 +236,11 @@ public class ClickAction extends MouseAdapter {
 	* @param vecteur sens du deplacement
 	*/
 
-	public void deroulementMouvement(int premiere, int deuxieme, int vecteur){
+	public void deroulementMouvement(byte premiere, byte deuxieme, byte vecteur){
 		boolean is_valid;
 		int gagnant = 0;
 		
-		Mouvement m = new Mouvement((byte)premiere, (byte)deuxieme, (byte)vecteur);
+		Mouvement m = new Mouvement(premiere, deuxieme, vecteur);
 		
 		// On verifie le mouvement 
 		is_valid = m.valider(fenetre.partie.plateau);

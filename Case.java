@@ -97,17 +97,26 @@ public class Case implements Serializable{
 				return vecteurs[direction];
 			}
 			
-			/** Retourne vrai si le parametre est une case adjacente a this*/
-			public boolean estAdjacent(byte numAdjacent){
+			/** Retourne vrai si le parametre est une case adjacente a this par le vecteur direction*/
+			public boolean estAdjacent(byte numAdjacent, byte direction){
+					//Si la case adjacente est numAdjacent alors on renvoi true
+					if(getAdjacent(direction) == numAdjacent)
+						return true;
+					else
+						return false;
+			}
+			
+			/** Renvoie le vecteur d'adjacence de this a numAdjacent s'il éxiste un lien, sinon renvoie -1*/
+			public byte vecteurAdjacent(byte numAdjacent){
 				//On teste tous les vecteurs
 				for(byte i=0; i<6; i++){
-					//Si la case adjacente est numAdjacent alors on renvoi true
-					if(getAdjacent(i) == numAdjacent)
-						return true;
+					//Si la case adjacente est numAdjacent alors on renvoi le vecteur en commun
+					if(estAdjacent(numAdjacent, i))
+						return i;
 				}
 				
-				//On a pas trouvé la case adjacente
-				return false;
+				//Il n'y a pas le vecteur commun
+				return (byte)(-1);
 			}
 
 	    /** @return Le numero de la ligne ou est situee la case*/
