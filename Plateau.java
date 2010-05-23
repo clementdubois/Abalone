@@ -199,6 +199,11 @@ public class Plateau implements Serializable{
 		}
 	}
 	
+	/** Vider une case du tableau*/
+	public void supprimerBille(int numCase){
+		this.cases[numCase].setContenu(Case.VIDE);
+	}
+	
 	/** Affiche une partie en console avec le System*/
 	public String toString(){
 		String afficher="";

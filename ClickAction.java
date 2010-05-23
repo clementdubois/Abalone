@@ -101,6 +101,7 @@ public class ClickAction extends MouseAdapter {
 	* -CTRL + ALT + Clique gauche => Marquer une bille (édition)      (640)
 	*/
 	public void mouseClicked(MouseEvent event){
+		int numCaseSelectionner = transcription(event.getY(),event.getX());
 /* 
 	on doit cliquer pour faire jouer l'ia
 */
@@ -207,10 +208,14 @@ public class ClickAction extends MouseAdapter {
 		else if(event.getButton() == MouseEvent.BUTTON3 && event.getModifiersEx() == 0){	            	
  			nbClick = 1;
 			fenetre.rafraichir(fenetre.partie.plateau);
-			System.out.println("Mouvement reinitialise !");
 		}//Supprimer bille
 		else if ((event.getModifiersEx())  == 128 && event.getButton() == MouseEvent.BUTTON1) {
-		        System.out.println("supprimer");
+					//On efface la bille du plateau
+		       fenetre.partie.plateau.supprimerBille(numCaseSelectionner);
+					//On met à jour le noeud modifié
+					fenetre.partie.dernierCoup.setUserObject(new Codage(fenetre.partie.plateau));
+					//On rafraichit graphiquement
+					fenetre.rafraichir(fenetre.partie.plateau);					
 		}//Ajouter bille noir
 		else if ((event.getModifiersEx())  == 512 && event.getButton() == MouseEvent.BUTTON1) {
 		        System.out.println("ajouté noir");
