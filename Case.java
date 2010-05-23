@@ -96,6 +96,19 @@ public class Case implements Serializable{
 			public byte getAdjacent(byte direction){
 				return vecteurs[direction];
 			}
+			
+			/** Retourne vrai si le parametre est une case adjacente a this*/
+			public boolean estAdjacent(byte numAdjacent){
+				//On teste tous les vecteurs
+				for(byte i=0; i<6; i++){
+					//Si la case adjacente est numAdjacent alors on renvoi true
+					if(getAdjacent(i) == numAdjacent)
+						return true;
+				}
+				
+				//On a pas trouvé la case adjacente
+				return false;
+			}
 
 	    /** @return Le numero de la ligne ou est situee la case*/
 			public byte getNumLigne() {
