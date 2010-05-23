@@ -101,11 +101,19 @@ public class Partie implements Serializable{
 	  return gagnant;
 	}
 			
-		/** Modifie les données liées à l'arbre lors d'un changement de l'etat du plateau*/
-		public void changementPlateau(){
+		/** Modifie les données liées à l'arbre lors d'un changement de l'etat du plateau
+		* @param frere indique s'il faut creer un noeud frere (true) ou fils (false)
+		*
+		*/
+		public void changementPlateau( ){
+			//Creer un nouveau noeud a partie du plateau
 			DefaultMutableTreeNode last = new DefaultMutableTreeNode(new Codage(plateau));
+			//On ajoute last comme dernier coups
 			dernierCoup.add(last);
+			
+			//On recharge le modele
 			coups.reload();
+			//Le dernier coup change de position
 			dernierCoup = last;
 			
 		}

@@ -33,6 +33,9 @@ public class Plateau implements Serializable{
 	/** Score actuel de chaque joueur*/
 	protected int[] score;
 	
+	/** Savoir si le plateau actuel est le résultat du'n mouvement ou d'une édition*/
+	private boolean isEdited;
+	
 	
 	/**
 	 * l'association entre notation officielle et notation byte
@@ -76,6 +79,8 @@ public class Plateau implements Serializable{
 		associerNotations();
 		//Pour chaque pion on enregistre ses points adjacents
 		casesAdjacentes();
+		//Il ne s'agit pas d'une édition
+		isEdited = false;
 	}
 	
 	/** Constructeur de chargement de plateau
@@ -92,6 +97,8 @@ public class Plateau implements Serializable{
 		associerNotations();
 		//Pour chaque pion on enregistre ses points adjacents
 		casesAdjacentes();
+		//Il ne s'agit pas d'une édition
+		isEdited = false;
 	}
 	
 	/** Creer un plateau avec des emplacements de billes deja definis*/
@@ -109,7 +116,8 @@ public class Plateau implements Serializable{
 		cases = c;
 		
 		associerNotations();
-
+		//Il ne s'agit pas d'une édition
+		isEdited = false;
 	}
 	
 	/** Constructeur par copie*/
@@ -120,6 +128,21 @@ public class Plateau implements Serializable{
 			score = new int[2];
 			score[0] = p.getScore(NOIR);
 			score[1] = p.getScore(BLANC);
+			isEdited = p.isEdition();
+			associerNotations();
+			//Pour chaque pion on enregistre ses points adjacents
+			casesAdjacentes();
+	}
+	
+	/** Constructeur par copie pour une édition*/
+	public Plateau(Plateau p, boolean edition){
+			cases = p.cases;
+			joueurActuel = p.getJoueurActuel();
+			numCoup = p.getNumCoup();
+			score = new int[2];
+			score[0] = p.getScore(NOIR);
+			score[1] = p.getScore(BLANC);
+			isEdited = true;
 			associerNotations();
 			//Pour chaque pion on enregistre ses points adjacents
 			casesAdjacentes();
@@ -189,6 +212,16 @@ public class Plateau implements Serializable{
 				for(int i=0; i<NB_CASES; i++){
 					this.cases[i].setContenu(c[i].getContenu());
 				}
+			}
+			
+			/** Le plateau résulte-t-il d'une édition ou d'un mouvement */
+			public boolean isEdition(){
+				return isEdited;
+			}
+			
+			/** Indiquer si le plateau resulte d'une edition*/
+			public void setEdited(boolean b){
+				isEdited = b;
 			}
 	//------------------------------------------------------------------------------------------------
 	

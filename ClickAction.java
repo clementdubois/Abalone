@@ -165,26 +165,21 @@ public class ClickAction extends MouseAdapter {
 		else if ((event.getModifiersEx())  == 128 && event.getButton() == MouseEvent.BUTTON1) {
 					//On efface la bille du plateau
 		       fenetre.partie.plateau.supprimerBille(numCaseSelectionner);
-					//On met à jour le noeud modifié
-					fenetre.partie.dernierCoup.setUserObject(new Codage(fenetre.partie.plateau));
-					//On rafraichit graphiquement
-					fenetre.rafraichir(fenetre.partie.plateau);					
+					//On gere les modifications
+					modifications();
+							
 		}//Ajouter bille noire
 		else if ((event.getModifiersEx())  == 512 && event.getButton() == MouseEvent.BUTTON1) {
 		        //On remplace la case selectionnée par une bille noire
 			       fenetre.partie.plateau.cases[numCaseSelectionner].setContenu(Case.NOIR);
-						//On met à jour le noeud modifié
-						fenetre.partie.dernierCoup.setUserObject(new Codage(fenetre.partie.plateau));
-						//On rafraichit graphiquement
-						fenetre.rafraichir(fenetre.partie.plateau);
+						//On gere les modifications
+						modifications();
 		}//Ajouter bille blanche
 		else if ((event.getModifiersEx())  == 512 && event.getButton() == MouseEvent.BUTTON3) {
 		        //On remplace la case selectionnée par une bille noire
 			       fenetre.partie.plateau.cases[numCaseSelectionner].setContenu(Case.BLANC);
-						//On met à jour le noeud modifié
-						fenetre.partie.dernierCoup.setUserObject(new Codage(fenetre.partie.plateau));
-						//On rafraichit graphiquement
-						fenetre.rafraichir(fenetre.partie.plateau);
+					  //On gere les modifications
+						modifications();
 		}//Ajouter marquage
 		else if ((event.getModifiersEx())  == 640 && event.getButton() == MouseEvent.BUTTON1) {
 		        System.out.println("marquer");
@@ -258,6 +253,8 @@ public class ClickAction extends MouseAdapter {
 				fenetre.partie.plateau.setNumCoup();
 				//On verifie si il faut incrementer le score de la partie
 				fenetre.partie.plateau.setScore();
+				//Il ne s'agit pas d'une edition
+				fenetre.partie.plateau.setEdited(false);
 			
 			//On ajoute le nouveau plateau comme fils
 			fenetre.partie.changementPlateau();
@@ -282,6 +279,23 @@ public class ClickAction extends MouseAdapter {
 			fenetre.dispose();	
 		}
 		
+	}
+	
+	public void modifications(){
+		//Si il ne s'agissait pas d'un plateau résultant d'une édition alors on creer un noeud frere qui est une edition
+		if(!fenetre.partie.plateau.isEdition()){
+			//On met à jour le noeud modifié
+			fenetre.partie.changementPlateau();
+			//On indique que le plateau est le résultat d'une édition
+			fenetre.partie.plateau.setEdited(true);
+		}//Sinon on rafraichit juste le noeud courant
+		else{
+			//On met à jour le noeud modifié
+			fenetre.partie.dernierCoup.setUserObject(new Codage(fenetre.partie.plateau));
+		}
+		//On rafraichit graphiquement
+		fenetre.expandAll(fenetre.arbre);
+		fenetre.rafraichir(fenetre.partie.plateau);
 	}
 	
 	

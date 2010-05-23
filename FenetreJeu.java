@@ -405,7 +405,7 @@ public class FenetreJeu extends JFrame{
 					}
 				});
 				//Charger une position
-				charger.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, KeyEvent.CTRL_DOWN_MASK));
+				chargerPosition.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, KeyEvent.CTRL_DOWN_MASK));
 				chargerPosition.addActionListener(new ActionListener(){
 					public void actionPerformed(ActionEvent e){
 						if(fileChooserPos.showOpenDialog(null) ==JFileChooser.APPROVE_OPTION){
