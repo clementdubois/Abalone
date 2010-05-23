@@ -21,6 +21,7 @@ public class FenetreJeu extends JFrame{
 	private JPanel treePanel = new JPanel();
     private int x,y ;
 
+
 	//L'arbre de coups
 	public JTree arbre;
 	//Les deux variables de taille de fenetre
@@ -386,7 +387,7 @@ public class FenetreJeu extends JFrame{
 									rafraichir(partie.plateau);
 									arbre.setModel(partie.coups);
 									partie.coups.reload();
-									expandAll();
+									expandAll(arbre);
 
 								} catch (FileNotFoundException e1) {
 									e1.printStackTrace();

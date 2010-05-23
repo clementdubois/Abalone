@@ -93,6 +93,12 @@ public class ClickAction extends MouseAdapter {
 	
 	/**
 	* On surcharge la methode mouseClicked pour quelle recupere et envoie le numero des billes selectionnees.
+	* -Clique gauche => selection de bille														(0)
+	* -Clique droit => annuler selection															(0)
+	* -CTRL + Clique gauche => supprimer une bille (édition)    			(128)
+	* -ALT + Clique gauche => Ajouter une bille noir (édition)				(512)
+	* -ALT + Clique droit => Ajouter une bille blanche (édition)  	  (512)
+	* -CTRL + ALT + Clique gauche => Marquer une bille (édition)      (640)
 	*/
 	public void mouseClicked(MouseEvent event){
 /* 
@@ -104,104 +110,116 @@ public class ClickAction extends MouseAdapter {
 			// }
 /*			
 	fin ia
-*/
+*/	
 
-
-		
-		if(nbClick == 1){
-			premiere = transcription(event.getY(),event.getX());
-			if(fenetre.partie.plateau.chercheBilles(fenetre.partie.plateau.getJoueurActuel()).contains((byte)premiere)){
-				System.out.println("premiere bille: " + premiere);
-				fenetre.rafraichirBS1(premiere);
-				nbClick = 2;
+		//Si on à juste appuyé sur le clique c'est qu'on veut selectionner une bille pour un mouvement
+		if(event.getButton() == MouseEvent.BUTTON1 && event.getModifiersEx() == 0){
+			if(nbClick == 1){
+				premiere = transcription(event.getY(),event.getX());
+				if(fenetre.partie.plateau.chercheBilles(fenetre.partie.plateau.getJoueurActuel()).contains((byte)premiere)){
+					System.out.println("premiere bille: " + premiere);
+					fenetre.rafraichirBS1(premiere);
+					nbClick = 2;
+				}
+				else{
+					System.out.println("Attention, ne cliquez que sur vos billes ! \n");
+				}	
 			}
-			else{
-				System.out.println("Attention, ne cliquez que sur vos billes ! \n");
-			}	
+			else if(nbClick == 2){
+				yb = event.getY();
+				xb = event.getX();
+				deuxieme = transcription(event.getY(),event.getX());
+				//On verifie que le joueur ne selectionne pas les billes adverses
+				if(fenetre.partie.plateau.chercheBilles(fenetre.partie.plateau.getJoueurActuel()).contains((byte)deuxieme)){
+					System.out.println("deuxieme bille: " + deuxieme);
+					//on recupere la bille intermediaire aux 2 billes selectionnees
+					intermediaire = fenetre.partie.plateau.caseIntermediaire((byte)premiere, (byte)deuxieme);
+					fenetre.rafraichirBS2(deuxieme,intermediaire);
+					nbClick = 3;
+				}
+				else{
+					System.out.println("Attention, ne cliquez que sur vos billes ! \n");
+				}	
+			}
+			else if(nbClick == 3){
+				xv = event.getX();
+				yv = event.getY();
+				vecteur = transcription(event.getY(),event.getX());
+
+				x = (xb - (xb % Panneau.TAILLEIM));
+				y = (yb - (yb % Panneau.TAILLEIM));
+
+				//Le plateau d'abalone a des lignes decales, ils faut donc verifier les coordonnees pour tester le vecteur avec les bonnes donnees 
+				if((y/Panneau.TAILLEIM)%2 == 1){
+					//dans un soucis de precision, on prend comme coordonnee le centre de la bille
+					if(xb % Panneau.TAILLEIM <= Panneau.TAILLEIM/2)
+						xb = x;
+					else
+						xb = x + Panneau.TAILLEIM;
+				}
+				else{
+					//et donc, le decalage a effectuer est different pour une ligne pair ou impair
+					xb = x + Panneau.TAILLEIM/2;
+				}
+				yb = y + Panneau.TAILLEIM/2;	
+
+				//En comparant la position du 2eme et 3eme clique, on peut savoir le numero du vecteur engendre
+				if(vecteur == deuxieme - 1) vecteur = 4; //deplacement a gauche
+				else if(vecteur == deuxieme + 1) vecteur = 1; //deplacement a droite
+				else if(vecteur < deuxieme && xv > xb) vecteur = 0; //deplacement haut-droite 
+				else if(vecteur < deuxieme && xv < xb) vecteur = 5; //deplacement haut-gauche
+				else if(vecteur > deuxieme && xv > xb) vecteur = 2; //deplacement bas-droite
+				else if(vecteur > deuxieme && xv < xb) vecteur = 3; //deplacement bas-gauche
+
+
+				System.out.println("vecteur: " + vecteur);
+
+				// System.out.println("xb: " + xb);
+				// System.out.println("xv: " + xv);
+				// System.out.println("yb: " + yb);
+				// System.out.println("yv: " + yv);
+
+				//Le mouvement est effectuee seulement si la position et le numero du vecteur est valide
+				int difX = xv - xb;
+				int difY = yv - yb;
+
+				if(difX <= 0) difX = - difX;
+				if(difY <= 0) difY = - difY;
+
+
+				if(difX > Panneau.TAILLEIM * 1.9 || difY > Panneau.TAILLEIM * 1.9){
+					System.out.println("\nMouvement invalide, ne cliquez pas trop loin de vos billes !\n");
+					fenetre.rafraichir(fenetre.partie.plateau);
+				}
+				else if(vecteur<=5){
+					deroulementMouvement(premiere,deuxieme,vecteur);
+				}
+				else{
+					System.out.println("Mouvement invalide !\n");
+					fenetre.rafraichir(fenetre.partie.plateau);
+
+				}	
+				nbClick = 1;
+			}
+			
 		}
-		else if(nbClick == 2){
-			yb = event.getY();
-			xb = event.getX();
-			deuxieme = transcription(event.getY(),event.getX());
-			//On verifie que le joueur ne selectionne pas les billes adverses
-			if(fenetre.partie.plateau.chercheBilles(fenetre.partie.plateau.getJoueurActuel()).contains((byte)deuxieme)){
-				System.out.println("deuxieme bille: " + deuxieme);
-				//on recupere la bille intermediaire aux 2 billes selectionnees
-				intermediaire = fenetre.partie.plateau.caseIntermediaire((byte)premiere, (byte)deuxieme);
-				fenetre.rafraichirBS2(deuxieme,intermediaire);
-				nbClick = 3;
-			}
-			else{
-				System.out.println("Attention, ne cliquez que sur vos billes ! \n");
-			}	
-		}
-		else if(nbClick == 3){
-			xv = event.getX();
-			yv = event.getY();
-			vecteur = transcription(event.getY(),event.getX());
-			
-			x = (xb - (xb % Panneau.TAILLEIM));
-			y = (yb - (yb % Panneau.TAILLEIM));
-			
-			//Le plateau d'abalone a des lignes decales, ils faut donc verifier les coordonnees pour tester le vecteur avec les bonnes donnees 
-			if((y/Panneau.TAILLEIM)%2 == 1){
-				//dans un soucis de precision, on prend comme coordonnee le centre de la bille
-				if(xb % Panneau.TAILLEIM <= Panneau.TAILLEIM/2)
-					xb = x;
-				else
-					xb = x + Panneau.TAILLEIM;
-			}
-			else{
-				//et donc, le decalage a effectuer est different pour une ligne pair ou impair
-				xb = x + Panneau.TAILLEIM/2;
-			}
-			yb = y + Panneau.TAILLEIM/2;	
-				
-			//En comparant la position du 2eme et 3eme clique, on peut savoir le numero du vecteur engendre
-			if(vecteur == deuxieme - 1) vecteur = 4; //deplacement a gauche
-			else if(vecteur == deuxieme + 1) vecteur = 1; //deplacement a droite
-			else if(vecteur < deuxieme && xv > xb) vecteur = 0; //deplacement haut-droite 
-			else if(vecteur < deuxieme && xv < xb) vecteur = 5; //deplacement haut-gauche
-			else if(vecteur > deuxieme && xv > xb) vecteur = 2; //deplacement bas-droite
-			else if(vecteur > deuxieme && xv < xb) vecteur = 3; //deplacement bas-gauche
-			
-			
-			System.out.println("vecteur: " + vecteur);
-			
-			// System.out.println("xb: " + xb);
-			// System.out.println("xv: " + xv);
-			// System.out.println("yb: " + yb);
-			// System.out.println("yv: " + yv);
-			
-			//Le mouvement est effectuee seulement si la position et le numero du vecteur est valide
-			int difX = xv - xb;
-			int difY = yv - yb;
-			
-			if(difX <= 0) difX = - difX;
-			if(difY <= 0) difY = - difY;
-			
-
-			if(difX > Panneau.TAILLEIM * 1.9 || difY > Panneau.TAILLEIM * 1.9){
-				System.out.println("\nMouvement invalide, ne cliquez pas trop loin de vos billes !\n");
-				fenetre.rafraichir(fenetre.partie.plateau);
-			}
-			else if(vecteur<=5){
-				deroulementMouvement(premiere,deuxieme,vecteur);
-			}
-			else{
-				System.out.println("Mouvement invalide !\n");
-				fenetre.rafraichir(fenetre.partie.plateau);
-
-			}	
-			nbClick = 1;
-		}
-		
 		//Un clique droit reinitialise la selection des billes
-		if(event.getButton() == MouseEvent.BUTTON3)	
-		{	            	
+		else if(event.getButton() == MouseEvent.BUTTON3 && event.getModifiersEx() == 0){	            	
  			nbClick = 1;
 			fenetre.rafraichir(fenetre.partie.plateau);
 			System.out.println("Mouvement reinitialise !");
+		}//Supprimer bille
+		else if ((event.getModifiersEx())  == 128 && event.getButton() == MouseEvent.BUTTON1) {
+		        System.out.println("supprimer");
+		}//Ajouter bille noir
+		else if ((event.getModifiersEx())  == 512 && event.getButton() == MouseEvent.BUTTON1) {
+		        System.out.println("ajouté noir");
+		}//Ajouter bille blanche
+		else if ((event.getModifiersEx())  == 512 && event.getButton() == MouseEvent.BUTTON3) {
+		        System.out.println("ajouté blanche");
+		}//Ajouter marquage
+		else if ((event.getModifiersEx())  == 640 && event.getButton() == MouseEvent.BUTTON1) {
+		        System.out.println("marquer");
 		}
 		
 	}
