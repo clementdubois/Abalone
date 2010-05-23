@@ -216,12 +216,22 @@ public class ClickAction extends MouseAdapter {
 					fenetre.partie.dernierCoup.setUserObject(new Codage(fenetre.partie.plateau));
 					//On rafraichit graphiquement
 					fenetre.rafraichir(fenetre.partie.plateau);					
-		}//Ajouter bille noir
+		}//Ajouter bille noire
 		else if ((event.getModifiersEx())  == 512 && event.getButton() == MouseEvent.BUTTON1) {
-		        System.out.println("ajouté noir");
+		        //On remplace la case selectionnée par une bille noire
+			       fenetre.partie.plateau.cases[numCaseSelectionner].setContenu(Case.NOIR);
+						//On met à jour le noeud modifié
+						fenetre.partie.dernierCoup.setUserObject(new Codage(fenetre.partie.plateau));
+						//On rafraichit graphiquement
+						fenetre.rafraichir(fenetre.partie.plateau);
 		}//Ajouter bille blanche
 		else if ((event.getModifiersEx())  == 512 && event.getButton() == MouseEvent.BUTTON3) {
-		        System.out.println("ajouté blanche");
+		        //On remplace la case selectionnée par une bille noire
+			       fenetre.partie.plateau.cases[numCaseSelectionner].setContenu(Case.BLANC);
+						//On met à jour le noeud modifié
+						fenetre.partie.dernierCoup.setUserObject(new Codage(fenetre.partie.plateau));
+						//On rafraichit graphiquement
+						fenetre.rafraichir(fenetre.partie.plateau);
 		}//Ajouter marquage
 		else if ((event.getModifiersEx())  == 640 && event.getButton() == MouseEvent.BUTTON1) {
 		        System.out.println("marquer");
