@@ -31,23 +31,17 @@ public class ClickAction extends MouseAdapter {
 
 	private Mouvement chercherMeilleurCoup(Vector<Mouvement> mouvementsValides, int profondeur) {
 		// on evalue chaque plateau.
-		Mouvement meilleur = new Mouvement((byte)1, (byte)1, (byte)1);
-		float meilleurScore = 0;
-		float scoreActuel = 0;
+		Mouvement meilleur = mouvementsValides.get(0);
+		double meilleurScore = 0.0;
+		double scoreActuel = 0.0;
 		for(int i = 0; i < mouvementsValides.size(); i++) {
-			scoreActuel = evaluerPlateau();
+			scoreActuel = IA.fonctionEvaluation(this.fenetre.partie.plateau , mouvementsValides.get(i));
 			if(scoreActuel > meilleurScore) {
 				meilleurScore = scoreActuel;
 				meilleur = mouvementsValides.get(i);
 			}
 		}
 		return meilleur;
-	}
-	
-	
-	private float evaluerPlateau() {
-		return 1;
-		// evaluer les differents criteres
 	}
 	
 	private void deroulementMouvement(Plateau p, Mouvement m) {
@@ -104,6 +98,7 @@ public class ClickAction extends MouseAdapter {
 			 int profondeur = 1;
 			 if(this.fenetre.partie.plateau.getJoueurActuel() == 1) {
 			 	deroulementMouvement(fenetre.partie.plateau, chercherMeilleurCoup(fenetre.partie.plateau.mouvementsValides(1), profondeur));
+				return;
 			 }
 /*			
 	fin ia

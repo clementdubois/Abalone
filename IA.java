@@ -1,3 +1,5 @@
+import java.util.*;
+
 
 public class IA {
 	// temps : java.util.*; <= Timer	
@@ -41,22 +43,79 @@ public class IA {
 	
 	
 	public IA() {
-		
+		this.deep = 1;
+		this.nom  = "neuneu";
 	}
 /*
 	public IA(String nom) {
 		this.nom = nom;
 	}
+*/
+	
+	public static double fonctionEvaluation(Plateau p, Mouvement m) {	
+		double 	position	= 1.1;
+		
+		
+		
+		// correspond au score cumule de toutes les billes.
+		// le score positionnel d'une bille correspond au minimum des 6 distances vis a vis du bord : un deplacement correspond a score+=1.
+		
+/*		
+		int typePartie = 0; // 0 => debut de partie, 1 => midgame, 2 => fin de partie
+		
+		if (typePartie == 0) {
+			
+		}
+*/
+		Plateau temporaire = new Plateau(p);
+		temporaire.effectuer(m);
+		
+		
+		
+		return 1.0;
+		
+	}
+
+	private double evaluerSumito(Mouvement m) {
+		if(
+	
+		// determine si l'adversaire pourra s'en sortir au prochain coup.
+		if() {
+			scoreSumito *= 2;
+		}
+	
+	
+		return 1.0;
+	}
+	
+	private double evaluerSecurite() {
+		
+	}
+	
+	private double trouverBillesInutiles() {
+		return 1.0;
+	}
+	
+/*	
+	private regroupementAuCentre() {
+		double position = 5.0; // on augmente de façon considérable le coefficient associe a la position.
+	}
 */	
 	
+	
 /**
- * fonction d'evaluation
- *
- 	public float evaluerPlateau() {
- 		
- 	}
- */
- 
+ * rechercher les billes en danger (lorsque l'adversaire n'a qu'une seule bille a ejecter on regarde d'abord si il a des billes a ejecter pour ne pas perdre de temps)
+ */ 
+
+	private Vector billesEnDanger (Plateau p) {
+		Vector billesEnDanger = new Vector();
+/*
+	ici on doit simplement ajouter au vecteur toute bille impliquée par un mouvement de l'adversaire qui amene une bille dans cases[0]
+*/		
+		return billesEnDanger;
+	}
+	
+	
 /**
  * alpha-beta
  */
