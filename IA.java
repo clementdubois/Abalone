@@ -5,6 +5,8 @@ public class IA {
 	// temps : java.util.*; <= Timer	
 	// vkaenemi@ee.ethz.ch - ssilvan@ee.ethz.ch
 	
+	byte numJoueur;
+	
 /**
  * son petit nom
  */
@@ -45,6 +47,7 @@ public class IA {
 	public IA() {
 		this.deep = 1;
 		this.nom  = "neuneu";
+		this.numJoueur = 0;
 	}
 /*
 	public IA(String nom) {
@@ -69,7 +72,9 @@ public class IA {
 */
 		Plateau temporaire = new Plateau(p);
 		temporaire.effectuer(m);
-		
+		temporaire.setScore();
+		if(temporaire.score[0] != p.score[0])
+			return 10.0;
 		
 		
 		return 1.0;
@@ -77,6 +82,7 @@ public class IA {
 	}
 
 	private double evaluerSumito(Mouvement m) {
+	/*
 		if(
 	
 		// determine si l'adversaire pourra s'en sortir au prochain coup.
@@ -84,12 +90,12 @@ public class IA {
 			scoreSumito *= 2;
 		}
 	
-	
+	*/
 		return 1.0;
 	}
 	
 	private double evaluerSecurite() {
-		
+		return 1.0;
 	}
 	
 	private double trouverBillesInutiles() {
