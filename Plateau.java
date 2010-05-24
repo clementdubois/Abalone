@@ -123,7 +123,9 @@ public class Plateau implements Serializable{
 	
 	/** Constructeur par copie*/
 	public Plateau(Plateau p){
-			cases = p.cases;
+			this.cases = new Case[NB_CASES];
+			for(byte i=0; i<NB_CASES; i++)
+				this.cases[i] = new Case(i, p.cases[i].getContenu());
 			joueurActuel = p.getJoueurActuel();
 			numCoup = p.getNumCoup();
 			score = new int[2];
