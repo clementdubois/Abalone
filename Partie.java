@@ -118,5 +118,8 @@ public class Partie implements Serializable{
 			
 		}
 	
+	public byte getNbBillesAEjecter() {
+		return this.NB_BILLES_EJECTER;
+	}
 	
 }

@@ -28,21 +28,6 @@ public class ClickAction extends MouseAdapter {
 		//La fenetre sur lequel s'applique le clickAction
 		this.fenetre = fen;
 	}
-
-	private Mouvement chercherMeilleurCoup(Vector<Mouvement> mouvementsValides, int profondeur) {
-		// on evalue chaque plateau.
-		Mouvement meilleur = mouvementsValides.get(0);
-		double meilleurScore = 0.0;
-		double scoreActuel = 0.0;
-		for(int i = 0; i < mouvementsValides.size(); i++) {
-			scoreActuel = IA.fonctionEvaluation(this.fenetre.partie.plateau , mouvementsValides.get(i));
-			if(scoreActuel > meilleurScore) {
-				meilleurScore = scoreActuel;
-				meilleur = mouvementsValides.get(i);
-			}
-		}
-		return meilleur;
-	}
 	
 	private void deroulementMouvement(Plateau p, Mouvement m) {
 		
@@ -80,7 +65,7 @@ public class ClickAction extends MouseAdapter {
 		
 					
 	}
-	
+
 	/**
 	* On surcharge la methode mouseClicked pour quelle recupere et envoie le numero des billes selectionnees.
 	* -Clique gauche => selection de bille														(0)
@@ -97,7 +82,7 @@ public class ClickAction extends MouseAdapter {
 */
 			 int profondeur = 1;
 			 if(this.fenetre.partie.plateau.getJoueurActuel() == 1) {
-			 	deroulementMouvement(fenetre.partie.plateau, chercherMeilleurCoup(fenetre.partie.plateau.mouvementsValides(1), profondeur));
+			 	deroulementMouvement(fenetre.partie.plateau, IA.jouer(this.fenetre.partie.plateau, 1, 1));
 				return;
 			 }
 /*			
