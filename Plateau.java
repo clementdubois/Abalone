@@ -73,7 +73,8 @@ public class Plateau implements Serializable{
 		//On indique un numero a chaque case (en deux etapes obligatoire car sinon cases = NULL et cases[i] est donc impossible)
 		for(byte i=0; i<NB_CASES; i++)
 			this.cases[i] = new Case(i);
-			
+		
+		
 		//On remplit les cases
 		initialiser();
 		associerNotations();
