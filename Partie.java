@@ -20,7 +20,7 @@ public class Partie implements Serializable{
  */
 	protected boolean terminee;
 	
-	protected final byte NB_BILLES_EJECTER = 1; 
+	protected final byte NB_BILLES_EJECTER = 2; 
 	
 	/** La fenetre de la partie*/
 	public transient FenetreJeu f;
@@ -118,5 +118,8 @@ public class Partie implements Serializable{
 			
 		}
 	
+	public byte getNbBillesAEjecter() {
+		return this.NB_BILLES_EJECTER;
+	}
 	
 }

@@ -6,6 +6,22 @@ public class IA {
 	// vkaenemi@ee.ethz.ch - ssilvan@ee.ethz.ch
 	
 /**
+ * permettra de calculer l'efficacite...
+ */ 
+	long tempsDeReflexion;
+	
+/**
+ * coefficients
+ */ 
+	static double ejection = 3.0;
+	static double position = 2.0;
+	
+/**
+ * numero de joueur
+ */ 
+	static byte numJoueur 	= 0;
+	
+/**
  * son petit nom
  */
 	private String nom;
@@ -45,6 +61,7 @@ public class IA {
 	public IA() {
 		this.deep = 1;
 		this.nom  = "neuneu";
+		this.numJoueur = 0;
 	}
 /*
 	public IA(String nom) {
@@ -52,7 +69,30 @@ public class IA {
 	}
 */
 	
-	public static double fonctionEvaluation(Plateau p, Mouvement m) {	
+    public static Mouvement jouer(Plateau p, int niveauIA, int profondeur) {
+
+		long tempsAvt=0;
+        long tempsApres=0;
+        
+        long tempsDeReflexion=0; // normalement ici ca devrait etre this mais comme jouer est static on peut pas...
+        
+        tempsAvt = System.currentTimeMillis();
+		IA intelart = new IA();
+        Mouvement meilleurMouvement = intelart.meilleurCoup(p, niveauIA, profondeur);
+        tempsApres = System.currentTimeMillis();
+        
+        tempsDeReflexion = tempsApres-tempsAvt;
+        
+		   
+        return meilleurMouvement;
+    }
+	
+	private Mouvement meilleurCoup(Plateau p, int niveauIA, int profondeur) {
+		return new Mouvement((byte)1, (byte)1, (byte)1);
+	}
+	
+	
+	private double fonctionEvaluation(Plateau p, int numJoueur) {	 // sera private et pas static : elle evalue un plateau
 		double 	position	= 1.1;
 		
 		
@@ -68,15 +108,22 @@ public class IA {
 		}
 */
 		Plateau temporaire = new Plateau(p);
-		temporaire.effectuer(m);
+//		temporaire.effectuer(m);
+		temporaire.setScore();
+		
+		double valeurPlateau = 1;
 		
 		
+		if(temporaire.score[IA.numJoueur] != p.score[IA.numJoueur]) // sortie d'une bille 
+			valeurPlateau*=IA.ejection;
 		
-		return 1.0;
+		
+		return valeurPlateau;
 		
 	}
 
 	private double evaluerSumito(Mouvement m) {
+	/*
 		if(
 	
 		// determine si l'adversaire pourra s'en sortir au prochain coup.
@@ -84,12 +131,12 @@ public class IA {
 			scoreSumito *= 2;
 		}
 	
-	
+	*/
 		return 1.0;
 	}
 	
 	private double evaluerSecurite() {
-		
+		return 1.0;
 	}
 	
 	private double trouverBillesInutiles() {
@@ -114,16 +161,90 @@ public class IA {
 */		
 		return billesEnDanger;
 	}
+
+
+
+
+
 	
 	
 /**
  * alpha-beta
  */
 
+ 
+ 
+ 
+ 
+ 
 /**
  * minamax
  */
+ 
+ /*
+    private int minimax(Plateau p, int profondeur, int numJoueur)
+    {
+        int max;
+        int minimax = 0;
+        Plateau temporaire = new Plateau(p);
+		Vector<Mouvement> mouvementsValides = temporaire.mouvementsValides(numJoueur);
+        
+        if(tour == this.numJoueur)
+            max=Integer.MIN_VALUE;
+        else
+            max=Integer.MAX_VALUE;
 
+        if (profondeur>0)
+        {
+            for(int i=0; i<mouvementsValides.size();i++)
+            {
+                    boolean gagne = false;
+                    if (temporaire.partie.getNbBillesAEjecter() == )
+                        gagne = true;
+                    if(gagne)
+                    {
+                        if(tour == this.numJoueur)
+                            return Integer.MAX_VALUE;
+                        else
+                            return Integer.MIN_VALUE;
+
+                    }
+                    else
+                    {
+                        minimax=minimax(,profondeur-1,(numJoueur+1)%2);
+                        if(tour == this.numJoueur)
+                        {
+                            if(max<minimax)
+                            {
+                                  max=minimax;
+           
+                            }
+                        }
+                        else
+                        {
+                            if(max>minimax)
+                            {
+                                  max=minimax;
+                                  
+                            }
+                        }
+
+
+                    }
+
+                 }
+             
+             }
+        else
+            max=fonctionEvaluation(p, numJoueur);
+        
+        return max;
+    }
+    
+   
+
+ */
+ 
 /**
  * genetique : on garde les poids (associes aux facteurs) du vainqueur et on genere son nouveau challenger en prenant ses poids comme base (on applique une tres legere evolution)
  * il existe differentes manieres d'evoluer donc il nous faudra differentes branches d'evolution (une partie est declaree nulle au bout de 300 coups, et est consideree comme une defaite pour l'ia : ainsi on aura une approche offensive)
