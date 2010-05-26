@@ -562,7 +562,7 @@ public class Plateau implements Serializable{
 		
 		//On cherche les billes du joueur
 		Vector<Byte> billes = chercheBilles(joueurActuel);
-		
+
 		//Pour chaque bille on teste tous les mouvements de poussés possible
 		Iterator itr = billes.iterator();
 		while(itr.hasNext()){

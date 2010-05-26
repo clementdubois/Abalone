@@ -19,7 +19,7 @@ public class IA {
 /**
  * numero de joueur
  */ 
-	private byte numJoueur 	= 0;
+	public int numJoueur 	= 0;
 	
 /**
  * son petit nom
@@ -60,10 +60,10 @@ public class IA {
 	
 	
 	
-	public IA() {
+	public IA(int numJoueur) {
 		this.deep = 1;
 		this.nom  = "neuneu";
-		this.numJoueur = 0;
+		this.numJoueur = numJoueur;
 		this.niveauIA = 1;
 	}
 /*
@@ -80,7 +80,8 @@ public class IA {
         long tempsDeReflexion=0; // normalement ici ca devrait etre this mais comme jouer est static on peut pas...
         
         tempsAvt = System.currentTimeMillis();
-        Mouvement meilleurMouvement = meilleurCoup(p);
+		System.out.println("je suis le joueur 0 ou 1 : "+this.numJoueur);
+        Mouvement meilleurMouvement = meilleurCoup(p, p.mouvementsValides(this.numJoueur));
         tempsApres = System.currentTimeMillis();
         
         tempsDeReflexion = tempsApres-tempsAvt;
@@ -89,12 +90,31 @@ public class IA {
         return meilleurMouvement;
     }
 	
-	private Mouvement meilleurCoup(Plateau p) {
-		return new Mouvement((byte)1, (byte)1, (byte)2);
+	private Mouvement meilleurCoup(Plateau p, Vector<Mouvement> mouvementsValides) {
+
+		/*
+			On doit tester tous les mouvements (on le fera plus tard avec minimax puis avec minimax transformé en alpha beta lorsque je l'aurai codé)
+		*/
+		
+ 	    // on evalue chaque plateau.
+		System.out.println("nombre de mouvements"+mouvementsValides.size());
+		Mouvement meilleur = mouvementsValides.get(0);
+		double meilleurScore = 0.0;
+		double scoreActuel = 0.0;
+		for(int i = 0; i < mouvementsValides.size(); i++) {
+		  scoreActuel = fonctionEvaluation(p, mouvementsValides.get(i));
+		  if(scoreActuel > meilleurScore) {
+			meilleurScore = scoreActuel;
+			meilleur = mouvementsValides.get(i);
+		  }
+		}
+		return meilleur;		
+		
+		
 	}
 	
 	
-	private double fonctionEvaluation(Plateau p, int numJoueur) {	 // sera private et pas static : elle evalue un plateau
+	private double fonctionEvaluation(Plateau p, Mouvement m) {	 // sera private et pas static : elle evalue un plateau
 		double 	position	= 1.1;
 		
 		
@@ -110,13 +130,13 @@ public class IA {
 		}
 */
 		Plateau temporaire = new Plateau(p);
-//		temporaire.effectuer(m);
+		temporaire.effectuer(m);
 		temporaire.setScore();
 		
 		double valeurPlateau = 1;
 		
 		
-		if(temporaire.score[this.numJoueur] != p.score[this.numJoueur]) // sortie d'une bille 
+		if(temporaire.score[this.numJoueur-1] != p.score[this.numJoueur-1]) // sortie d'une bille 
 			valeurPlateau*=this.ejection;
 		
 		

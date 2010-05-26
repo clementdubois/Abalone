@@ -233,14 +233,18 @@ public class Partie implements Serializable{
 	/** Creer les instance d'ia suivant le type de partie*/
 	public void creerIA(int type){
 		//Si il n'y a qu'une IA dans la partie
-		if(type == 1 || type == 2){
+		if(type == 1){
 			IAs = new IA[1];
-			IAs[0] = new IA();
+			IAs[0] = new IA(BLANC);
+		}else if(type == 2) {
+			IAs = new IA[1];
+			IAs[0] = new IA(NOIR);
+		}
 		//Si il y a deux IAs
-		}else if(type == 3){
+		else if(type == 3){
 			IAs = new IA[2];
-			IAs[0] = new IA();
-			IAs[1] = new IA();
+			IAs[0] = new IA(NOIR);
+			IAs[1] = new IA(BLANC);
 		}
 			
 	}
@@ -251,15 +255,18 @@ public class Partie implements Serializable{
 		//Si il n'y a que des IA, l'index correspond au joueur Actuel -1
 		if(typeJoueur == 3 )
 			return (plateau.getJoueurActuel())-1;
+		else if(typeJoueur == 1){
+			return IAs[0].numJoueur;
+		}			
 		else
-		 return 0;
+			return 15;
 	}
 	
 	/** Fait jouer l'IA si c'est bien à elle de jouer*/
 	public void testerIA(){
 		//Si le joueurActuel est bien une IA
 		if(!estHumain()) {
-				Mouvement m = IAs[indexIA()].jouer(plateau);
+				Mouvement m = IAs[0/*indexIA()*/].jouer(plateau);
 				System.out.println(m);
 		 		deroulementMouvement(m.getPremiere(), m.getDerniere(), m.getVecteur());
 		 }
