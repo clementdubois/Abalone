@@ -15,7 +15,7 @@ public class FenetreJeu extends JFrame{
 	public Partie partie;
 	public FenetreMenu fm;
 	ClickAction listener;
-	private Panneau pan;
+	public Panneau pan;
 	private Menu menu;
     private JPanel container = new JPanel();
 	private JPanel treePanel = new JPanel();

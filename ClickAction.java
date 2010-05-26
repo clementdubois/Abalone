@@ -19,6 +19,8 @@ public class ClickAction extends MouseAdapter {
 	/** Les coordonnees des cliques*/
 	private int yb,yv,xb,xv;
 	int x,y;
+	Mouvement m;
+	byte cp;
 	
 	/** On evoie la partie associee a la fenetre pour pouvoir la modifier 
 	* @param p La partie sur laquel se deroule les actions.
@@ -42,18 +44,6 @@ public class ClickAction extends MouseAdapter {
 	*/
 	public void mouseClicked(MouseEvent event){
 		int numCaseSelectionner = transcription(event.getY(),event.getX());
-/* 
-	on doit cliquer pour faire jouer l'ia
-*/
-			 int profondeur = 1;
-					 			 if(!fenetre.partie.estHumain) {
-					 					Mouvement m = IA.jouer(this.fenetre.partie.plateau, 1, 1);
-					 			 		deroulementMouvement(m.getPremiere(), m.getDerniere, m.getVecteur());
-					 					return;
-					 			 }
-/*			
-	fin ia
-*/	
 	
 		//Les cliques sont actifs seulement si ce n'est pas à l'IA de jouer
 		if(fenetre.partie.estHumain()){
@@ -98,6 +88,7 @@ public class ClickAction extends MouseAdapter {
 						fenetre.rafraichir(fenetre.partie.plateau);
 					}	
 					nbClick = 1;
+
 				}
 			
 			}

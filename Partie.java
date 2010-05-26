@@ -42,8 +42,14 @@ public class Partie implements Serializable{
 	*  IA vs IA => 3
 	*/
 	public int typeJoueur = 0;
+	/** Les IA présente dans la partie (max 2 => IA vs IA)*/
+	public IA[] IAs;
 	
 	public Partie() {
+		// Pour la création d'IA
+		typeJoueur = choixJoueur();
+		creerIA(typeJoueur);
+		//La partie ne fait que commencé voyons!
 		terminee = false;
 		plateau = new Plateau(); 
 		//On initialise l'arbre de coups avec le premier plateau (ca sera la racine)
@@ -69,6 +75,10 @@ public class Partie implements Serializable{
 	
 	/** Pour le chargement d'une partie*/
 	public Partie(Partie p){
+		// Pour la création d'IA
+		typeJoueur = p.typeJoueur;
+		creerIA(typeJoueur);  // <== Prévoir un constructeur par copie pour l'IA
+		//On reprend les données de la partie chargée
 		terminee = p.terminee;
 		gagnant = p.gagnant;
 		plateau = new Plateau(p.plateau);
@@ -177,7 +187,6 @@ public class Partie implements Serializable{
 			
 			//On ajoute le nouveau plateau comme fils
 			changementPlateau();
-			
 		}
 		
 		//On rafraichie graphiquement
@@ -196,8 +205,64 @@ public class Partie implements Serializable{
 			
 			jop.showMessageDialog(null, message); 	
 			f.dispose();	
+			return;
 		}
 		
+		//On regarde si c'est a l'IA de jouer auquel cas on la fait jouer
+		testerIA();
+		
+	}
+	
+	/** Choix du type de partie ( JvsJ => 0, JvsIA => 1, JvsIA => 2, IA vs IA => 3)*/
+	public int choixJoueur(){
+		/*En attendant une version graphique*/
+		int type;
+		try {
+			System.out.println("Entrer en console le type de partie : JvsJ => 0, JvsIA => 1, JvsIA => 2, IA vs IA => 3");
+			System.out.println("Conseil: 0 pou ceux qui font pas l'IA, Sinon 1");
+				BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+				type = Integer.parseInt(new String(br.readLine()));
+		}catch(IOException e){
+			return 0;
+		}
+	
+		System.out.println("type :: "+type);
+		return type;
+	}
+	
+	/** Creer les instance d'ia suivant le type de partie*/
+	public void creerIA(int type){
+		//Si il n'y a qu'une IA dans la partie
+		if(type == 1 || type == 2){
+			IAs = new IA[1];
+			IAs[0] = new IA();
+		//Si il y a deux IAs
+		}else if(type == 3){
+			IAs = new IA[2];
+			IAs[0] = new IA();
+			IAs[1] = new IA();
+		}
+			
+	}
+	/** Permet de savoir quel IA doit jouer (0 ou 1) pour l'index du tableau IAs.
+	* Elle ne peut être appelé que si c'est actuellement à l'IA de jouer
+	*/
+	public int indexIA(){
+		//Si il n'y a que des IA, l'index correspond au joueur Actuel -1
+		if(typeJoueur == 3 )
+			return (plateau.getJoueurActuel())-1;
+		else
+		 return 0;
+	}
+	
+	/** Fait jouer l'IA si c'est bien à elle de jouer*/
+	public void testerIA(){
+		//Si le joueurActuel est bien une IA
+		if(!estHumain()) {
+				Mouvement m = IAs[indexIA()].jouer(plateau);
+				System.out.println(m);
+		 		deroulementMouvement(m.getPremiere(), m.getDerniere(), m.getVecteur());
+		 }
 	}
 	
 }

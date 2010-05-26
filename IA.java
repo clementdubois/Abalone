@@ -13,13 +13,13 @@ public class IA {
 /**
  * coefficients
  */ 
-	static double ejection = 3.0;
-	static double position = 2.0;
+	private double ejection = 3.0;
+	private double position = 2.0;
 	
 /**
  * numero de joueur
  */ 
-	static byte numJoueur 	= 0;
+	private byte numJoueur 	= 0;
 	
 /**
  * son petit nom
@@ -29,6 +29,8 @@ public class IA {
  * sur quelle profondeur l'ia effectuera-t-elle ses recherches.
  */
 	private byte deep;
+	/** Niveau de difficulté de l'IA*/
+	private int niveauIA;
 /**
  * la strategie a appliquer : on stockera des coefficient (des poids) associes a chacun des facteurs.
  */
@@ -62,6 +64,7 @@ public class IA {
 		this.deep = 1;
 		this.nom  = "neuneu";
 		this.numJoueur = 0;
+		this.niveauIA = 1;
 	}
 /*
 	public IA(String nom) {
@@ -69,7 +72,7 @@ public class IA {
 	}
 */
 	
-    public static Mouvement jouer(Plateau p, int niveauIA, int profondeur) {
+    public Mouvement jouer(Plateau p) {
 
 		long tempsAvt=0;
         long tempsApres=0;
@@ -77,8 +80,7 @@ public class IA {
         long tempsDeReflexion=0; // normalement ici ca devrait etre this mais comme jouer est static on peut pas...
         
         tempsAvt = System.currentTimeMillis();
-		IA intelart = new IA();
-        Mouvement meilleurMouvement = intelart.meilleurCoup(p, niveauIA, profondeur);
+        Mouvement meilleurMouvement = meilleurCoup(p);
         tempsApres = System.currentTimeMillis();
         
         tempsDeReflexion = tempsApres-tempsAvt;
@@ -87,8 +89,8 @@ public class IA {
         return meilleurMouvement;
     }
 	
-	private Mouvement meilleurCoup(Plateau p, int niveauIA, int profondeur) {
-		return new Mouvement((byte)1, (byte)1, (byte)1);
+	private Mouvement meilleurCoup(Plateau p) {
+		return new Mouvement((byte)1, (byte)1, (byte)2);
 	}
 	
 	
@@ -114,8 +116,8 @@ public class IA {
 		double valeurPlateau = 1;
 		
 		
-		if(temporaire.score[IA.numJoueur] != p.score[IA.numJoueur]) // sortie d'une bille 
-			valeurPlateau*=IA.ejection;
+		if(temporaire.score[this.numJoueur] != p.score[this.numJoueur]) // sortie d'une bille 
+			valeurPlateau*=this.ejection;
 		
 		
 		return valeurPlateau;
