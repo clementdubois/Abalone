@@ -2,6 +2,7 @@ import java.lang.*;
 import java.util.*;
 import java.io.*;
 import javax.swing.tree.*;
+import javax.swing.*;
 
 
 /**
@@ -32,6 +33,15 @@ public class Partie implements Serializable{
 	
 	/** Le gagnant de la partie, a 0 si personne n'a encore gagne*/
 	protected int gagnant = 0;
+	
+	/** Le type des joueur.
+	*
+	*  J vs J => 0
+	*  J vs IA => 1
+	*  IA vs J => 2
+	*  IA vs IA => 3
+	*/
+	public int typeJoueur = 0;
 	
 	public Partie() {
 		terminee = false;
@@ -81,6 +91,17 @@ public class Partie implements Serializable{
 		else if(numJ == BLANC){this.gagnant =  NOIR;}
 	}	
 	
+	/** Savoir quel est le type du joueur en cours.
+	* return true si c'est un joueur humain, false si c'est l'IA*/
+	public boolean estHumain(){
+		if(typeJoueur == 3 || (typeJoueur == 1 && plateau.getJoueurActuel() == BLANC) ||
+		    (typeJoueur == 2 && plateau.getJoueurActuel() == NOIR))
+						return false;
+		else
+						return true;
+	}
+	
+	
 	/** Verifie que la partie est terminee et renvoit le vainqueur
 	* @return 0 si la partie n'est pas fini, NOIR si le joueur 1 gagne, BLANC si le joueur deux gagne
 	*/	
@@ -120,6 +141,63 @@ public class Partie implements Serializable{
 	
 	public byte getNbBillesAEjecter() {
 		return this.NB_BILLES_EJECTER;
+	}
+	
+	/** Gere le deroulement d'un mouvement a  partir des coordonnees envoyees par l'interface
+	*
+	* @param premiere numero de case de la premiere bille
+	* @param deuxieme numero de case de a deuxieme bille
+	* @param vecteur sens du deplacement
+	*/
+
+	public void deroulementMouvement(byte premiere, byte deuxieme, byte vecteur){
+		boolean is_valid;
+		int gagnant = 0;
+		
+		Mouvement m = new Mouvement(premiere, deuxieme, vecteur);
+		
+		// On verifie le mouvement 
+		is_valid = m.valider(plateau);
+		//Si c'est valide on l'effectue
+		if(is_valid){
+			//On effectue le mouvement
+			plateau.effectuer(m);
+			//On affiche en console
+			plateau.afficher();
+			//On modifie l'etat de la partie
+				//On change le joueur courant
+				plateau.setJoueur();
+				
+				//On incremente le nombre de coups
+				plateau.setNumCoup();
+				//On verifie si il faut incrementer le score de la partie
+				plateau.setScore();
+				//Il ne s'agit pas d'une edition
+				plateau.setEdited(false);
+			
+			//On ajoute le nouveau plateau comme fils
+			changementPlateau();
+			
+		}
+		
+		//On rafraichie graphiquement
+		f.expandAll(f.arbre);
+		f.rafraichir(plateau);
+		
+		//On regarde si quelqu'un à gagné
+		gagnant = vainqueur();
+		if(gagnant != 0){
+			JOptionPane jop = new JOptionPane();
+			String message = "La partie se termine par K.O.\n";
+			if(gagnant == NOIR)
+				message+="Le joueur NOIR remporte la partie";
+			else
+				message+="Le joueur BLANC remporte la partie";
+			
+			jop.showMessageDialog(null, message); 	
+			f.dispose();	
+		}
+		
 	}
 	
 }

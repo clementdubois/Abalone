@@ -60,7 +60,7 @@ public class Plateau implements Serializable{
 
 	public Plateau() {
 		//Initialisation du joueur en cour
-		joueurActuel = 1;
+		joueurActuel = NOIR;
 		//Initialisation du num de coup
 		numCoup = 0;
 		//Initialisation du score

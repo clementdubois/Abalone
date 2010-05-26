@@ -29,42 +29,7 @@ public class ClickAction extends MouseAdapter {
 		this.fenetre = fen;
 	}
 	
-	private void deroulementMouvement(Plateau p, Mouvement m) {
-		
-		// On verifie le mouvement 
-		boolean is_valid = m.valider(fenetre.partie.plateau);
-		//Si c'est valide on l'effectue
-		if(is_valid){
-			//On effectue le mouvement
-			fenetre.partie.plateau.effectuer(m);
-			//On affiche en console
-			fenetre.partie.plateau.afficher();
-			//On modifie l'etat de la partie
-				//On change le joueur courant
-				fenetre.partie.plateau.setJoueur();
-				
-				//On incremente le nombre de coups
-				fenetre.partie.plateau.setNumCoup();
-				//On verifie si il faut incrementer le score de la partie
-				fenetre.partie.plateau.setScore();
-			
-			//On ajoute le nouveau plateau comme fils
-			DefaultMutableTreeNode last = new DefaultMutableTreeNode(new Codage(fenetre.partie.plateau));
-			fenetre.partie.dernierCoup.add(last);
-			fenetre.partie.coups.reload();
-			fenetre.partie.dernierCoup = last;
-			
-			//On teste pour voir le parent et lui meme
-			// System.out.println("Nouveau Fils = "+((Codage)(noeuFils.getUserObject())).decodage() );
-			// 			System.out.println("Le parent = "+((Codage)(((DefaultMutableTreeNode)(noeuFils.getParent())).getUserObject())).decodage());
-			
-		}
-		
-		//On rafraichie graphiquement
-		fenetre.rafraichir(fenetre.partie.plateau);
-		
-					
-	}
+	
 
 	/**
 	* On surcharge la methode mouseClicked pour quelle recupere et envoie le numero des billes selectionnees.
@@ -81,86 +46,89 @@ public class ClickAction extends MouseAdapter {
 	on doit cliquer pour faire jouer l'ia
 */
 			 int profondeur = 1;
-			 if(this.fenetre.partie.plateau.getJoueurActuel() == 1) {
-			 	deroulementMouvement(fenetre.partie.plateau, IA.jouer(this.fenetre.partie.plateau, 1, 1));
-				return;
-			 }
+					 			 if(!fenetre.partie.estHumain) {
+					 					Mouvement m = IA.jouer(this.fenetre.partie.plateau, 1, 1);
+					 			 		deroulementMouvement(m.getPremiere(), m.getDerniere, m.getVecteur());
+					 					return;
+					 			 }
 /*			
 	fin ia
 */	
+	
+		//Les cliques sont actifs seulement si ce n'est pas à l'IA de jouer
+		if(fenetre.partie.estHumain()){
+			//Si on à juste appuyé sur le clique c'est qu'on veut selectionner une bille pour un mouvement
+			if(event.getButton() == MouseEvent.BUTTON1 && event.getModifiersEx() == 0){
+				//C'est le premier clique pour la sélection en vue d'un mouvement
+				if(nbClick == 1){
+					premiere = transcription(event.getY(),event.getX());
+					if(fenetre.partie.plateau.chercheBilles(fenetre.partie.plateau.getJoueurActuel()).contains((byte)premiere)){
+						System.out.println("premiere bille: " + premiere);
+						fenetre.rafraichirBS1(premiere);
+						nbClick = 2;
+					}
+					else{
+						System.out.println("Attention, ne cliquez que sur vos billes ! \n");
+					}	
+				}//C'est le deuxieme clique pour selectionner les autres billes du mouvement
+				else if(nbClick == 2){
+					yb = event.getY();
+					xb = event.getX();
+					deuxieme = transcription(event.getY(),event.getX());
+					//On verifie que le joueur ne selectionne pas les billes adverses
+					if(fenetre.partie.plateau.chercheBilles(fenetre.partie.plateau.getJoueurActuel()).contains((byte)deuxieme)){
+						System.out.println("deuxieme bille: " + deuxieme);
+						//on recupere la bille intermediaire aux 2 billes selectionnees
+						intermediaire = fenetre.partie.plateau.caseIntermediaire((byte)premiere, (byte)deuxieme);
+						fenetre.rafraichirBS2(deuxieme,intermediaire);
+						nbClick = 3;
+					}
+					else{
+						System.out.println("Attention, ne cliquez que sur vos billes ! \n");
+					}	
+				}//C'est le clique qui va determiner dans quel direction on veut déplacer la bille (avant => 53 lignes, après => 11)
+				else if(nbClick == 3){
+					troisieme = transcription(event.getY(),event.getX());
 
-		//Si on à juste appuyé sur le clique c'est qu'on veut selectionner une bille pour un mouvement
-		if(event.getButton() == MouseEvent.BUTTON1 && event.getModifiersEx() == 0){
-			//C'est le premier clique pour la sélection en vue d'un mouvement
-			if(nbClick == 1){
-				premiere = transcription(event.getY(),event.getX());
-				if(fenetre.partie.plateau.chercheBilles(fenetre.partie.plateau.getJoueurActuel()).contains((byte)premiere)){
-					System.out.println("premiere bille: " + premiere);
-					fenetre.rafraichirBS1(premiere);
-					nbClick = 2;
+					//On vérifie que la deuxieme selectionnee a un vecteur par rapport a la troisieme
+				  if((vecteur = fenetre.partie.plateau.cases[deuxieme].vecteurAdjacent(troisieme) )!= -1){
+						fenetre.partie.deroulementMouvement(premiere,deuxieme,vecteur);
+					}
+					else{
+						fenetre.rafraichir(fenetre.partie.plateau);
+					}	
+					nbClick = 1;
 				}
-				else{
-					System.out.println("Attention, ne cliquez que sur vos billes ! \n");
-				}	
-			}//C'est le deuxieme clique pour selectionner les autres billes du mouvement
-			else if(nbClick == 2){
-				yb = event.getY();
-				xb = event.getX();
-				deuxieme = transcription(event.getY(),event.getX());
-				//On verifie que le joueur ne selectionne pas les billes adverses
-				if(fenetre.partie.plateau.chercheBilles(fenetre.partie.plateau.getJoueurActuel()).contains((byte)deuxieme)){
-					System.out.println("deuxieme bille: " + deuxieme);
-					//on recupere la bille intermediaire aux 2 billes selectionnees
-					intermediaire = fenetre.partie.plateau.caseIntermediaire((byte)premiere, (byte)deuxieme);
-					fenetre.rafraichirBS2(deuxieme,intermediaire);
-					nbClick = 3;
-				}
-				else{
-					System.out.println("Attention, ne cliquez que sur vos billes ! \n");
-				}	
-			}//C'est le clique qui va determiner dans quel direction on veut déplacer la bille (avant => 53 lignes, après => 11)
-			else if(nbClick == 3){
-				troisieme = transcription(event.getY(),event.getX());
-
-				//On vérifie que la deuxieme selectionnee a un vecteur par rapport a la troisieme
-			  if((vecteur = fenetre.partie.plateau.cases[deuxieme].vecteurAdjacent(troisieme) )!= -1){
-					deroulementMouvement(premiere,deuxieme,vecteur);
-				}
-				else{
-					fenetre.rafraichir(fenetre.partie.plateau);
-				}	
-				nbClick = 1;
-			}
 			
-		}
-		//Un clique droit reinitialise la selection des billes
-		else if(event.getButton() == MouseEvent.BUTTON3 && event.getModifiersEx() == 0){	            	
- 			nbClick = 1;
-			fenetre.rafraichir(fenetre.partie.plateau);
-		}//Supprimer bille
-		else if ((event.getModifiersEx())  == 128 && event.getButton() == MouseEvent.BUTTON1) {
-					//On efface la bille du plateau
-		       fenetre.partie.plateau.supprimerBille(numCaseSelectionner);
-					//On gere les modifications
-					modifications();
-							
-		}//Ajouter bille noire
-		else if ((event.getModifiersEx())  == 512 && event.getButton() == MouseEvent.BUTTON1) {
-		        //On remplace la case selectionnée par une bille noire
-			       fenetre.partie.plateau.cases[numCaseSelectionner].setContenu(Case.NOIR);
+			}
+			//Un clique droit reinitialise la selection des billes
+			else if(event.getButton() == MouseEvent.BUTTON3 && event.getModifiersEx() == 0){	            	
+	 			nbClick = 1;
+				fenetre.rafraichir(fenetre.partie.plateau);
+			}//Supprimer bille
+			else if ((event.getModifiersEx())  == 128 && event.getButton() == MouseEvent.BUTTON1) {
+						//On efface la bille du plateau
+			       fenetre.partie.plateau.supprimerBille(numCaseSelectionner);
 						//On gere les modifications
 						modifications();
-		}//Ajouter bille blanche
-		else if ((event.getModifiersEx())  == 512 && event.getButton() == MouseEvent.BUTTON3) {
-		        //On remplace la case selectionnée par une bille noire
-			       fenetre.partie.plateau.cases[numCaseSelectionner].setContenu(Case.BLANC);
-					  //On gere les modifications
-						modifications();
-		}//Ajouter marquage
-		else if ((event.getModifiersEx())  == 640 && event.getButton() == MouseEvent.BUTTON1) {
-		        System.out.println("marquer");
+							
+			}//Ajouter bille noire
+			else if ((event.getModifiersEx())  == 512 && event.getButton() == MouseEvent.BUTTON1) {
+			        //On remplace la case selectionnée par une bille noire
+				       fenetre.partie.plateau.cases[numCaseSelectionner].setContenu(Case.NOIR);
+							//On gere les modifications
+							modifications();
+			}//Ajouter bille blanche
+			else if ((event.getModifiersEx())  == 512 && event.getButton() == MouseEvent.BUTTON3) {
+			        //On remplace la case selectionnée par une bille noire
+				       fenetre.partie.plateau.cases[numCaseSelectionner].setContenu(Case.BLANC);
+						  //On gere les modifications
+							modifications();
+			}//Ajouter marquage
+			else if ((event.getModifiersEx())  == 640 && event.getButton() == MouseEvent.BUTTON1) {
+			        System.out.println("marquer");
+			}
 		}
-		
 	}
 	
 	
@@ -200,62 +168,7 @@ public class ClickAction extends MouseAdapter {
 		return (byte)caseSelected;		
 	}
 	
-	/** Gere le deroulement d'un mouvement a  partir des coordonnees envoyees par l'interface
-	*
-	* @param premiere numero de case de la premiere bille
-	* @param deuxieme numero de case de a deuxieme bille
-	* @param vecteur sens du deplacement
-	*/
 
-	public void deroulementMouvement(byte premiere, byte deuxieme, byte vecteur){
-		boolean is_valid;
-		int gagnant = 0;
-		
-		Mouvement m = new Mouvement(premiere, deuxieme, vecteur);
-		
-		// On verifie le mouvement 
-		is_valid = m.valider(fenetre.partie.plateau);
-		//Si c'est valide on l'effectue
-		if(is_valid){
-			//On effectue le mouvement
-			fenetre.partie.plateau.effectuer(m);
-			//On affiche en console
-			fenetre.partie.plateau.afficher();
-			//On modifie l'etat de la partie
-				//On change le joueur courant
-				fenetre.partie.plateau.setJoueur();
-				
-				//On incremente le nombre de coups
-				fenetre.partie.plateau.setNumCoup();
-				//On verifie si il faut incrementer le score de la partie
-				fenetre.partie.plateau.setScore();
-				//Il ne s'agit pas d'une edition
-				fenetre.partie.plateau.setEdited(false);
-			
-			//On ajoute le nouveau plateau comme fils
-			fenetre.partie.changementPlateau();
-			
-		}
-		
-		//On rafraichie graphiquement
-		fenetre.expandAll(fenetre.arbre);
-		fenetre.rafraichir(fenetre.partie.plateau);
-		
-		gagnant = fenetre.partie.vainqueur();
-		if(gagnant != 0){
-			JOptionPane jop = new JOptionPane();
-			String message = "La partie se termine par K.O.\n";
-			if(gagnant == Partie.NOIR)
-				message+="Le joueur NOIR remporte la partie";
-			else
-				message+="Le joueur BLANC remporte la partie";
-			
-			jop.showMessageDialog(null, message); 	
-			Partie p = new Partie();
-			fenetre.dispose();	
-		}
-		
-	}
 	
 	public void modifications(){
 		//Si il ne s'agissait pas d'un plateau résultant d'une édition alors on creer un noeud frere qui est une edition
