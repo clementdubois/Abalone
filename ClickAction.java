@@ -19,6 +19,8 @@ public class ClickAction extends MouseAdapter {
 	/** Les coordonnees des cliques*/
 	private int yb,yv,xb,xv;
 	int x,y;
+	Mouvement m;
+	byte cp;
 	
 	/** On evoie la partie associee a la fenetre pour pouvoir la modifier 
 	* @param p La partie sur laquel se deroule les actions.
@@ -80,11 +82,11 @@ public class ClickAction extends MouseAdapter {
 /* 
 	on doit cliquer pour faire jouer l'ia
 */
-			 int profondeur = 1;
-			 if(this.fenetre.partie.plateau.getJoueurActuel() == 1) {
-			 	deroulementMouvement(fenetre.partie.plateau, IA.jouer(this.fenetre.partie.plateau, 1, 1));
-				return;
-			 }
+			 // int profondeur = 1;
+			 // if(this.fenetre.partie.plateau.getJoueurActuel() == 1) {
+			 // 	deroulementMouvement(fenetre.partie.plateau, IA.jouer(this.fenetre.partie.plateau, 1, 1));
+			 // 				return;
+			 // }
 /*			
 	fin ia
 */	
@@ -114,6 +116,14 @@ public class ClickAction extends MouseAdapter {
 					intermediaire = fenetre.partie.plateau.caseIntermediaire((byte)premiere, (byte)deuxieme);
 					fenetre.rafraichirBS2(deuxieme,intermediaire);
 					nbClick = 3;
+					
+					for(byte i =0; i<6; i++){
+					           m = new Mouvement(premiere, deuxieme, i);
+					           if(m.valider(fenetre.partie.plateau)){
+					                 cp = fenetre.partie.plateau.cases[deuxieme].getAdjacent(i);
+									 fenetre.pan.rafraichirCP(cp,i);	
+					           }
+					}
 				}
 				else{
 					System.out.println("Attention, ne cliquez que sur vos billes ! \n");

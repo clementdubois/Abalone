@@ -10,8 +10,9 @@ public static final int TAILLEIM = 62;
 
 Plateau plateau;
 ClickAction listener;
-Image neant,casevide,pionN,pionB,pionBS,pionNS,pionBP,pionNP;
+Image neant,casevide,pionN,pionB,pionBS,pionNS,pionBP,pionNP,moveB,moveN,moveV;
 int bille1,bille2,bille3;
+byte cp0,cp1,cp2,cp3,cp4,cp5;
 
 	/**
 	* Constructeur du panel.
@@ -24,6 +25,12 @@ int bille1,bille2,bille3;
 			this.bille1 = 0;
 			this.bille2 = 0;
 			this.bille3 = 0;
+			this.cp0 = -1;
+			this.cp1 = -1;
+			this.cp2 = -1;
+			this.cp3 = -1;
+			this.cp4 = -1;
+			this.cp5 = -1;
 			//permet de gérer la gestion des click dans la classe ClickAction
 			addMouseListener(listener);
 			//chargement des images
@@ -37,6 +44,9 @@ int bille1,bille2,bille3;
 			this.pionNS   = kit.getImage("images/pionNS.jpg");
 			this.pionBP   = kit.getImage("images/pionBP.jpg");
 			this.pionNP   = kit.getImage("images/pionNP.jpg");
+			this.moveB   = kit.getImage("images/moveB.jpg");
+			this.moveN   = kit.getImage("images/moveN.jpg");
+			this.moveV   = kit.getImage("images/moveV.jpg");
 			//les trackers c'est la vie !
 			tracker.addImage(neant,0);
 			tracker.addImage(casevide,0);
@@ -46,6 +56,9 @@ int bille1,bille2,bille3;
 			tracker.addImage(pionNP,0);
 			tracker.addImage(pionBS,0);
 			tracker.addImage(pionBP,0);
+			tracker.addImage(moveB,0);
+			tracker.addImage(moveN,0);
+			tracker.addImage(moveV,0);
 			try {tracker.waitForID(0);}
 			catch(InterruptedException e){}
 
@@ -89,6 +102,9 @@ int bille1,bille2,bille3;
 							g.drawImage(this.pionNP,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
 						}
 					}
+					else if(plateau.cases[taillePlateau].getNumero() == cp0 || plateau.cases[taillePlateau].getNumero() == cp1 || plateau.cases[taillePlateau].getNumero() == cp2 || plateau.cases[taillePlateau].getNumero() == cp3 || plateau.cases[taillePlateau].getNumero() == cp4 || plateau.cases[taillePlateau].getNumero() == cp5){
+						g.drawImage(this.moveN,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
+					}
 					//sinon on l'affiche normalement
 					else{
 						g.drawImage(this.pionN,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
@@ -105,6 +121,9 @@ int bille1,bille2,bille3;
 							g.drawImage(this.pionNP,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
 							}
 					}
+					else if(plateau.cases[taillePlateau].getNumero() == cp0 || plateau.cases[taillePlateau].getNumero() == cp1 || plateau.cases[taillePlateau].getNumero() == cp2 || plateau.cases[taillePlateau].getNumero() == cp3 || plateau.cases[taillePlateau].getNumero() == cp4 || plateau.cases[taillePlateau].getNumero() == cp5){
+						g.drawImage(this.moveN,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
+					}
 					else{
 						g.drawImage(this.pionN,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
 					}
@@ -120,6 +139,9 @@ int bille1,bille2,bille3;
 							g.drawImage(this.pionBP,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
 						}
 					}
+					else if(plateau.cases[taillePlateau].getNumero() == cp0 || plateau.cases[taillePlateau].getNumero() == cp1 || plateau.cases[taillePlateau].getNumero() == cp2 || plateau.cases[taillePlateau].getNumero() == cp3 || plateau.cases[taillePlateau].getNumero() == cp4 || plateau.cases[taillePlateau].getNumero() == cp5){
+							g.drawImage(this.moveB,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
+						}
 					else{
 						g.drawImage(this.pionB,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
 					}
@@ -131,6 +153,9 @@ int bille1,bille2,bille3;
 						if(bille1 != bille2){
 							g.drawImage(this.pionBS,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
 						}
+						else if(plateau.cases[taillePlateau].getNumero() == cp0 || plateau.cases[taillePlateau].getNumero() == cp1 || plateau.cases[taillePlateau].getNumero() == cp2 || plateau.cases[taillePlateau].getNumero() == cp3 || plateau.cases[taillePlateau].getNumero() == cp4 || plateau.cases[taillePlateau].getNumero() == cp5){
+							g.drawImage(this.moveB,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
+						}						
 						else{
 							g.drawImage(this.pionBP,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
 						}
@@ -142,12 +167,18 @@ int bille1,bille2,bille3;
 				}
 
 				else if(plateau.cases[taillePlateau].getContenu() == Case.VIDE && i%2 == 1 && taillePlateau < 62){
-				 	g.drawImage(this.casevide,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);
+				 	if(plateau.cases[taillePlateau].getNumero() == cp0 || plateau.cases[taillePlateau].getNumero() == cp1 || plateau.cases[taillePlateau].getNumero() == cp2 || plateau.cases[taillePlateau].getNumero() == cp3 || plateau.cases[taillePlateau].getNumero() == cp4 || plateau.cases[taillePlateau].getNumero() == cp5)
+						g.drawImage(this.moveV,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);	
+				   	else	
+						g.drawImage(this.casevide,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);	
 					taillePlateau += 1;
 				}
 
 				else if(plateau.cases[taillePlateau].getContenu() == Case.VIDE && i%2 == 0 && taillePlateau < 62){
-				 	g.drawImage(this.casevide,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
+					if(plateau.cases[taillePlateau].getNumero() == cp0 || plateau.cases[taillePlateau].getNumero() == cp1 || plateau.cases[taillePlateau].getNumero() == cp2 || plateau.cases[taillePlateau].getNumero() == cp3 || plateau.cases[taillePlateau].getNumero() == cp4 || plateau.cases[taillePlateau].getNumero() == cp5)
+						g.drawImage(this.moveV,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
+					else	
+						g.drawImage(this.casevide,(j-1)*TAILLEIM+(TAILLEIM/2),(i-1)*TAILLEIM,null);
 					taillePlateau += 1;
 				}
 				
@@ -164,6 +195,12 @@ int bille1,bille2,bille3;
 		this.bille1 = 0;
 		this.bille2 = 0;
 		this.bille3 = 0;
+		this.cp0 = -1;
+		this.cp1 = -1;
+		this.cp2 = -1;
+		this.cp3 = -1;
+		this.cp4 = -1;
+		this.cp5 = -1;
 		this.repaint();
 	}
 	
@@ -182,6 +219,17 @@ int bille1,bille2,bille3;
 	public void rafraichirBS2(int bille2, int bille3){
 		this.bille2 = bille2;
 		this.bille3 = bille3;
+		this.repaint();
+	}
+	
+	public void rafraichirCP(byte cp, byte i){
+		if(i == 0) this.cp0 = cp;
+		else if(i == 1) this.cp1 = cp;
+		else if(i == 1) this.cp2 = cp;
+		else if(i == 3) this.cp3 = cp;
+		else if(i == 4) this.cp4 = cp;
+		else if(i == 5) this.cp5 = cp;
+		
 		this.repaint();
 	} 
 
