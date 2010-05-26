@@ -1,3 +1,5 @@
+import java.util.*;
+
 /** Code un mouvement
  * 
  * La premiere bille deplace et la derniere (s'il s'agit d'une poussee la premiere bille = la deuxieme bille).
@@ -95,6 +97,11 @@ public class Mouvement {
 		byte cptBilleMoi; //Compteur du nombre de bille que je deplace
 		byte cptBilleLui; //Compteur du nombre de bille adverse qui vont etre deplacees
 		
+		//On vérifie que le joueur (ou l'IA) selectionne bien ces propres pions
+		Vector<Byte> billesPossibles = p.chercheBilles(p.getJoueurActuel());
+		if (!billesPossibles.contains(this.premiere) || !billesPossibles.contains(this.derniere))
+			return false;
+		
 		//On calcul le nombre de bille poussées et on regarde la derniere de nos billes poussee, derniereBille vaudra la derniere de nos billes poussée
 		for(cptBilleMoi = 1; plateau.cases[plateau.cases[derniereBille].getAdjacent(vecteur)].getContenu() == contenuBille; cptBilleMoi++)
 			derniereBille = plateau.cases[derniereBille].getAdjacent(vecteur);
@@ -103,12 +110,6 @@ public class Mouvement {
 		if(this.derniere == this.premiere ){	
 			//On teste la case juste apres nos billes
 			//Si suivante vide et je pousse maximum trois de mes billes : OK
-			System.out.println("DERNIERE BILLE : "+derniereBille+" ");
-			System.out.println("vecteur : "+vecteur+" ");
-			System.out.println("BILLE ADJ : "+plateau.cases[derniereBille].getAdjacent(vecteur)+" ");
-			
-			System.out.println("PREMIER : "+plateau.cases[plateau.cases[derniereBille].getAdjacent(vecteur)].getContenu()+" ");
-			
 			if (plateau.cases[plateau.cases[derniereBille].getAdjacent(vecteur)].getContenu() == Case.VIDE &&
 			         cptBilleMoi <= 3){
 				return true;
