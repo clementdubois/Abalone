@@ -80,7 +80,6 @@ public class IA {
         long tempsDeReflexion=0; // normalement ici ca devrait etre this mais comme jouer est static on peut pas...
         
         tempsAvt = System.currentTimeMillis();
-		System.out.println("je suis le joueur 0 ou 1 : "+this.numJoueur);
         Mouvement meilleurMouvement = meilleurCoup(p, p.mouvementsValides(this.numJoueur));
         tempsApres = System.currentTimeMillis();
         
@@ -97,7 +96,6 @@ public class IA {
 		*/
 		
  	    // on evalue chaque plateau.
-		System.out.println("nombre de mouvements"+mouvementsValides.size());
 		Mouvement meilleur = mouvementsValides.get(0);
 		double meilleurScore = 0.0;
 		double scoreActuel = 0.0;
