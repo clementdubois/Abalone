@@ -41,16 +41,11 @@ public class FenetreMenu extends JFrame{
 					
 					//Demarrer une partie
 					 if(x>113 && x<454 && y>146 && y<245 && event.getButton() == MouseEvent.BUTTON1){
-						// if(click == 0){
-						// 							menu.rafraichirMenu(1);
-						// 							click = 1;
-						// 						}	
-						// 						else if(click == 1){
+							ChoixRegles cr = new ChoixRegles(null, "Regles", true);
+							Regles regles = cr.showChoixRegles();
 							Partie p = new Partie();
-							// click = 0;
 							menu.rafraichirMenu(0); 
 							dispose(); 
-						// }
 					 }
 					//Charger une partie
 					if(x>113 && x<454 && y>280 && y<379 && event.getButton() == MouseEvent.BUTTON1){
@@ -94,20 +89,12 @@ public class FenetreMenu extends JFrame{
 					
 					//Quitter
 					if(x>113 && x<454 && y>430 && y<529 && event.getButton() == MouseEvent.BUTTON1){
-						// if(click == 0){
-						// 							menu.rafraichirMenu(3);
-						// 							click = 1;
-						// 						}	
-						// 						else if(click == 1){
-							// click = 0;
 							menu.rafraichirMenu(0);
 							System.exit(0); 
-						// }
 					 }
 					
 					if(event.getButton() == MouseEvent.BUTTON3){	
 						menu.rafraichirMenu(0);            	
-			 			// click = 0;
 					}	
 		     }			
 		
