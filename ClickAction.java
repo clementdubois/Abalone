@@ -36,7 +36,7 @@ public class ClickAction extends MouseAdapter {
 	/**
 	* On surcharge la methode mouseClicked pour quelle recupere et envoie le numero des billes selectionnees.
 	* -Clique gauche => selection de bille														(0)
-	* -Clique droit => annuler selection															(0)
+	* -Clique droit => annuler selection															(256)
 	* -CTRL + Clique gauche => supprimer une bille (édition)    			(128)
 	* -ALT + Clique gauche => Ajouter une bille noir (édition)				(512)
 	* -ALT + Clique droit => Ajouter une bille blanche (édition)  	  (512)
@@ -44,6 +44,8 @@ public class ClickAction extends MouseAdapter {
 	*/
 	public void mouseClicked(MouseEvent event){
 		int numCaseSelectionner = transcription(event.getY(),event.getX());
+		System.out.println("event"+event.getModifiersEx());
+		
 	
 		//Les cliques sont actifs seulement si ce n'est pas à l'IA de jouer
 		if(fenetre.partie.estHumain()){
@@ -72,6 +74,15 @@ public class ClickAction extends MouseAdapter {
 						intermediaire = fenetre.partie.plateau.caseIntermediaire((byte)premiere, (byte)deuxieme);
 						fenetre.rafraichirBS2(deuxieme,intermediaire);
 						nbClick = 3;
+						
+						//cette boucle permet de checker les mouvement valides et ensuite d'illuminer les cases correspondantes
+						for(byte i =0; i<6; i++){
+					           m = new Mouvement(premiere, deuxieme, i);
+					           if(m.valider(fenetre.partie.plateau)){
+					               cp = fenetre.partie.plateau.cases[deuxieme].getAdjacent(i);
+									fenetre.pan.rafraichirCP(cp,i);
+					           }
+					     }
 					}
 					else{
 						System.out.println("Attention, ne cliquez que sur vos billes ! \n");
@@ -93,7 +104,7 @@ public class ClickAction extends MouseAdapter {
 			
 			}
 			//Un clique droit reinitialise la selection des billes
-			else if(event.getButton() == MouseEvent.BUTTON3 && event.getModifiersEx() == 0){	            	
+			else if(event.getButton() == MouseEvent.BUTTON3 && event.getModifiersEx() == 256){	            	
 	 			nbClick = 1;
 				fenetre.rafraichir(fenetre.partie.plateau);
 			}//Supprimer bille

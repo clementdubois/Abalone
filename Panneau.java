@@ -222,10 +222,13 @@ byte cp0,cp1,cp2,cp3,cp4,cp5;
 		this.repaint();
 	}
 	
+	/**
+	* methode pour connaitre le numero des cases ou le mouvement est valide
+	*/
 	public void rafraichirCP(byte cp, byte i){
 		if(i == 0) this.cp0 = cp;
 		else if(i == 1) this.cp1 = cp;
-		else if(i == 1) this.cp2 = cp;
+		else if(i == 2) this.cp2 = cp;
 		else if(i == 3) this.cp3 = cp;
 		else if(i == 4) this.cp4 = cp;
 		else if(i == 5) this.cp5 = cp;
