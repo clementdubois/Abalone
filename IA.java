@@ -1,12 +1,12 @@
 import java.util.*;
-
+import java.io.*;
+import java.lang.*;
 
 public class IA {
 	// temps : java.util.*; <= Timer	
 	// vkaenemi@ee.ethz.ch - ssilvan@ee.ethz.ch
 	
 	long iterator;
-	
 	
 /**
  * permettra de calculer l'efficacite...
@@ -64,7 +64,7 @@ public class IA {
 	
 	
 	public IA(int numJoueur) {
-		this.profondeur = 1;
+		this.profondeur = 3;
 		this.nom  = "neuneu";
 		this.numJoueur = numJoueur;
 		this.niveauIA = 1;
@@ -89,43 +89,110 @@ public class IA {
         
         tempsDeReflexion = tempsApres-tempsAvt;
         
-		   
+		System.out.println("temps avant:"+tempsAvt+" apres:"+tempsApres+" temps mis:"+tempsDeReflexion);
+		
+		
+		
+		
         return meilleurMouvement;
     }
 	
 	private Mouvement meilleurCoup(Plateau p, Vector<Mouvement> mouvementsValides) {
 
-	
+
+
+
  	    // on evalue chaque racine.
 		Mouvement meilleur = mouvementsValides.get(0);
 		double meilleurScore = 0.0;
 		double scoreActuel = 0.0;
 		for(int i = 0; i < mouvementsValides.size(); i++) {	
 			Plateau temporaire = new Plateau(p);		
-/*			temporaire.effectuer(mouvementsValides.get(i));
+			temporaire.effectuer(mouvementsValides.get(i));
 			temporaire.setJoueur();
 			temporaire.setNumCoup();
 			temporaire.setScore();
-*/
+
+			
 /*			Node n = new Node(new Mouvement((byte)1, (byte)1, (byte)1), temporaire);
 			Node meilleur = new Node();
 			meilleur = n.negamax(1);
 			System.out.println(meilleur);
 */			
-//		  scoreActuel = minimax(temporaire, this.profondeur, this.numJoueur-1);
-		  scoreActuel = negamax(temporaire, 2, Double.MIN_VALUE, Double.MAX_VALUE);
-		  if(scoreActuel > meilleurScore) {
-			meilleurScore = scoreActuel;
-			meilleur = mouvementsValides.get(i);
-		  }
+
+			scoreActuel = negamax(temporaire, this.profondeur, Double.MIN_VALUE, Double.MAX_VALUE);
+			System.out.println("scoreActuel"+scoreActuel);
+			
+			
+			if(scoreActuel > meilleurScore) {
+				meilleurScore = scoreActuel;
+				meilleur = mouvementsValides.get(i);
+			}
 		}
-		
+	
+		System.out.println("meilleur:"+meilleurScore);
+		System.out.println(meilleur);
 		return meilleur;		
 		
 		
 	}
 	
+	
+	private double negamax(Plateau p, int profondeur, double alpha, double beta) {
+		double valeur, best;
+		Vector<Mouvement> mouvementsValides = new Vector<Mouvement>();
+				
+
+
+		
+		if(profondeur == 0) {
+			return fonctionEvaluation(p);
+		}
+		
+		Plateau temporaire = new Plateau(p);
+		mouvementsValides = temporaire.mouvementsValides(p.getJoueurActuel());
+
+		if(/*temporaire.getJoueurActuel() != this.numJoueur*/profondeur%2 == 1)
+			best = Double.MAX_VALUE;
+		else
+			best = Double.MIN_VALUE;
+		
+		for(int i = 0 ; i < mouvementsValides.size() ; i++) {
+			temporaire.effectuer(mouvementsValides.get(i));
+			temporaire.setJoueur();
+			temporaire.setNumCoup();
+			temporaire.setScore();
+			valeur = negamax(temporaire, profondeur-1, alpha, beta);
+			
+			if(/*temporaire.getJoueurActuel() != this.numJoueur*/profondeur%2 == 1) { 
+				if(valeur < best) { // on minimise
+					best = valeur;
+					if(best<beta) {
+						beta=best;
+						if(alpha>beta)
+							return best; // coupure alpha
+					}
+				}
+			}
+			else if (valeur > best) { // on maximise
+				best = valeur;
+				if(best>alpha) {
+					alpha=best;
+					if(alpha>beta)
+						return best; // coupure beta
+				}
+			}
+		}
+		System.out.println("best"+best);
+		return best;
+	}
+	
+	
+/*	
 	private double negamax(Plateau p, int profondeur, double alpha,  double beta) {
+		Plateau temporaire;
+		
+	
 		System.out.println("negamax()");
 		if(profondeur == 0) {
 			return fonctionEvaluation(p); // fonction d'evaluation les coups de l'ia donc on doit avoir une profondeur qui termine avec les coups de l'ia donc ici on doit tester avec deep = 2
@@ -141,12 +208,13 @@ public class IA {
 				temporaire.setNumCoup();
 				temporaire.setScore();
 				alpha = max(alpha, -negamax(temporaire, profondeur-1, -alpha, -beta));
+				System.out.println("alpha vs negamax : "+alpha+" "+p.getJoueurActuel());
 				if (alpha > beta) { // alpha-beta
-					System.out.println("->alpha-beta pruning");
 					return alpha;
 				}
 			}
 		}
+		System.out.println("negamax a choisi le plateau ayant la valeur "+alpha);
 		return alpha;
 	}
 	
@@ -232,13 +300,15 @@ public class IA {
 		temporaire.setNumCoup();
 		temporaire.setScore();
 */		double valeurPlateau = 1;
+		if(temporaire.cases[12].getContenu()!=0)
+			valeurPlateau = 55;
 		
 /*		
 		if(temporaire.score[temporaire.getJoueurActuel()] != p.score[temporaire.getJoueurActuel()]) // sortie d'une bille 
 			valeurPlateau*=this.ejection;
 */		
-		iterator++;
-		System.out.println(iterator+"fonctionEvaluation()->"+valeurPlateau);	
+
+//		System.out.println("fonctionEvaluation()->"+valeurPlateau);	
 		return valeurPlateau;
 		
 	}
