@@ -5,6 +5,9 @@ public class IA {
 	// temps : java.util.*; <= Timer	
 	// vkaenemi@ee.ethz.ch - ssilvan@ee.ethz.ch
 	
+	long iterator;
+	
+	
 /**
  * permettra de calculer l'efficacite...
  */ 
@@ -28,7 +31,7 @@ public class IA {
 /**
  * sur quelle profondeur l'ia effectuera-t-elle ses recherches.
  */
-	private byte deep;
+	private int profondeur;
 	/** Niveau de difficulté de l'IA*/
 	private int niveauIA;
 /**
@@ -61,10 +64,11 @@ public class IA {
 	
 	
 	public IA(int numJoueur) {
-		this.deep = 1;
+		this.profondeur = 1;
 		this.nom  = "neuneu";
 		this.numJoueur = numJoueur;
 		this.niveauIA = 1;
+		this.iterator = 0;
 	}
 /*
 	public IA(String nom) {
@@ -80,7 +84,7 @@ public class IA {
         long tempsDeReflexion=0; // normalement ici ca devrait etre this mais comme jouer est static on peut pas...
         
         tempsAvt = System.currentTimeMillis();
-        Mouvement meilleurMouvement = meilleurCoup(p, p.mouvementsValides(this.numJoueur));
+        Mouvement meilleurMouvement = meilleurCoup(new Plateau(p), p.mouvementsValides(this.numJoueur)); // on appelle minimax sur chaque mouvement possible, dans un premier temps...
         tempsApres = System.currentTimeMillis();
         
         tempsDeReflexion = tempsApres-tempsAvt;
@@ -91,28 +95,123 @@ public class IA {
 	
 	private Mouvement meilleurCoup(Plateau p, Vector<Mouvement> mouvementsValides) {
 
-		/*
-			On doit tester tous les mouvements (on le fera plus tard avec minimax puis avec minimax transformé en alpha beta lorsque je l'aurai codé)
-		*/
-		
- 	    // on evalue chaque plateau.
+	
+ 	    // on evalue chaque racine.
 		Mouvement meilleur = mouvementsValides.get(0);
 		double meilleurScore = 0.0;
 		double scoreActuel = 0.0;
-		for(int i = 0; i < mouvementsValides.size(); i++) {
-		  scoreActuel = fonctionEvaluation(p, mouvementsValides.get(i));
+		for(int i = 0; i < mouvementsValides.size(); i++) {	
+			Plateau temporaire = new Plateau(p);		
+/*			temporaire.effectuer(mouvementsValides.get(i));
+			temporaire.setJoueur();
+			temporaire.setNumCoup();
+			temporaire.setScore();
+*/
+/*			Node n = new Node(new Mouvement((byte)1, (byte)1, (byte)1), temporaire);
+			Node meilleur = new Node();
+			meilleur = n.negamax(1);
+			System.out.println(meilleur);
+*/			
+//		  scoreActuel = minimax(temporaire, this.profondeur, this.numJoueur-1);
+		  scoreActuel = negamax(temporaire, 2, Double.MIN_VALUE, Double.MAX_VALUE);
 		  if(scoreActuel > meilleurScore) {
 			meilleurScore = scoreActuel;
 			meilleur = mouvementsValides.get(i);
 		  }
 		}
+		
 		return meilleur;		
 		
 		
 	}
 	
+	private double negamax(Plateau p, int profondeur, double alpha,  double beta) {
+		System.out.println("negamax()");
+		if(profondeur == 0) {
+			return fonctionEvaluation(p); // fonction d'evaluation les coups de l'ia donc on doit avoir une profondeur qui termine avec les coups de l'ia donc ici on doit tester avec deep = 2
+		}
+		else {
+			System.out.println("->dans le else");
+			Plateau temporaire = new Plateau(p);		
+			Vector<Mouvement> mouvementsValides = temporaire.mouvementsValides(p.getJoueurActuel());
+			for(int i = 0; i < mouvementsValides.size(); i++) {
+				System.out.println("->dans le for : "+i);
+				temporaire.effectuer(mouvementsValides.get(i));
+				temporaire.setJoueur();
+				temporaire.setNumCoup();
+				temporaire.setScore();
+				alpha = max(alpha, -negamax(temporaire, profondeur-1, -alpha, -beta));
+				if (alpha > beta) { // alpha-beta
+					System.out.println("->alpha-beta pruning");
+					return alpha;
+				}
+			}
+		}
+		return alpha;
+	}
 	
-	private double fonctionEvaluation(Plateau p, Mouvement m) {	 // sera private et pas static : elle evalue un plateau
+	private double max(double a, double b) {
+		return a>b?a:b;
+	}
+	
+/*	
+	private double minimax(Plateau temporaire, int profondeur, int numJoueur) { // le plateau à passer doit être un temporaire (pas le vrai) !
+		System.out.println("minimax()");
+		System.out.println("profondeur->"+profondeur);
+		System.out.println("numJoueur->"+numJoueur);		
+		System.out.println("mon nomJoueur->"+numJoueur);
+		double score = 0;
+		double minimax = 0;
+		
+		// on recupere les mouvements valides pour ce node.
+		Vector<Mouvement> mouvementsValides = temporaire.mouvementsValides(numJoueur-1);
+		System.out.println(mouvementsValides.size());
+		System.out.println(numJoueur);
+		for(int i=0; i<mouvementsValides.size();i++) {
+			if(profondeur > 0) { // on fait remonter les valeurs !
+				System.out.println("on va effectuer un mouvement !");
+				Plateau temporaire2 = new Plateau(temporaire);
+				temporaire2.effectuer(mouvementsValides.get(i));
+				temporaire2.setScore();
+				if (temporaire2.partie.getNbBillesAEjecter() ==temporaire2.getScore(this.numJoueur)) {
+					if(numJoueur == this.numJoueur)
+						return Double.MAX_VALUE;
+					else
+						return Double.MIN_VALUE;
+				}
+				else
+				{
+				
+					// on continue de descendre vers les feuilles...
+					score=minimax(temporaire2,profondeur-1,(numJoueur+1)%2);
+					if(numJoueur == this.numJoueur)
+					{
+						if(score<minimax)
+						{
+							  score=minimax;
+						}
+					}
+					else
+					{
+						if(score>minimax)
+						{
+							  score=minimax;
+						}
+					}
+                }
+            }
+			else { // on doit evaluer les feuilles
+					score = fonctionEvaluation(new Plateau(temporaire), mouvementsValides.get(i));
+					System.out.println(i+":"+score);
+			}			
+		}
+		System.out.println("score->"+score);
+		return score; // on doit retourner le pire score puisqu'on commence avec les coups adverses ?
+	}
+*/	
+	
+	private double fonctionEvaluation(Plateau p/*, Mouvement m*/) {	 // sera private et pas static : elle evalue un plateau
+
 		double 	position	= 1.1;
 		
 		
@@ -128,16 +227,18 @@ public class IA {
 		}
 */
 		Plateau temporaire = new Plateau(p);
-		temporaire.effectuer(m);
+/*		temporaire.effectuer(m);
+		temporaire.setJoueur();
+		temporaire.setNumCoup();
 		temporaire.setScore();
+*/		double valeurPlateau = 1;
 		
-		double valeurPlateau = 1;
-		
-		
-		if(temporaire.score[this.numJoueur-1] != p.score[this.numJoueur-1]) // sortie d'une bille 
+/*		
+		if(temporaire.score[temporaire.getJoueurActuel()] != p.score[temporaire.getJoueurActuel()]) // sortie d'une bille 
 			valeurPlateau*=this.ejection;
-		
-		
+*/		
+		iterator++;
+		System.out.println(iterator+"fonctionEvaluation()->"+valeurPlateau);	
 		return valeurPlateau;
 		
 	}
@@ -200,8 +301,23 @@ public class IA {
 /**
  * minamax
  */
- 
  /*
+
+	private Mouvement minimax(Plateau p, int profondeur, int numJoueur) {
+	
+		Plateau temporaire = new Plateau(p);
+		
+		if(profondeur > 0) { // on fait remonter les valeurs !
+			// on recupere les mouvements valides pour ce node.
+			Vector<Mouvement> mouvementsValides = temporaire.mouvementsValides(numJoueur);
+			int[] scores = new int[mouvementsValides.size()];
+		}
+		else { // on doit évaluer les feuilles
+			
+		}
+		return meilleurMouvement; // on doit retourner le meilleur Mouvement
+	} 
+
     private int minimax(Plateau p, int profondeur, int numJoueur)
     {
         int max;
@@ -260,10 +376,9 @@ public class IA {
         
         return max;
     }
-    
+*/
    
 
- */
  
 /**
  * genetique : on garde les poids (associes aux facteurs) du vainqueur et on genere son nouveau challenger en prenant ses poids comme base (on applique une tres legere evolution)

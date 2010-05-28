@@ -714,7 +714,7 @@ class Codage implements Serializable{
 		Plateau p = new Plateau(cases, joueurActuel, nbCoup, score);
 		return p;
 	}
-	
+
 	/** L'affichage du titre*/
 	public String toString(){
 		return ""+(numCoup>>1);
