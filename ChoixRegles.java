@@ -4,11 +4,11 @@ import java.awt.event.*;
 
 
 
-/** Fenetre de dialogue au lancement de la partie pour déterminer les règles de la partie*/
+/** Fenetre de dialogue au lancement de la partie pour determiner les regles de la partie*/
 class ChoixRegles extends JDialog{
-	/** Les reglès qui vont être choisies*/
+	/** Les regles qui vont etre choisies*/
 	private Regles regles = new Regles();
-	/** Savoir si l'utilisateur à annuler ou a valider*/
+	/** Savoir si l'utilisateur a annuler ou a valider*/
 	private boolean sendData;
 	/** L'icone de la fenetre*/
 	JLabel icon;
@@ -19,18 +19,22 @@ class ChoixRegles extends JDialog{
 	public ChoixRegles(JFrame parent, String title, boolean modal){
 			//On appelle le construteur de JDialog correspondant
 			super(parent, title, modal);
-			//On spécifie une taille
+			//On specifie une taille
 			this.setSize(550, 270);
 			//La position
 			this.setLocationRelativeTo(null);
 			//La boîte ne devra pas être redimensionnable
 			this.setResizable(false);
-			this.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+			this.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
 			this.initComponent();
+			//A l'ouverture de la fenetre l'utilisateur n'a rien envoye
+			this.sendData = false;
+			
+      
 	}
 	
 	/**
-		 * Méthode appelée pour utiliser la boîte 
+		 * Methode appelee pour utiliser la boîte 
 		 * @return Regles
 		 */
 		public Regles showChoixRegles(){
@@ -81,6 +85,7 @@ class ChoixRegles extends JDialog{
 				okBouton.addActionListener(new ActionListener(){
 					public void actionPerformed(ActionEvent arg0) {				
 						regles = new Regles(getType());
+						sendData = true;
 						setVisible(false);
 					}
 
@@ -94,6 +99,7 @@ class ChoixRegles extends JDialog{
 				JButton cancelBouton = new JButton("Annuler");
 				cancelBouton.addActionListener(new ActionListener(){
 					public void actionPerformed(ActionEvent arg0) {
+						sendData = false;
 						setVisible(false);
 					}			
 				});
@@ -107,6 +113,9 @@ class ChoixRegles extends JDialog{
 		
 	}
 	
-	
+	/** Permet de savoir si l'utilisateur a valide*/
+	public boolean aChoisi(){
+		return this.sendData;
+	}
 	
 }

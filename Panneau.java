@@ -31,7 +31,7 @@ byte cp0,cp1,cp2,cp3,cp4,cp5;
 			this.cp3 = -1;
 			this.cp4 = -1;
 			this.cp5 = -1;
-			//permet de gérer la gestion des click dans la classe ClickAction
+			//permet de gerer la gestion des click dans la classe ClickAction
 			addMouseListener(listener);
 			//chargement des images
 			Toolkit kit=Toolkit.getDefaultToolkit();
@@ -93,7 +93,7 @@ byte cp0,cp1,cp2,cp3,cp4,cp5;
 				}
 				
 				else if(plateau.cases[taillePlateau].getContenu() == Case.NOIR && i%2 == 1 && taillePlateau < 62){
-					//si une bille est selectionnée, on l'a met en surbrillance
+					//si une bille est selectionnee, on l'a met en surbrillance
 					if(plateau.cases[taillePlateau].getNumero() == bille1 || plateau.cases[taillePlateau].getNumero() == bille2 || plateau.cases[taillePlateau].getNumero() == bille3){
 						if(bille1 != bille2){
 							boolean b = g.drawImage(this.pionNS,(j-1)*TAILLEIM,(i-1)*TAILLEIM,null);

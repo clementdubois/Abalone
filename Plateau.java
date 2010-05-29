@@ -33,7 +33,7 @@ public class Plateau implements Serializable{
 	/** Score actuel de chaque joueur*/
 	protected int[] score;
 	
-	/** Savoir si le plateau actuel est le résultat du'n mouvement ou d'une édition*/
+	/** Savoir si le plateau actuel est le resultat du'n mouvement ou d'une edition*/
 	private boolean isEdited;
 	
 	
@@ -50,7 +50,7 @@ public class Plateau implements Serializable{
 	 */		
 		private static byte[] longueurLigne;
 	/** 
-	 * les lettres associées aux lignes
+	 * les lettres associees aux lignes
 	 */			
 		private static String[] lettreLigne;
 	/**
@@ -80,7 +80,7 @@ public class Plateau implements Serializable{
 		associerNotations();
 		//Pour chaque pion on enregistre ses points adjacents
 		casesAdjacentes();
-		//Il ne s'agit pas d'une édition
+		//Il ne s'agit pas d'une edition
 		isEdited = false;
 	}
 	
@@ -98,7 +98,7 @@ public class Plateau implements Serializable{
 		associerNotations();
 		//Pour chaque pion on enregistre ses points adjacents
 		casesAdjacentes();
-		//Il ne s'agit pas d'une édition
+		//Il ne s'agit pas d'une edition
 		isEdited = false;
 	}
 	
@@ -117,7 +117,7 @@ public class Plateau implements Serializable{
 		cases = c;
 		
 		associerNotations();
-		//Il ne s'agit pas d'une édition
+		//Il ne s'agit pas d'une edition
 		isEdited = false;
 	}
 	
@@ -137,7 +137,7 @@ public class Plateau implements Serializable{
 			casesAdjacentes();
 	}
 	
-	/** Constructeur par copie pour une édition*/
+	/** Constructeur par copie pour une edition*/
 	public Plateau(Plateau p, boolean edition){
 			cases = p.cases;
 			joueurActuel = p.getJoueurActuel();
@@ -175,7 +175,7 @@ public class Plateau implements Serializable{
 				else
 					return score[BLANC-1];
 			}
-			/** Vérifie le plateau pour savoir si une bille est tombe au dernier coup et incremente le score*/
+			/** Verifie le plateau pour savoir si une bille est tombe au dernier coup et incremente le score*/
 			public void setScore(){
 				//Des qu'une bille est tombee incremente le score
 				//Si une bille blanche est dans le trou, on incremente le score du joueur noir
@@ -217,7 +217,7 @@ public class Plateau implements Serializable{
 				}
 			}
 			
-			/** Le plateau résulte-t-il d'une édition ou d'un mouvement */
+			/** Le plateau resulte-t-il d'une edition ou d'un mouvement */
 			public boolean isEdition(){
 				return isEdited;
 			}
@@ -356,7 +356,7 @@ public class Plateau implements Serializable{
 				return cases[premiere].getAdjacent(GG);
 			
 			else{
-				//La séparation entre les deux billes est de plus d'une bille intermediaire
+				//La separation entre les deux billes est de plus d'une bille intermediaire
 				return -1;
 			}
 			
@@ -467,7 +467,7 @@ public class Plateau implements Serializable{
 			}
 			lastLength = longueurLigne[i];
 		}
-		// la valeur de k est conservée !
+		// la valeur de k est conservee !
 		for(int i=5;i<9;i++) { // de d à a
 			for(int j=0;j<longueurLigne[i];j++) {
 				k++;
@@ -491,33 +491,33 @@ public class Plateau implements Serializable{
 		// il faut maintenant initialiser les vecteurs menant au TROU 
 		byte[] tempVecteurs = {HG, HD, GG};
 		cases[1].setVecteursNuls(tempVecteurs); // a1
-		cases[this.getNumCaseOpposee((byte)1)].setVecteursNulsOpposes(tempVecteurs); // son opposé
+		cases[this.getNumCaseOpposee((byte)1)].setVecteursNulsOpposes(tempVecteurs); // son oppose
 		
 		byte[] tempVecteurs2 = {HG, HD, DD};
 		cases[5].setVecteursNuls(tempVecteurs2); // a5
-		cases[this.getNumCaseOpposee((byte)5)].setVecteursNulsOpposes(tempVecteurs2); // son opposé
+		cases[this.getNumCaseOpposee((byte)5)].setVecteursNulsOpposes(tempVecteurs2); // son oppose
 		
 		byte[] tempVecteurs3 = {HG, GG, BG};
 		cases[(Byte)assOfficielleVersByte.get("e1")].setVecteursNuls(tempVecteurs3); // 27
-		cases[getNumCaseOpposee((Byte)assOfficielleVersByte.get("e1"))].setVecteursNulsOpposes(tempVecteurs3); // son opposé		
+		cases[getNumCaseOpposee((Byte)assOfficielleVersByte.get("e1"))].setVecteursNulsOpposes(tempVecteurs3); // son oppose		
 		
 		byte i = 1;
 		for(byte numCase = 6 ; numCase <= 19 ; numCase += longueurLigne[i++]) { // le bord haut gauche
 			byte[] tempVecteurs4 = {HG, GG};
 			cases[numCase].setVecteursNuls(tempVecteurs4);
-			cases[getNumCaseOpposee(numCase)].setVecteursNulsOpposes(tempVecteurs4); // son opposé
+			cases[getNumCaseOpposee(numCase)].setVecteursNulsOpposes(tempVecteurs4); // son oppose
 		}
 		i = 1;
 		for(byte numCase = 11 ; numCase <= 26 ; numCase += (longueurLigne[++i])) { // le bord haut droit
 			// System.out.println(numCase);
 			byte[] tempVecteurs4 = {HD, DD};
 			cases[numCase].setVecteursNuls(tempVecteurs4);
-			cases[getNumCaseOpposee(numCase)].setVecteursNulsOpposes(tempVecteurs4); // son opposé
+			cases[getNumCaseOpposee(numCase)].setVecteursNulsOpposes(tempVecteurs4); // son oppose
 		}
 		for(byte numCase = 1 ; numCase < 5 ; numCase++) { // le bord haut
 			byte[] tempVecteurs4 = {HD, HG};
 			cases[numCase].setVecteursNuls(tempVecteurs4);
-			cases[getNumCaseOpposee(numCase)].setVecteursNulsOpposes(tempVecteurs4); // son opposé
+			cases[getNumCaseOpposee(numCase)].setVecteursNulsOpposes(tempVecteurs4); // son oppose
 		}		
 	}
 	
@@ -563,7 +563,7 @@ public class Plateau implements Serializable{
 		//On cherche les billes du joueur
 		Vector<Byte> billes = chercheBilles(joueurActuel);
 
-		//Pour chaque bille on teste tous les mouvements de poussés possible
+		//Pour chaque bille on teste tous les mouvements de pousses possible
 		Iterator itr = billes.iterator();
 		while(itr.hasNext()){
 			numCase = (Byte)itr.next();
@@ -573,7 +573,7 @@ public class Plateau implements Serializable{
 				//--------------------Mouvements de poussees---------------------
 					m = new Mouvement(numCase, numCase, i);
 				
-					//On teste la validité du mouvement, s'il est valide on l'ajoute à la liste des mouv renvoyés
+					//On teste la validite du mouvement, s'il est valide on l'ajoute à la liste des mouv renvoyes
 					if(m.valider(this))
 						mouvements.add(m);
 				//-----------------Mouvements lateraux a deux billes-------
@@ -596,7 +596,7 @@ public class Plateau implements Serializable{
 			//---------------Mouvements lateraux a trois billes------------
 				//On regarde autour de la bille
 				for(byte i=0; i<3; i++){
-					//Si la bille est entre deux autres on peut vérifier les mouvements possibles avec ces trois billes
+					//Si la bille est entre deux autres on peut verifier les mouvements possibles avec ces trois billes
 					adjacent1 = cases[cases[numCase].getAdjacent(i)];
 					adjacent2 = cases[cases[numCase].getAdjacent(getVecteurOppose(i))];
 					
@@ -708,7 +708,7 @@ class Codage implements Serializable{
 		//Puis le numero du coup
 		nbCoup = (numCoup >> 1) & 7;
 		//Enfin le joueur Actuel
-		joueurActuel = numCoup & 1; //On récupere 0 ou 1
+		joueurActuel = numCoup & 1; //On recupere 0 ou 1
 		joueurActuel++; //On ajoute un pour faire correspondre au fonctionnement de joueurActuel du plateau
 			
 		Plateau p = new Plateau(cases, joueurActuel, nbCoup, score);

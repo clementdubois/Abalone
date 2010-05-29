@@ -34,22 +34,21 @@ public class Partie implements Serializable{
 	/** Le gagnant de la partie, a 0 si personne n'a encore gagne*/
 	protected int gagnant = 0;
 	
-	/** Le type des joueur.
-	*
-	*  J vs J => 0
-	*  J vs IA => 1
-	*  IA vs J => 2
-	*  IA vs IA => 3
-	*/
-	public int typeJoueur = 0;
-	/** Les IA présente dans la partie (max 2 => IA vs IA)*/
+
+	/** Les IA presente dans la partie (max 2 => IA vs IA)*/
 	public IA[] IAs;
+	/** Les regles de la partie*/
+	public Regles regles;
 	
-	public Partie() {
-		// Pour la création d'IA
-		typeJoueur = choixJoueur();
-		creerIA(typeJoueur);
-		//La partie ne fait que commencé voyons!
+	/** Nouvelle partie creee depuis le menu principal
+	* Les regles choisies depuis la fenetre de dialogue avant la creation de la partie
+	*/
+	public Partie(Regles r) {
+		//On charge les regles du jeu
+		this.regles = r;
+		//On genere les IA si besoin
+		creerIA(r.getTypeJoueur());
+		//La partie ne fait que commence voyons!
 		terminee = false;
 		plateau = new Plateau(); 
 		//On initialise l'arbre de coups avec le premier plateau (ca sera la racine)
@@ -63,7 +62,7 @@ public class Partie implements Serializable{
 	/** Creer une partie avec une position de depart*/
 	public Partie(Case[] position){
 		terminee = false;
-		//On créer un plateau avec une position de depart
+		//On creer un plateau avec une position de depart
 		plateau = new Plateau(position); 
 		//On initialise l'arbre de coups avec le premier plateau (ca sera la racine)
 		dernierCoup = new DefaultMutableTreeNode(new Codage(plateau));
@@ -75,10 +74,10 @@ public class Partie implements Serializable{
 	
 	/** Pour le chargement d'une partie*/
 	public Partie(Partie p){
-		// Pour la création d'IA
-		typeJoueur = p.typeJoueur;
-		creerIA(typeJoueur);  // <== Prévoir un constructeur par copie pour l'IA
-		//On reprend les données de la partie chargée
+		// Pour la creation d'IA
+		this.regles = p.regles;
+		creerIA(this.regles.getTypeJoueur());  // <== Prevoir un constructeur par copie pour l'IA
+		//On reprend les donnees de la partie chargee
 		terminee = p.terminee;
 		gagnant = p.gagnant;
 		plateau = new Plateau(p.plateau);
@@ -104,8 +103,8 @@ public class Partie implements Serializable{
 	/** Savoir quel est le type du joueur en cours.
 	* return true si c'est un joueur humain, false si c'est l'IA*/
 	public boolean estHumain(){
-		if(typeJoueur == 3 || (typeJoueur == 1 && plateau.getJoueurActuel() == BLANC) ||
-		    (typeJoueur == 2 && plateau.getJoueurActuel() == NOIR))
+		if(regles.getTypeJoueur() == 3 || (regles.getTypeJoueur() == 1 && plateau.getJoueurActuel() == BLANC) ||
+		    (regles.getTypeJoueur() == 2 && plateau.getJoueurActuel() == NOIR))
 						return false;
 		else
 						return true;
@@ -132,7 +131,7 @@ public class Partie implements Serializable{
 	  return gagnant;
 	}
 			
-		/** Modifie les données liées à l'arbre lors d'un changement de l'etat du plateau
+		/** Modifie les donnees liees à l'arbre lors d'un changement de l'etat du plateau
 		* @param frere indique s'il faut creer un noeud frere (true) ou fils (false)
 		*
 		*/
@@ -193,7 +192,7 @@ public class Partie implements Serializable{
 		f.expandAll(f.arbre);
 		f.rafraichir(plateau);
 		
-		//On regarde si quelqu'un à gagné
+		//On regarde si quelqu'un à gagne
 		gagnant = vainqueur();
 		if(gagnant != 0){
 			JOptionPane jop = new JOptionPane();
@@ -204,7 +203,10 @@ public class Partie implements Serializable{
 				message+="Le joueur BLANC remporte la partie";
 			
 			jop.showMessageDialog(null, message); 	
+			//On retourne au menu
 			f.dispose();	
+			f.fm = new FenetreMenu();
+			//Empeche l'IA de jouer si le joueur à terminer la partie
 			return;
 		}
 		
@@ -249,13 +251,13 @@ public class Partie implements Serializable{
 			
 	}
 	/** Permet de savoir quel IA doit jouer (0 ou 1) pour l'index du tableau IAs.
-	* Elle ne peut être appelé que si c'est actuellement à l'IA de jouer
+	* Elle ne peut être appele que si c'est actuellement à l'IA de jouer
 	*/
 	public int indexIA(){
 		//Si il n'y a que des IA, l'index correspond au joueur Actuel -1
-		if(typeJoueur == 3 )
+		if(regles.getTypeJoueur() == 3 )
 			return (plateau.getJoueurActuel())-1;
-		else if(typeJoueur == 1){
+		else if(regles.getTypeJoueur() == 1){
 			return IAs[0].numJoueur;
 		}			
 		else

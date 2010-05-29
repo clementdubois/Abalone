@@ -31,8 +31,9 @@ public class IA {
 /**
  * sur quelle profondeur l'ia effectuera-t-elle ses recherches.
  */
+
 	private int profondeur;
-	/** Niveau de difficulté de l'IA*/
+	/** Niveau de difficulte de l'IA*/
 	private int niveauIA;
 /**
  * la strategie a appliquer : on stockera des coefficient (des poids) associes a chacun des facteurs.
@@ -98,7 +99,6 @@ public class IA {
     }
 	
 	private Mouvement meilleurCoup(Plateau p, Vector<Mouvement> mouvementsValides) {
-
 
 
 
@@ -336,7 +336,7 @@ public class IA {
 	
 /*	
 	private regroupementAuCentre() {
-		double position = 5.0; // on augmente de façon considérable le coefficient associe a la position.
+		double position = 5.0; // on augmente de façon considerable le coefficient associe a la position.
 	}
 */	
 	
@@ -348,7 +348,7 @@ public class IA {
 	private Vector billesEnDanger (Plateau p) {
 		Vector billesEnDanger = new Vector();
 /*
-	ici on doit simplement ajouter au vecteur toute bille impliquée par un mouvement de l'adversaire qui amene une bille dans cases[0]
+	ici on doit simplement ajouter au vecteur toute bille impliquee par un mouvement de l'adversaire qui amene une bille dans cases[0]
 */		
 		return billesEnDanger;
 	}
@@ -465,7 +465,7 @@ public class IA {
  *   defini les coefficients associes aux facteurs.
  *  
  * algos :
- * 1/ tente de trouver le meilleur moyen de regrouper les billes au centre (cela peut passer par une pseudo-attaque si le style du joueur!="defenseur" ou par un déplacement simple)
+ * 1/ tente de trouver le meilleur moyen de regrouper les billes au centre (cela peut passer par une pseudo-attaque si le style du joueur!="defenseur" ou par un deplacement simple)
  * 2/ 
  *
  *	
@@ -497,7 +497,7 @@ public class IA {
 	}
 	
 	public chercherPartie() {
-		// comme un joueur : on veut récupérer la liste des parties en attente de joueur.	
+		// comme un joueur : on veut recuperer la liste des parties en attente de joueur.	
 	}
 */	
 /**

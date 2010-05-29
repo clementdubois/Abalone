@@ -7,7 +7,7 @@ public class Regles implements Serializable{
 		private boolean isNavigable;
 		/** Combien de billes faut-il ejecter pour remporter la partie*/
 		private byte nbBilleAEjecter;
-		/**  S'agit t'il d'un mode d'édition (menu supplémentaire d'édition et possibilite d'avoir un plateau de depart vide)*/
+		/**  S'agit t'il d'un mode d'edition (menu supplementaire d'edition et possibilite d'avoir un plateau de depart vide)*/
 		private boolean isEdition;
 		/** Le type de partie*/
 		private int typeJoueur;

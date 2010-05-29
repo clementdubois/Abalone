@@ -33,8 +33,7 @@ int curseur;
 	public void paintComponent(Graphics g){
 		g.drawImage(this.menu,0,0,null);
 		if(curseur == 1) g.drawImage(this.select1,114,148,null);
-		else if(curseur == 3){ g.drawImage(this.select3,114,432,null);
-		}
+		else if(curseur == 3){ g.drawImage(this.select3,114,432,null);}
 	}
 	
 	public void rafraichirMenu(int curseur){

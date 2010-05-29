@@ -7,8 +7,8 @@ import java.util.*;
  */
 
 public class Mouvement {
-	/** Determine s'il s'agit d'un mouvement réelle lors d'une partie (true) 
-	* ou d'une bille placé lors d'une édition par exemple (false)*/
+	/** Determine s'il s'agit d'un mouvement reelle lors d'une partie (true) 
+	* ou d'une bille place lors d'une edition par exemple (false)*/
 	private boolean estMouvement;
 	/** Numero de la premiere bille*/
 	private byte premiere;
@@ -86,23 +86,23 @@ public class Mouvement {
 	*/
 	public boolean valider(Plateau p){
 		Plateau plateau = p;
-		/* La derniere bille testé*/
+		/* La derniere bille teste*/
 		byte derniereBille = this.premiere;
-		/* Le contenu de la derniere bille testé*/
+		/* Le contenu de la derniere bille teste*/
 		byte contenuBille = plateau.cases[premiere].getContenu();
 		/* La couleur de la bille adverse adjacente qui va peut etre etre deplacee*/
 		byte couleurAdverse;
-		//La bille du mileu s'il s'agit d'un mouvement latéral de trois billes 
-		byte milieu = -10;//Initialisation a un nombre quelconque pour éviter qu'il ne soit pas initialiser (surtout pas mettre 0)
+		//La bille du mileu s'il s'agit d'un mouvement lateral de trois billes 
+		byte milieu = -10;//Initialisation a un nombre quelconque pour eviter qu'il ne soit pas initialiser (surtout pas mettre 0)
 		byte cptBilleMoi; //Compteur du nombre de bille que je deplace
 		byte cptBilleLui; //Compteur du nombre de bille adverse qui vont etre deplacees
 		
-		//On vérifie que le joueur (ou l'IA) selectionne bien ces propres pions
+		//On verifie que le joueur (ou l'IA) selectionne bien ces propres pions
 		Vector<Byte> billesPossibles = p.chercheBilles(p.getJoueurActuel());
 		if (!billesPossibles.contains(this.premiere) || !billesPossibles.contains(this.derniere))
 			return false;
 		
-		//On calcul le nombre de bille poussées et on regarde la derniere de nos billes poussee, derniereBille vaudra la derniere de nos billes poussée
+		//On calcul le nombre de bille poussees et on regarde la derniere de nos billes poussee, derniereBille vaudra la derniere de nos billes poussee
 		for(cptBilleMoi = 1; plateau.cases[plateau.cases[derniereBille].getAdjacent(vecteur)].getContenu() == contenuBille; cptBilleMoi++)
 			derniereBille = plateau.cases[derniereBille].getAdjacent(vecteur);
 		
@@ -120,7 +120,7 @@ public class Mouvement {
 			        cptBilleMoi <= 3 ){ 
 				//On regarde la couleur de la bille adverse a pousser
 				couleurAdverse = plateau.cases[plateau.cases[derniereBille].getAdjacent(vecteur)].getContenu();
-				//On calcule le nombre de billes adverse qui vont être deplacées
+				//On calcule le nombre de billes adverse qui vont être deplacees
 				for(cptBilleLui = 0; plateau.cases[plateau.cases[derniereBille].getAdjacent(vecteur)].getContenu() == couleurAdverse; cptBilleLui++)
 					derniereBille = plateau.cases[derniereBille].getAdjacent(vecteur);
 				
@@ -137,10 +137,10 @@ public class Mouvement {
 		}else{//Deplacement lateral
 			byte numCaseIntermediaire = plateau.caseIntermediaire(this.premiere, this.derniere);
 			
-			//On vérfie que des billes ont bien été séléctionnées
+			//On verfie que des billes ont bien ete selectionnees
 			if(plateau.cases[this.premiere].getContenu() != Case.VIDE &&
 			  plateau.cases[this.derniere].getContenu() != Case.VIDE ){
-					//On vérifie que la distance entre les deux billes est valide (invalide si case intermediaire renvoi -1)
+					//On verifie que la distance entre les deux billes est valide (invalide si case intermediaire renvoi -1)
 					if (numCaseIntermediaire != -1){
 						//Si il y a effectivement une case intermediaire et que cette case n'est pas vide...
 						if(numCaseIntermediaire != 0 )
