@@ -136,55 +136,137 @@ public class IA {
 		
 		
 	}
-	
+/*	
+	private double negamax() {
+		
+	}
+*/	
 	
 	private double negamax(Plateau p, int profondeur, double alpha, double beta) {
 		double valeur, best;
 		Vector<Mouvement> mouvementsValides = new Vector<Mouvement>();
-				
-
-
+		this.iterator++;
 		
+		
+		PrintWriter ecrivain;
+		try {
+			ecrivain =  new PrintWriter(new BufferedWriter
+		   (new FileWriter("ia.txt", true)));
+			if(profondeur%2 == 1) ecrivain.print("					");
+			ecrivain.println(this.iterator+"minimax("+profondeur+", "+alpha+", "+beta+")");
+			ecrivain.close();
+		} catch(IOException e) {
+		
+		}
+		
+
 		if(profondeur == 0) {
 			return fonctionEvaluation(p);
 		}
 		
 		Plateau temporaire = new Plateau(p);
-		mouvementsValides = temporaire.mouvementsValides(p.getJoueurActuel());
-
+		mouvementsValides = temporaire.mouvementsValides(1/*p.getJoueurActuel()*/);
+		try {
+			ecrivain =  new PrintWriter(new BufferedWriter
+		   (new FileWriter("ia.txt", true)));
+		   	if(profondeur%2 == 1) ecrivain.print("					");
+			ecrivain.println(this.iterator+"mouvements valides : "+mouvementsValides.size());
+			ecrivain.close();
+		} catch(IOException e) {
+	
+		}			
+		
 		if(/*temporaire.getJoueurActuel() != this.numJoueur*/profondeur%2 == 1)
 			best = Double.MAX_VALUE;
 		else
 			best = Double.MIN_VALUE;
 		
 		for(int i = 0 ; i < mouvementsValides.size() ; i++) {
+			try {
+				ecrivain =  new PrintWriter(new BufferedWriter
+			   (new FileWriter("ia.txt", true)));
+				if(profondeur%2 == 1) ecrivain.print("					");
+				ecrivain.println(this.iterator+"mouvement : "+i);
+				if(profondeur%2 == 1) ecrivain.print("					");
+				ecrivain.println(mouvementsValides.get(i));
+				ecrivain.close();
+			} catch(IOException e) {
+		
+			}
+			
 			temporaire.effectuer(mouvementsValides.get(i));
-			temporaire.setJoueur();
+/*			temporaire.setJoueur();
 			temporaire.setNumCoup();
-			temporaire.setScore();
+*/			temporaire.setScore();
 			valeur = negamax(temporaire, profondeur-1, alpha, beta);
 			
-			if(/*temporaire.getJoueurActuel() != this.numJoueur*/profondeur%2 == 1) { 
+			try {
+				ecrivain =  new PrintWriter(new BufferedWriter
+			   (new FileWriter("ia.txt", true)));
+			   if(profondeur%2 == 1) ecrivain.print("					");
+				ecrivain.println(this.iterator+"	valeur:"+valeur+" alpha:"+alpha+" beta:"+beta);
+				ecrivain.close();
+			} catch(IOException e) {
+		
+			}	
+//			valeur = max(best, -negamax(temporaire, profondeur-1, -alpha, -beta)); // min() = max()
+			
+			
+			if(/*temporaire.getJoueurActuel() != this.numJoueur*/  profondeur%2 == 1) { 
 				if(valeur < best) { // on minimise
-					best = valeur;
+					try {
+						ecrivain =  new PrintWriter(new BufferedWriter
+					   (new FileWriter("ia.txt", true)));
+					   if(profondeur%2 == 1) ecrivain.print("					");
+						ecrivain.println(this.iterator+"on minimise : valeur < best -> best:"+best+" alpha:"+alpha+" beta:"+beta+" valeur:"+valeur);
+						ecrivain.close();
+					} catch(IOException e) {
+						
+					}
+					best = valeur;			
 					if(best<beta) {
 						beta=best;
-						if(alpha>beta)
+						if(alpha>beta) {					
 							return best; // coupure alpha
+						}
 					}
 				}
-			}
-			else if (valeur > best) { // on maximise
-				best = valeur;
-				if(best>alpha) {
-					alpha=best;
-					if(alpha>beta)
-						return best; // coupure beta
+				else if (valeur > best) { // on maximise
+					try {
+						ecrivain =  new PrintWriter(new BufferedWriter
+					   (new FileWriter("ia.txt", true)));
+					   if(profondeur%2 == 1) ecrivain.print("					");
+						ecrivain.println(this.iterator+"on maximise : valeur > best -> best:"+best+" alpha:"+alpha+" beta:"+beta+" valeur:"+valeur);
+						ecrivain.close();
+					} catch(IOException e) {
+				
+					}		
+					best = valeur;
+					if(best>alpha) {
+						alpha=best;
+						if(alpha>beta) {						
+							return best; // coupure beta
+						}
+					}
 				}
+							
 			}
 		}
-		System.out.println("best"+best);
+		
+		try {
+			ecrivain =  new PrintWriter(new BufferedWriter
+		   (new FileWriter("ia.txt", true)));
+			ecrivain.println("		best:"+best);
+			ecrivain.close();
+		} catch(IOException e) {
+		
+		}			
+			
 		return best;
+	}
+	
+	private double max(double d1, double d2) {
+		return d1>d2?d1:d2;
 	}
 	
 	
@@ -295,6 +377,7 @@ public class IA {
 		}
 */
 		Plateau temporaire = new Plateau(p);
+		
 /*		temporaire.effectuer(m);
 		temporaire.setJoueur();
 		temporaire.setNumCoup();

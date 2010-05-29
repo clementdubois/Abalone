@@ -50,7 +50,7 @@ public class ClickAction extends MouseAdapter {
 		//Les cliques sont actifs seulement si ce n'est pas à l'IA de jouer
 		if(fenetre.partie.estHumain()){
 			//Si on à juste appuye sur le clique c'est qu'on veut selectionner une bille pour un mouvement
-			if(event.getButton() == MouseEvent.BUTTON1 && event.getModifiersEx() == 0){
+			if(event.getButton() == MouseEvent.BUTTON1 && event.getModifiersEx() == 0) {
 				//C'est le premier clique pour la selection en vue d'un mouvement
 				if(nbClick == 1){
 					premiere = transcription(event.getY(),event.getX());
