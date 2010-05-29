@@ -6,9 +6,9 @@ import java.awt.event.*;
 
 /** Fenetre de dialogue au lancement de la partie pour determiner les regles de la partie*/
 class ChoixRegles extends JDialog{
-	/** Les regles qui vont être choisies*/
+	/** Les regles qui vont etre choisies*/
 	private Regles regles = new Regles();
-	/** Savoir si l'utilisateur à annuler ou a valider*/
+	/** Savoir si l'utilisateur a annuler ou a valider*/
 	private boolean sendData;
 	/** L'icone de la fenetre*/
 	JLabel icon;
@@ -25,8 +25,12 @@ class ChoixRegles extends JDialog{
 			this.setLocationRelativeTo(null);
 			//La boîte ne devra pas être redimensionnable
 			this.setResizable(false);
-			this.setDefaultCloseOperation(JDialog.DO_NOTHING_ON_CLOSE);
+			this.setDefaultCloseOperation(JDialog.HIDE_ON_CLOSE);
 			this.initComponent();
+			//A l'ouverture de la fenetre l'utilisateur n'a rien envoye
+			this.sendData = false;
+			
+      
 	}
 	
 	/**
@@ -81,7 +85,7 @@ class ChoixRegles extends JDialog{
 				okBouton.addActionListener(new ActionListener(){
 					public void actionPerformed(ActionEvent arg0) {				
 						regles = new Regles(getType());
-						this.sendData = true;
+						sendData = true;
 						setVisible(false);
 					}
 
@@ -95,7 +99,7 @@ class ChoixRegles extends JDialog{
 				JButton cancelBouton = new JButton("Annuler");
 				cancelBouton.addActionListener(new ActionListener(){
 					public void actionPerformed(ActionEvent arg0) {
-						this.sendData = false;
+						sendData = false;
 						setVisible(false);
 					}			
 				});
@@ -110,6 +114,8 @@ class ChoixRegles extends JDialog{
 	}
 	
 	/** Permet de savoir si l'utilisateur a valide*/
-	public boolean aChoisi
+	public boolean aChoisi(){
+		return this.sendData;
+	}
 	
 }
