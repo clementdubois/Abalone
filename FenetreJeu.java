@@ -520,7 +520,7 @@ public class FenetreJeu extends JFrame{
 					 	
 						jop.showMessageDialog(null, message); 
 						//retour au menu	
-						Partie p = new Partie();
+						fm = new FenetreMenu();
 						dispose();					
 					}
 				}
@@ -529,7 +529,8 @@ public class FenetreJeu extends JFrame{
     	// lancement.addSeparator();
     	quitter.addActionListener(new ActionListener(){
     		public void actionPerformed(ActionEvent event){
-    		System.exit(0);
+    			fm = new FenetreMenu();
+					dispose();
     		}
     	});
     	lancement.add(quitter);

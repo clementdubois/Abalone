@@ -34,21 +34,20 @@ public class Partie implements Serializable{
 	/** Le gagnant de la partie, a 0 si personne n'a encore gagne*/
 	protected int gagnant = 0;
 	
-	/** Le type des joueur.
-	*
-	*  J vs J => 0
-	*  J vs IA => 1
-	*  IA vs J => 2
-	*  IA vs IA => 3
-	*/
-	public int typeJoueur = 0;
+
 	/** Les IA présente dans la partie (max 2 => IA vs IA)*/
 	public IA[] IAs;
+	/** Les règles de la partie*/
+	public Regles regles;
 	
-	public Partie() {
-		// Pour la création d'IA
-		typeJoueur = choixJoueur();
-		creerIA(typeJoueur);
+	/** Nouvelle partie créée depuis le menu principal
+	* Les règles choisies depuis la fenetre de dialogue avant la création de la partie
+	*/
+	public Partie(Regles r) {
+		//On charge les regles du jeu
+		this.regles = r;
+		//On génère les IA si besoin
+		creerIA(r.getTypeJoueur());
 		//La partie ne fait que commencé voyons!
 		terminee = false;
 		plateau = new Plateau(); 
@@ -76,8 +75,8 @@ public class Partie implements Serializable{
 	/** Pour le chargement d'une partie*/
 	public Partie(Partie p){
 		// Pour la création d'IA
-		typeJoueur = p.typeJoueur;
-		creerIA(typeJoueur);  // <== Prévoir un constructeur par copie pour l'IA
+		this.regles = p.regles;
+		creerIA(this.regles.getTypeJoueur());  // <== Prévoir un constructeur par copie pour l'IA
 		//On reprend les données de la partie chargée
 		terminee = p.terminee;
 		gagnant = p.gagnant;
@@ -104,8 +103,8 @@ public class Partie implements Serializable{
 	/** Savoir quel est le type du joueur en cours.
 	* return true si c'est un joueur humain, false si c'est l'IA*/
 	public boolean estHumain(){
-		if(typeJoueur == 3 || (typeJoueur == 1 && plateau.getJoueurActuel() == BLANC) ||
-		    (typeJoueur == 2 && plateau.getJoueurActuel() == NOIR))
+		if(regles.getTypeJoueur() == 3 || (regles.getTypeJoueur() == 1 && plateau.getJoueurActuel() == BLANC) ||
+		    (regles.getTypeJoueur() == 2 && plateau.getJoueurActuel() == NOIR))
 						return false;
 		else
 						return true;
@@ -204,7 +203,10 @@ public class Partie implements Serializable{
 				message+="Le joueur BLANC remporte la partie";
 			
 			jop.showMessageDialog(null, message); 	
+			//On retourne au menu
 			f.dispose();	
+			f.fm = new FenetreMenu();
+			//Empeche l'IA de jouer si le joueur à terminer la partie
 			return;
 		}
 		
@@ -253,9 +255,9 @@ public class Partie implements Serializable{
 	*/
 	public int indexIA(){
 		//Si il n'y a que des IA, l'index correspond au joueur Actuel -1
-		if(typeJoueur == 3 )
+		if(regles.getTypeJoueur() == 3 )
 			return (plateau.getJoueurActuel())-1;
-		else if(typeJoueur == 1){
+		else if(regles.getTypeJoueur() == 1){
 			return IAs[0].numJoueur;
 		}			
 		else

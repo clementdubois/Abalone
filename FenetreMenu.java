@@ -43,7 +43,7 @@ public class FenetreMenu extends JFrame{
 					 if(x>113 && x<454 && y>146 && y<245 && event.getButton() == MouseEvent.BUTTON1){
 							ChoixRegles cr = new ChoixRegles(null, "Regles", true);
 							Regles regles = cr.showChoixRegles();
-							Partie p = new Partie();
+							Partie p = new Partie(regles);
 							menu.rafraichirMenu(0); 
 							dispose(); 
 					 }
