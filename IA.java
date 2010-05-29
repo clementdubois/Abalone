@@ -65,7 +65,7 @@ public class IA {
 	
 	
 	public IA(int numJoueur) {
-		this.profondeur = 3;
+		this.profondeur = 1;
 		this.nom  = "neuneu";
 		this.numJoueur = numJoueur;
 		this.niveauIA = 1;
@@ -183,7 +183,7 @@ public class IA {
 				}
 			}
 		}
-		System.out.println("best"+best);
+		//System.out.println("best"+best);
 		return best;
 	}
 	

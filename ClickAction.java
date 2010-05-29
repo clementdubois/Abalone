@@ -44,7 +44,6 @@ public class ClickAction extends MouseAdapter {
 	*/
 	public void mouseClicked(MouseEvent event){
 		int numCaseSelectionner = transcription(event.getY(),event.getX());
-		System.out.println("event"+event.getModifiersEx());
 		
 	
 		//Les cliques sont actifs seulement si ce n'est pas à l'IA de jouer
@@ -130,6 +129,8 @@ public class ClickAction extends MouseAdapter {
 			else if ((event.getModifiersEx())  == 640 && event.getButton() == MouseEvent.BUTTON1) {
 			        System.out.println("marquer");
 			}
+		}else if(!fenetre.partie.estHumain() && fenetre.partie.plateau.getNumCoup() == 0){
+			fenetre.partie.testerIA();
 		}
 	}
 	

@@ -111,6 +111,7 @@ public class FenetreJeu extends JFrame{
 	* Constructeur de la fenetre
 	*/
     public FenetreJeu(Partie partie){
+			
 			super();
 			this.partie = partie;
 			this.setTitle("Abalone");
