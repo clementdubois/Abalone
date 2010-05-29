@@ -22,7 +22,7 @@ public class Connect{
 		}
 	}
 	
-	//Méthode qui va nous retourner notre instance et la créer si elle n'existe pas...
+	//Methode qui va nous retourner notre instance et la creer si elle n'existe pas...
 	 
 public static Connection getInstance(){
 			if(connect == null){

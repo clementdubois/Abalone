@@ -35,20 +35,20 @@ public class Partie implements Serializable{
 	protected int gagnant = 0;
 	
 
-	/** Les IA présente dans la partie (max 2 => IA vs IA)*/
+	/** Les IA presente dans la partie (max 2 => IA vs IA)*/
 	public IA[] IAs;
-	/** Les règles de la partie*/
+	/** Les regles de la partie*/
 	public Regles regles;
 	
-	/** Nouvelle partie créée depuis le menu principal
-	* Les règles choisies depuis la fenetre de dialogue avant la création de la partie
+	/** Nouvelle partie creee depuis le menu principal
+	* Les regles choisies depuis la fenetre de dialogue avant la creation de la partie
 	*/
 	public Partie(Regles r) {
 		//On charge les regles du jeu
 		this.regles = r;
-		//On génère les IA si besoin
+		//On genere les IA si besoin
 		creerIA(r.getTypeJoueur());
-		//La partie ne fait que commencé voyons!
+		//La partie ne fait que commence voyons!
 		terminee = false;
 		plateau = new Plateau(); 
 		//On initialise l'arbre de coups avec le premier plateau (ca sera la racine)
@@ -62,7 +62,7 @@ public class Partie implements Serializable{
 	/** Creer une partie avec une position de depart*/
 	public Partie(Case[] position){
 		terminee = false;
-		//On créer un plateau avec une position de depart
+		//On creer un plateau avec une position de depart
 		plateau = new Plateau(position); 
 		//On initialise l'arbre de coups avec le premier plateau (ca sera la racine)
 		dernierCoup = new DefaultMutableTreeNode(new Codage(plateau));
@@ -74,10 +74,10 @@ public class Partie implements Serializable{
 	
 	/** Pour le chargement d'une partie*/
 	public Partie(Partie p){
-		// Pour la création d'IA
+		// Pour la creation d'IA
 		this.regles = p.regles;
-		creerIA(this.regles.getTypeJoueur());  // <== Prévoir un constructeur par copie pour l'IA
-		//On reprend les données de la partie chargée
+		creerIA(this.regles.getTypeJoueur());  // <== Prevoir un constructeur par copie pour l'IA
+		//On reprend les donnees de la partie chargee
 		terminee = p.terminee;
 		gagnant = p.gagnant;
 		plateau = new Plateau(p.plateau);
@@ -131,7 +131,7 @@ public class Partie implements Serializable{
 	  return gagnant;
 	}
 			
-		/** Modifie les données liées à l'arbre lors d'un changement de l'etat du plateau
+		/** Modifie les donnees liees à l'arbre lors d'un changement de l'etat du plateau
 		* @param frere indique s'il faut creer un noeud frere (true) ou fils (false)
 		*
 		*/
@@ -192,7 +192,7 @@ public class Partie implements Serializable{
 		f.expandAll(f.arbre);
 		f.rafraichir(plateau);
 		
-		//On regarde si quelqu'un à gagné
+		//On regarde si quelqu'un à gagne
 		gagnant = vainqueur();
 		if(gagnant != 0){
 			JOptionPane jop = new JOptionPane();
@@ -251,7 +251,7 @@ public class Partie implements Serializable{
 			
 	}
 	/** Permet de savoir quel IA doit jouer (0 ou 1) pour l'index du tableau IAs.
-	* Elle ne peut être appelé que si c'est actuellement à l'IA de jouer
+	* Elle ne peut être appele que si c'est actuellement à l'IA de jouer
 	*/
 	public int indexIA(){
 		//Si il n'y a que des IA, l'index correspond au joueur Actuel -1

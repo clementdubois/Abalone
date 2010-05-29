@@ -5,7 +5,7 @@ import java.io.*;
 public class Case implements Serializable{
 /**
  * contientBille permet de savoir si la case contient effectivement une bille jouable.
- * C'est lui qui doit etre mis à jour.	
+ * C'est lui qui doit etre mis a jour.	
  */
 	//private boolean contientBille;
 /**
@@ -106,7 +106,7 @@ public class Case implements Serializable{
 						return false;
 			}
 			
-			/** Renvoie le vecteur d'adjacence de this a numAdjacent s'il éxiste un lien, sinon renvoie -1*/
+			/** Renvoie le vecteur d'adjacence de this a numAdjacent s'il existe un lien, sinon renvoie -1*/
 			public byte vecteurAdjacent(byte numAdjacent){
 				//On teste tous les vecteurs
 				for(byte i=0; i<6; i++){

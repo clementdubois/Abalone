@@ -78,7 +78,7 @@ public class FenetreMenu extends JFrame{
 							}
 							else{
 								JOptionPane alert = new JOptionPane();
-								alert.showMessageDialog(null, "Erreur d'extension de fichier ! \nVotre chargement a échoué !", "Erreur", JOptionPane.ERROR_MESSAGE);
+								alert.showMessageDialog(null, "Erreur d'extension de fichier ! \nVotre chargement a echoue !", "Erreur", JOptionPane.ERROR_MESSAGE);
 							}
 						}
 						

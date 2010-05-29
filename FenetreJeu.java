@@ -83,7 +83,7 @@ public class FenetreJeu extends JFrame{
 			File file;
 		
 
-    // Création de notre barre d'outils.
+    // Creation de notre barre d'outils.
     private JToolBar toolBar = new JToolBar();
 
     //Les boutons
@@ -132,7 +132,7 @@ public class FenetreJeu extends JFrame{
 				
         //On initialise le menu stop
         stop.setEnabled(false);
-        //On affecte les écouteurs
+        //On affecte les ecouteurs
         stop.addActionListener(stopPartie);
 
     		launch.addActionListener(startPartie);
@@ -301,7 +301,7 @@ public class FenetreJeu extends JFrame{
 										else{
 											//Si extension invalide ! 
 											JOptionPane alert = new JOptionPane();
-											alert.showMessageDialog(null, "Erreur: votre fichier doit avoir l'extension .ab! \nVotre sauvegarde a échoué !", "Erreur", JOptionPane.ERROR_MESSAGE);
+											alert.showMessageDialog(null, "Erreur: votre fichier doit avoir l'extension .ab! \nVotre sauvegarde a echoue !", "Erreur", JOptionPane.ERROR_MESSAGE);
 										}						
 									}
 								}
@@ -331,14 +331,14 @@ public class FenetreJeu extends JFrame{
 								}
 							}
 							else{
-								//Si vous n'avez pas spécifié une extension valide ! 
+								//Si vous n'avez pas specifie une extension valide ! 
 								JOptionPane alert = new JOptionPane();
-								alert.showMessageDialog(null, "Erreur: votre fichier doit avoir l'extension .ab! \nVotre sauvegarde a échoué !", "Erreur", JOptionPane.ERROR_MESSAGE);
+								alert.showMessageDialog(null, "Erreur: votre fichier doit avoir l'extension .ab! \nVotre sauvegarde a echoue !", "Erreur", JOptionPane.ERROR_MESSAGE);
 							}
 						}
 					}			
 				});
-				//Enregistrer l'etat d'une plateau comme un position de départ possible pour une partie
+				//Enregistrer l'etat d'une plateau comme un position de depart possible pour une partie
 				enregistrerPosition.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_P, KeyEvent.CTRL_DOWN_MASK));
 				enregistrerPosition.addActionListener(new ActionListener(){
 
@@ -362,9 +362,9 @@ public class FenetreJeu extends JFrame{
 								}
 							}
 							else{
-								//Si vous n'avez pas spécifié une extension valide ! 
+								//Si vous n'avez pas specifie une extension valide ! 
 								JOptionPane alert = new JOptionPane();
-								alert.showMessageDialog(null, "Erreur: votre fichier doit avoir l'extension .pos! \nVotre sauvegarde a échoué !", "Erreur", JOptionPane.ERROR_MESSAGE);
+								alert.showMessageDialog(null, "Erreur: votre fichier doit avoir l'extension .pos! \nVotre sauvegarde a echoue !", "Erreur", JOptionPane.ERROR_MESSAGE);
 							}
 						}
 					}			
@@ -399,7 +399,7 @@ public class FenetreJeu extends JFrame{
 							}
 							else{
 								JOptionPane alert = new JOptionPane();
-								alert.showMessageDialog(null, "Erreur d'extension de fichier ! \nVotre chargement a échoué !", "Erreur", JOptionPane.ERROR_MESSAGE);
+								alert.showMessageDialog(null, "Erreur d'extension de fichier ! \nVotre chargement a echoue !", "Erreur", JOptionPane.ERROR_MESSAGE);
 							}
 						}
 					}
@@ -435,7 +435,7 @@ public class FenetreJeu extends JFrame{
 							}
 							else{
 								JOptionPane alert = new JOptionPane();
-								alert.showMessageDialog(null, "Erreur d'extension de fichier ! \nVotre chargement a échoué !", "Erreur", JOptionPane.ERROR_MESSAGE);
+								alert.showMessageDialog(null, "Erreur d'extension de fichier ! \nVotre chargement a echoue !", "Erreur", JOptionPane.ERROR_MESSAGE);
 							}
 						}
 					}
@@ -457,7 +457,7 @@ public class FenetreJeu extends JFrame{
 					public void actionPerformed(ActionEvent arg0){
 						//On vide le plateau de jeu
 						partie.plateau.viderPlateau();
-						//On rafraichit les données de l'arbre
+						//On rafraichit les donnees de l'arbre
 						partie.changementPlateau();
 						//On rafraichit graphiquement
 						rafraichir(partie.plateau);
@@ -489,7 +489,7 @@ public class FenetreJeu extends JFrame{
 			//--------------FIN Menu Edition----------------
 			//Menu Lancement
     	lancer.addActionListener(startPartie);
-    	//On attribue l'accélerateur c
+    	//On attribue l'accelerateur c
     	lancer.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, KeyEvent.CTRL_MASK));
     	lancement.add(lancer);
 

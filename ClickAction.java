@@ -37,10 +37,10 @@ public class ClickAction extends MouseAdapter {
 	* On surcharge la methode mouseClicked pour quelle recupere et envoie le numero des billes selectionnees.
 	* -Clique gauche => selection de bille														(0)
 	* -Clique droit => annuler selection															(256)
-	* -CTRL + Clique gauche => supprimer une bille (édition)    			(128)
-	* -ALT + Clique gauche => Ajouter une bille noir (édition)				(512)
-	* -ALT + Clique droit => Ajouter une bille blanche (édition)  	  (512)
-	* -CTRL + ALT + Clique gauche => Marquer une bille (édition)      (640)
+	* -CTRL + Clique gauche => supprimer une bille (edition)    			(128)
+	* -ALT + Clique gauche => Ajouter une bille noir (edition)				(512)
+	* -ALT + Clique droit => Ajouter une bille blanche (edition)  	  (512)
+	* -CTRL + ALT + Clique gauche => Marquer une bille (edition)      (640)
 	*/
 	public void mouseClicked(MouseEvent event){
 		int numCaseSelectionner = transcription(event.getY(),event.getX());
@@ -49,9 +49,9 @@ public class ClickAction extends MouseAdapter {
 	
 		//Les cliques sont actifs seulement si ce n'est pas à l'IA de jouer
 		if(fenetre.partie.estHumain()){
-			//Si on à juste appuyé sur le clique c'est qu'on veut selectionner une bille pour un mouvement
+			//Si on à juste appuye sur le clique c'est qu'on veut selectionner une bille pour un mouvement
 			if(event.getButton() == MouseEvent.BUTTON1 && event.getModifiersEx() == 0){
-				//C'est le premier clique pour la sélection en vue d'un mouvement
+				//C'est le premier clique pour la selection en vue d'un mouvement
 				if(nbClick == 1){
 					premiere = transcription(event.getY(),event.getX());
 					if(fenetre.partie.plateau.chercheBilles(fenetre.partie.plateau.getJoueurActuel()).contains((byte)premiere)){
@@ -87,11 +87,11 @@ public class ClickAction extends MouseAdapter {
 					else{
 						System.out.println("Attention, ne cliquez que sur vos billes ! \n");
 					}	
-				}//C'est le clique qui va determiner dans quel direction on veut déplacer la bille (avant => 53 lignes, après => 11)
+				}//C'est le clique qui va determiner dans quel direction on veut deplacer la bille (avant => 53 lignes, apres => 11)
 				else if(nbClick == 3){
 					troisieme = transcription(event.getY(),event.getX());
 
-					//On vérifie que la deuxieme selectionnee a un vecteur par rapport a la troisieme
+					//On verifie que la deuxieme selectionnee a un vecteur par rapport a la troisieme
 				  if((vecteur = fenetre.partie.plateau.cases[deuxieme].vecteurAdjacent(troisieme) )!= -1){
 						fenetre.partie.deroulementMouvement(premiere,deuxieme,vecteur);
 					}
@@ -116,13 +116,13 @@ public class ClickAction extends MouseAdapter {
 							
 			}//Ajouter bille noire
 			else if ((event.getModifiersEx())  == 512 && event.getButton() == MouseEvent.BUTTON1) {
-			        //On remplace la case selectionnée par une bille noire
+			        //On remplace la case selectionnee par une bille noire
 				       fenetre.partie.plateau.cases[numCaseSelectionner].setContenu(Case.NOIR);
 							//On gere les modifications
 							modifications();
 			}//Ajouter bille blanche
 			else if ((event.getModifiersEx())  == 512 && event.getButton() == MouseEvent.BUTTON3) {
-			        //On remplace la case selectionnée par une bille noire
+			        //On remplace la case selectionnee par une bille noire
 				       fenetre.partie.plateau.cases[numCaseSelectionner].setContenu(Case.BLANC);
 						  //On gere les modifications
 							modifications();
@@ -173,15 +173,15 @@ public class ClickAction extends MouseAdapter {
 
 	
 	public void modifications(){
-		//Si il ne s'agissait pas d'un plateau résultant d'une édition alors on creer un noeud frere qui est une edition
+		//Si il ne s'agissait pas d'un plateau resultant d'une edition alors on creer un noeud frere qui est une edition
 		if(!fenetre.partie.plateau.isEdition()){
-			//On met à jour le noeud modifié
+			//On met à jour le noeud modifie
 			fenetre.partie.changementPlateau();
-			//On indique que le plateau est le résultat d'une édition
+			//On indique que le plateau est le resultat d'une edition
 			fenetre.partie.plateau.setEdited(true);
 		}//Sinon on rafraichit juste le noeud courant
 		else{
-			//On met à jour le noeud modifié
+			//On met à jour le noeud modifie
 			fenetre.partie.dernierCoup.setUserObject(new Codage(fenetre.partie.plateau));
 		}
 		//On rafraichit graphiquement
