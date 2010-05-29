@@ -65,7 +65,7 @@ public class IA {
 	
 	
 	public IA(int numJoueur) {
-		this.profondeur = 2;
+		this.profondeur = 0;
 		this.nom  = "neuneu";
 		this.numJoueur = numJoueur;
 		this.niveauIA = 1;
@@ -252,6 +252,7 @@ public class IA {
 							
 			}
 		}
+
 		
 		try {
 			ecrivain =  new PrintWriter(new BufferedWriter
@@ -261,7 +262,7 @@ public class IA {
 		} catch(IOException e) {
 		
 		}			
-			
+
 		return best;
 	}
 	

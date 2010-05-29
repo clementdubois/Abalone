@@ -192,7 +192,7 @@ public class Partie implements Serializable{
 		f.expandAll(f.arbre);
 		f.rafraichir(plateau);
 		
-		//On regarde si quelqu'un à gagne
+		//On regarde si quelqu'un a gagne
 		gagnant = vainqueur();
 		if(gagnant != 0){
 			JOptionPane jop = new JOptionPane();
@@ -206,7 +206,7 @@ public class Partie implements Serializable{
 			//On retourne au menu
 			f.dispose();	
 			f.fm = new FenetreMenu();
-			//Empeche l'IA de jouer si le joueur à terminer la partie
+			//Empeche l'IA de jouer si le joueur a termine la partie
 			return;
 		}
 		
@@ -251,16 +251,17 @@ public class Partie implements Serializable{
 			
 	}
 	/** Permet de savoir quel IA doit jouer (0 ou 1) pour l'index du tableau IAs.
-	* Elle ne peut être appele que si c'est actuellement à l'IA de jouer
+	* Elle ne peut etre appele que si c'est actuellement à l'IA de jouer
 	*/
 	public int indexIA(){
 		//Si il n'y a que des IA, l'index correspond au joueur Actuel -1
 		if(regles.getTypeJoueur() == 3 )
 			return (plateau.getJoueurActuel())-1;
-		else if(regles.getTypeJoueur() == 1){
-			return IAs[0].numJoueur;
+		//Si l'IA est le joueur 1 ou le joueur 2, il n'y a qu'une seul IA donc l'index est 0
+		else if(regles.getTypeJoueur() == 1 || regles.getTypeJoueur() == 2){
+			return 0;
 		}			
-		else
+		else //On ne devrait jamais arriver ici
 			return 15;
 	}
 	
@@ -268,8 +269,8 @@ public class Partie implements Serializable{
 	public void testerIA(){
 		//Si le joueurActuel est bien une IA
 		if(!estHumain()) {
-				Mouvement m = IAs[0/*indexIA()*/].jouer(plateau);
-				System.out.println(m);
+			
+				Mouvement m = IAs[indexIA()].jouer(plateau);
 		 		deroulementMouvement(m.getPremiere(), m.getDerniere(), m.getVecteur());
 		 }
 	}

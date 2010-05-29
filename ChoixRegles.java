@@ -58,7 +58,7 @@ class ChoixRegles extends JDialog{
 				JPanel panType = new JPanel();
 				panType.setBackground(Color.white);
 				panType.setBorder(BorderFactory.createTitledBorder("Type de partie"));
-				panType.setPreferredSize(new Dimension(440, 60));
+				panType.setPreferredSize(new Dimension(558, 692));
 				type1 = new JRadioButton("Humain vs Humain");
 				type1.setSelected(true);
 				type2 = new JRadioButton("Humain vs IA");
@@ -73,6 +73,7 @@ class ChoixRegles extends JDialog{
 				panType.add(type2);
 				panType.add(type3);
 				panType.add(type4);
+				
 		
 				
 				JPanel content = new JPanel();

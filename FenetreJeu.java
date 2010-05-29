@@ -112,6 +112,7 @@ public class FenetreJeu extends JFrame{
 	*/
     public FenetreJeu(Partie partie){
 			super();
+			
 			this.partie = partie;
 			this.setTitle("Abalone");
 			this.setSize(LARGEUR,HAUTEUR);
@@ -193,7 +194,6 @@ public class FenetreJeu extends JFrame{
 	*/
 	public void rafraichir(Plateau plateau){
 		pan.rafraichir(plateau);
-		pan.repaint();
 		joueurActuel = plateau.getJoueurActuel();
 
 		if(joueurActuel == 1){

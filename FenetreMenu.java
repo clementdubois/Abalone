@@ -54,8 +54,8 @@ public class FenetreMenu extends JFrame{
 					 }
 					//Charger une partie
 					if(x>113 && x<454 && y>280 && y<379 && event.getButton() == MouseEvent.BUTTON1){
-						//File chooser pour choisir une partie à charger
-						//On ouvre la fenetre de jeu avec la partie à charger
+						//File chooser pour choisir une partie a charger
+						//On ouvre la fenetre de jeu avec la partie a charger
 						if(fileChooser.showOpenDialog(null) ==JFileChooser.APPROVE_OPTION){
 							file = fileChooser.getSelectedFile();
 							if(fileChooser.getFileFilter().accept(file))
@@ -71,7 +71,7 @@ public class FenetreMenu extends JFrame{
 									partie.f.rafraichir(partie.plateau);
 									partie.f.arbre.setModel(partie.coups);
 									partie.coups.reload();
-
+									dispose();
 
 								} catch (FileNotFoundException e1) {
 									e1.printStackTrace();
@@ -88,7 +88,7 @@ public class FenetreMenu extends JFrame{
 						}
 						
 						menu.rafraichirMenu(0); 
-						dispose();
+						
 					}
 				
 					
