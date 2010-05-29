@@ -73,6 +73,7 @@ class ChoixRegles extends JDialog{
 				panType.add(type2);
 				panType.add(type3);
 				panType.add(type4);
+				
 		
 				
 				JPanel content = new JPanel();

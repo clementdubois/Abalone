@@ -201,7 +201,7 @@ byte cp0,cp1,cp2,cp3,cp4,cp5;
 		this.cp3 = -1;
 		this.cp4 = -1;
 		this.cp5 = -1;
-		this.repaint();
+		paintImmediately(this.getVisibleRect());
 	}
 	
 	/**

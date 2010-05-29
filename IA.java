@@ -65,7 +65,6 @@ public class IA {
 	
 	
 	public IA(int numJoueur) {
-
 		this.profondeur = 2;
 		this.nom  = "neuneu";
 		this.numJoueur = numJoueur;
