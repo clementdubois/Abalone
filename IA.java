@@ -65,7 +65,7 @@ public class IA {
 	
 	
 	public IA(int numJoueur) {
-		this.profondeur = 0;
+		this.profondeur = 3;
 		this.nom  = "neuneu";
 		this.numJoueur = numJoueur;
 		this.niveauIA = 1;
@@ -136,13 +136,56 @@ public class IA {
 		
 		
 	}
-/*	
-	private double negamax() {
+
+	private double negamax(Plateau p, int profondeur, double alpha, double beta) {
+		double valeur, best;
+		Vector<Mouvement> mouvementsValides = new Vector<Mouvement>();
+		PrintWriter ecrivain;
+		
+		
+		if(profondeur == 0) {
+			return fonctionEvaluation(p);
+		}		
+		
+		valeur = Double.MIN_VALUE;
+		mouvementsValides = p.mouvementsValides(1);
+		System.out.println(mouvementsValides.size());
+		for(int i = 0 ; i < mouvementsValides.size() ; i++) {
+			try {
+				ecrivain =  new PrintWriter(new BufferedWriter
+			   (new FileWriter("ia.txt", true)));
+				if(profondeur%2 == 1) ecrivain.print("					");
+				ecrivain.println(this.iterator+"mouvement : "+i);
+				if(profondeur%2 == 1) ecrivain.print("					");
+				ecrivain.println(mouvementsValides.get(i));
+				ecrivain.close();
+			} catch(IOException e) {
+		
+			}
+			Plateau temporaire = new Plateau(p);
+			temporaire.effectuer(mouvementsValides.get(i));
+/*			temporaire.setJoueur();
+			temporaire.setNumCoup();
+*/			temporaire.setScore();
+			valeur = max(-valeur, negamax(temporaire, profondeur-1, alpha, beta));	
+		}		
+			try {
+				ecrivain =  new PrintWriter(new BufferedWriter
+			   (new FileWriter("ia.txt", true)));
+				if(profondeur%2 == 1) ecrivain.print("					");
+				ecrivain.println("VALEUR:"+valeur);
+				ecrivain.close();
+			} catch(IOException e) {
+		
+			}		
+		return valeur;
+		
+		
 		
 	}
-*/	
+
 	
-	private double negamax(Plateau p, int profondeur, double alpha, double beta) {
+	private double negamaxTest(Plateau p, int profondeur, double alpha, double beta) {
 		double valeur, best;
 		Vector<Mouvement> mouvementsValides = new Vector<Mouvement>();
 		this.iterator++;
@@ -230,27 +273,26 @@ public class IA {
 							return best; // coupure alpha
 						}
 					}
-				}
-				else if (valeur > best) { // on maximise
-					try {
-						ecrivain =  new PrintWriter(new BufferedWriter
-					   (new FileWriter("ia.txt", true)));
-					   if(profondeur%2 == 1) ecrivain.print("					");
-						ecrivain.println(this.iterator+"on maximise : valeur > best -> best:"+best+" alpha:"+alpha+" beta:"+beta+" valeur:"+valeur);
-						ecrivain.close();
-					} catch(IOException e) {
-				
-					}		
-					best = valeur;
-					if(best>alpha) {
-						alpha=best;
-						if(alpha>beta) {						
-							return best; // coupure beta
-						}
+				}							
+			}
+			else if (valeur > best) { // on maximise
+				try {
+					ecrivain =  new PrintWriter(new BufferedWriter
+				   (new FileWriter("ia.txt", true)));
+				   if(profondeur%2 == 1) ecrivain.print("					");
+					ecrivain.println(this.iterator+"on maximise : valeur > best -> best:"+best+" alpha:"+alpha+" beta:"+beta+" valeur:"+valeur);
+					ecrivain.close();
+				} catch(IOException e) {
+			
+				}		
+				best = valeur;
+				if(best>alpha) {
+					alpha=best;
+					if(alpha>beta) {						
+						return best; // coupure beta
 					}
 				}
-							
-			}
+			}			
 		}
 
 		
@@ -387,6 +429,17 @@ public class IA {
 		if(temporaire.cases[12].getContenu()!=0)
 			valeurPlateau = 55;
 		
+		
+		PrintWriter ecrivain;
+		try {
+			ecrivain =  new PrintWriter(new BufferedWriter
+		   (new FileWriter("ia.txt", true)));
+			ecrivain.println("fonctionEvaluation()->"+valeurPlateau);
+			ecrivain.close();
+		} catch(IOException e) {
+	
+		}		
+
 /*		
 		if(temporaire.score[temporaire.getJoueurActuel()] != p.score[temporaire.getJoueurActuel()]) // sortie d'une bille 
 			valeurPlateau*=this.ejection;
@@ -417,12 +470,15 @@ public class IA {
 	private double trouverBillesInutiles() {
 		return 1.0;
 	}
-	
 /*	
-	private regroupementAuCentre() {
-		double position = 5.0; // on augmente de façon considerable le coefficient associe a la position.
+	private double evaluerPosition() {
+		return ;
 	}
 */	
+	private void regroupementAuCentre() {
+		this.position = 5.0; // on augmente de façon considerable le coefficient associe a la position.
+	}
+	
 	
 	
 /**
