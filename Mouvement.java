@@ -98,10 +98,10 @@ public class Mouvement {
 		byte cptBilleLui; //Compteur du nombre de bille adverse qui vont etre deplacees
 		
 		//On verifie que le joueur (ou l'IA) selectionne bien ces propres pions
-		Vector<Byte> billesPossibles = p.chercheBilles(p.getJoueurActuel());
+/*		Vector<Byte> billesPossibles = p.chercheBilles(p.getJoueurActuel());
 		if (!billesPossibles.contains(this.premiere) || !billesPossibles.contains(this.derniere))
 			return false;
-		
+*/		
 		//On calcul le nombre de bille poussees et on regarde la derniere de nos billes poussee, derniereBille vaudra la derniere de nos billes poussee
 		for(cptBilleMoi = 1; plateau.cases[plateau.cases[derniereBille].getAdjacent(vecteur)].getContenu() == contenuBille; cptBilleMoi++)
 			derniereBille = plateau.cases[derniereBille].getAdjacent(vecteur);

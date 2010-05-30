@@ -16,8 +16,18 @@ public class IA {
 /**
  * coefficients
  */ 
-	private double ejection = 3.0;
-	private double position = 2.0;
+	private float coeffEjection;
+	private float coeffPosition;
+	
+/**
+ * 	
+ */ 
+	private float valeurEjection;
+	private float valeurPosition;
+	
+	
+	
+	private float valeurMAX;
 	
 /**
  * numero de joueur
@@ -63,13 +73,21 @@ public class IA {
  */
 	
 	
-	
 	public IA(int numJoueur) {
-		this.profondeur = 3;
+		this.profondeur 	= 3;
+		
+		this.coeffEjection	= 100;
+		this.coeffPosition	= 50;
+
+		
+		this.valeurMAX 		= -100000;
+		
+		
 		this.nom  = "neuneu";
 		this.numJoueur = numJoueur;
 		this.niveauIA = 1;
 		this.iterator = 0;
+		System.out.println("ia cree, numJoueur = "+this.numJoueur);
 	}
 /*
 	public IA(String nom) {
@@ -100,12 +118,12 @@ public class IA {
 	
 	private Mouvement meilleurCoup(Plateau p, Vector<Mouvement> mouvementsValides) {
 
-
+		Plateau meilleurPlateau = new Plateau(p);
 
  	    // on evalue chaque racine.
 		Mouvement meilleur = mouvementsValides.get(0);
-		double meilleurScore = 0.0;
-		double scoreActuel = 0.0;
+		float meilleurScore = 0;
+		float scoreActuel = 0;
 		for(int i = 0; i < mouvementsValides.size(); i++) {	
 			Plateau temporaire = new Plateau(p);		
 			temporaire.effectuer(mouvementsValides.get(i));
@@ -120,13 +138,25 @@ public class IA {
 			System.out.println(meilleur);
 */			
 
-			scoreActuel = negamax(temporaire, this.profondeur, Double.MIN_VALUE, Double.MAX_VALUE);
+			scoreActuel = negamax(temporaire, this.profondeur, Float.MIN_VALUE, Float.MAX_VALUE);
 			System.out.println("scoreActuel"+scoreActuel);
 			
 			
 			if(scoreActuel > meilleurScore) {
 				meilleurScore = scoreActuel;
 				meilleur = mouvementsValides.get(i);
+				meilleurPlateau = new Plateau(temporaire);
+			}
+			else if(scoreActuel == meilleurScore) { // permet de prendre la bonne decision au niveau 0 ?
+				float score1 	= fonctionEvaluation(meilleurPlateau, this.numJoueur);
+				float score2 	= fonctionEvaluation(temporaire, this.numJoueur);
+				if(score2 > score1) {
+					System.out.println("mieux"+score1+">"+score2);
+					meilleur = mouvementsValides.get(i);
+				}
+				else {
+					System.out.println("pas mieux"+score1+"<="+score2);
+				}
 			}
 		}
 	
@@ -137,21 +167,79 @@ public class IA {
 		
 	}
 
-	private double negamax(Plateau p, int profondeur, double alpha, double beta) {
-		double valeur, best;
+	private float negamax(Plateau p, int profondeur, float alpha, float beta) {
+		float valeur, best;
 		Vector<Mouvement> mouvementsValides = new Vector<Mouvement>();
-		PrintWriter ecrivain;
+		PrintWriter ecrivain;	
+		
+		valeur = this.valeurMAX;
+		
+		int JoueurCourant;
+		if(profondeur%2==1) { // c'est a l'autre de jouer
+			JoueurCourant = (this.numJoueur==1?2:1);
+
+			
+			
+			try {
+				ecrivain =  new PrintWriter(new BufferedWriter
+			   (new FileWriter("ia.txt", true)));
+			   for(int i = 0 ; i < profondeur ; i++)
+					ecrivain.print("					");
+				ecrivain.println("c'est a l'autre de jouer"+JoueurCourant);
+				ecrivain.close();
+			} catch(IOException e) {
+				
+			}		
+		}
+		else { // c'est a nous de jouer
+			JoueurCourant = this.numJoueur;
+			
+			try {
+				ecrivain =  new PrintWriter(new BufferedWriter
+			   (new FileWriter("ia.txt", true)));
+			   for(int i = 0 ; i < profondeur ; i++)
+					ecrivain.print("					");
+				ecrivain.println("c'est a nous de jouer."+JoueurCourant);
+				ecrivain.close();
+			} catch(IOException e) {
+				
+			}
+		}
+		
+		
+		
+		
+		
+		
 		
 		
 		if(profondeur == 0) {
-			return fonctionEvaluation(p);
-		}		
+			return fonctionEvaluation(p, JoueurCourant);
+		}
 		
-		valeur = Double.MIN_VALUE;
-		mouvementsValides = p.mouvementsValides(1);
-		System.out.println(mouvementsValides.size());
-		for(int i = 0 ; i < mouvementsValides.size() ; i++) {
+
+		mouvementsValides = p.mouvementsValides(JoueurCourant);
+		if(mouvementsValides.size()==0) {
+			if(JoueurCourant == this.numJoueur)
+				return this.valeurMAX; // il a ete sorti ou bloque.
+			else
+				return -this.valeurMAX;
+		
+		}
+		
+			//return 0;
+			
 			try {
+				ecrivain =  new PrintWriter(new BufferedWriter
+			   (new FileWriter("ia.txt", true)));
+			   for(int i = 0 ; i < profondeur ; i++)
+				ecrivain.println("nb mouvements valides : "+mouvementsValides.size());
+				ecrivain.close();
+			} catch(IOException e) {
+				
+			}
+		for(int i = 0 ; i < mouvementsValides.size() ; i++) {
+/*			try {
 				ecrivain =  new PrintWriter(new BufferedWriter
 			   (new FileWriter("ia.txt", true)));
 				if(profondeur%2 == 1) ecrivain.print("					");
@@ -160,16 +248,30 @@ public class IA {
 				ecrivain.println(mouvementsValides.get(i));
 				ecrivain.close();
 			} catch(IOException e) {
-		
+				
 			}
-			Plateau temporaire = new Plateau(p);
+*/			Plateau temporaire = new Plateau(p);
 			temporaire.effectuer(mouvementsValides.get(i));
 /*			temporaire.setJoueur();
 			temporaire.setNumCoup();
 */			temporaire.setScore();
-			valeur = max(-valeur, negamax(temporaire, profondeur-1, alpha, beta));	
-		}		
+			if(temporaire.getScore(JoueurCourant)==1)
+				return fonctionEvaluation(p, JoueurCourant);
+				
+			valeur = max(valeur, -negamax(temporaire, profondeur-1, alpha, beta));	
 			try {
+				ecrivain =  new PrintWriter(new BufferedWriter
+			   (new FileWriter("ia.txt", true)));
+			   for(int j = 0 ; j < profondeur ; j++)
+					ecrivain.print("					");
+				ecrivain.println("valeur:"+valeur);
+				ecrivain.close();
+			} catch(IOException e) {
+				
+			}
+
+		}		
+/*			try {
 				ecrivain =  new PrintWriter(new BufferedWriter
 			   (new FileWriter("ia.txt", true)));
 				if(profondeur%2 == 1) ecrivain.print("					");
@@ -177,11 +279,8 @@ public class IA {
 				ecrivain.close();
 			} catch(IOException e) {
 		
-			}		
-		return valeur;
-		
-		
-		
+			}
+*/		return -valeur;
 	}
 
 	
@@ -189,7 +288,7 @@ public class IA {
 		double valeur, best;
 		Vector<Mouvement> mouvementsValides = new Vector<Mouvement>();
 		this.iterator++;
-		
+		valeur = this.valeurMAX;
 		
 		PrintWriter ecrivain;
 		try {
@@ -199,12 +298,12 @@ public class IA {
 			ecrivain.println(this.iterator+"minimax("+profondeur+", "+alpha+", "+beta+")");
 			ecrivain.close();
 		} catch(IOException e) {
-		
+			
 		}
 		
 
 		if(profondeur == 0) {
-			return fonctionEvaluation(p);
+			return fonctionEvaluation(p, 1);
 		}
 		
 		Plateau temporaire = new Plateau(p);
@@ -241,7 +340,7 @@ public class IA {
 /*			temporaire.setJoueur();
 			temporaire.setNumCoup();
 */			temporaire.setScore();
-			valeur = negamax(temporaire, profondeur-1, alpha, beta);
+			valeur = negamaxTest(temporaire, profondeur-1, alpha, beta);
 			
 			try {
 				ecrivain =  new PrintWriter(new BufferedWriter
@@ -308,7 +407,17 @@ public class IA {
 		return best;
 	}
 	
-	private double max(double d1, double d2) {
+	private float max(float d1, float d2) {
+		PrintWriter ecrivain;
+		
+		try {
+			ecrivain =  new PrintWriter(new BufferedWriter
+		   (new FileWriter("ia.txt", true)));
+			ecrivain.println("d1:"+d1+" d2:"+d2);
+			ecrivain.close();
+		} catch(IOException e) {
+		
+		}				
 		return d1>d2?d1:d2;
 	}
 	
@@ -402,10 +511,10 @@ public class IA {
 		return score; // on doit retourner le pire score puisqu'on commence avec les coups adverses ?
 	}
 */	
-	
-	private double fonctionEvaluation(Plateau p/*, Mouvement m*/) {	 // sera private et pas static : elle evalue un plateau
+	// LE NUMJOUEUR EST TOTALEMENT INUTILE CAR ON EVALUERA LES PLATEAUX QU'ON PEUT CHOISIR A LA FIN ET PAS CEUX DE L'ADVERSAIRE !!!
+	private float fonctionEvaluation(Plateau p, int numJoueur/*, Mouvement m*/) {	 // sera private et pas static : elle evalue un plateau
 
-		double 	position	= 1.1;
+		float 	position	= 1;
 		
 		
 		
@@ -425,10 +534,17 @@ public class IA {
 		temporaire.setJoueur();
 		temporaire.setNumCoup();
 		temporaire.setScore();
-*/		double valeurPlateau = 1;
-		if(temporaire.cases[12].getContenu()!=0)
-			valeurPlateau = 55;
+*/		float valeurPlateau = 1;
 		
+		this.valeurEjection = 0;
+		if(temporaire.getScore(this.numJoueur)!=0)
+			this.valeurEjection = 55*this.coeffEjection;
+			
+/*		if(temporaire.getScore(1)!=0)
+			valeurPlateau = 55;
+		if(temporaire.getScore(2)!=0)
+			valeurPlateau = 55;
+*/		
 		
 		PrintWriter ecrivain;
 		try {
@@ -440,6 +556,14 @@ public class IA {
 	
 		}		
 
+		
+		this.valeurPosition = evaluerPosition(temporaire);
+		this.valeurPosition*=this.coeffPosition;
+		
+		
+		valeurPlateau=this.valeurPosition+this.valeurEjection;
+		
+		
 /*		
 		if(temporaire.score[temporaire.getJoueurActuel()] != p.score[temporaire.getJoueurActuel()]) // sortie d'une bille 
 			valeurPlateau*=this.ejection;
@@ -450,7 +574,44 @@ public class IA {
 		
 	}
 
-	private double evaluerSumito(Mouvement m) {
+	
+	private float evaluerPosition(Plateau p) {
+		Plateau temporaire = new Plateau(p);
+		float scorePositionnel 	= 0;
+		float eloignementMAX 	= 0;
+		float[] eloignement = new float[6];
+		for(int i = 1 ; i <= temporaire.cases.length-1 ; i++) {
+			if(temporaire.cases[i].getContenu() == this.numJoueur) {
+				int k = i;
+				while(temporaire.cases[k].getAdjacent((byte)0) != 0) {
+						++eloignement[0];
+						k = temporaire.cases[k].getAdjacent((byte)0);
+				}
+				eloignementMAX = eloignement[0];
+//				System.out.println("eloignement[0]"+eloignement[0]);				
+				for(int j = 1 ; j < 6 ; j++) {
+					k = i;
+					while(temporaire.cases[k].getAdjacent((byte)j) != 0) {
+						++eloignement[j];
+						k = temporaire.cases[k].getAdjacent((byte)j);
+					}
+					if(eloignement[j] > eloignementMAX)
+						eloignementMAX = eloignement[j];
+//					System.out.println("eloignement["+j+"]"+eloignement[j]);
+				}
+				scorePositionnel = eloignementMAX;
+			}
+		}
+/*		try {
+			Thread.currentThread().sleep(2000);
+		} catch(InterruptedException e) {
+		
+		}
+		System.out.println("scorePositionnel"+(scorePositionnel));
+*/		return 9-scorePositionnel;
+	}
+	
+	private double evaluerSumito(Plateau p) {
 	/*
 		if(
 	
@@ -476,7 +637,7 @@ public class IA {
 	}
 */	
 	private void regroupementAuCentre() {
-		this.position = 5.0; // on augmente de façon considerable le coefficient associe a la position.
+		this.coeffPosition = 5; // on augmente de façon considerable le coefficient associe a la position.
 	}
 	
 	

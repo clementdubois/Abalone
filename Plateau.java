@@ -7,7 +7,7 @@ public class Plateau implements Serializable{
 	public final static int TROU = 0;
 
 	/** La liste des cases du plateau (avec leur ocntenu)*/
-	public Case[] cases; 
+	public Case[] cases;
 	
 	/** Vecteur en haut a gauche*/
 	public static final byte HD = 0;
