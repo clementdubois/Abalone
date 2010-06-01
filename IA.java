@@ -74,13 +74,13 @@ public class IA {
 	
 	
 	public IA(int numJoueur) {
-		this.profondeur 	= 3;
+		this.profondeur 	= 0;
 		
 		this.coeffEjection	= 100;
-		this.coeffPosition	= 50;
+		this.coeffPosition	= 5;
 
 		
-		this.valeurMAX 		= -100000;
+		this.valeurMAX 		= 100000;
 		
 		
 		this.nom  = "neuneu";
@@ -117,7 +117,7 @@ public class IA {
     }
 	
 	private Mouvement meilleurCoup(Plateau p, Vector<Mouvement> mouvementsValides) {
-
+		PrintWriter ecrivain;
 		Plateau meilleurPlateau = new Plateau(p);
 
  	    // on evalue chaque racine.
@@ -138,49 +138,84 @@ public class IA {
 			System.out.println(meilleur);
 */			
 
-			scoreActuel = negamax(temporaire, this.profondeur, Float.MIN_VALUE, Float.MAX_VALUE);
+
+			
+			long tempsAvt=0;
+			long tempsApres=0;
+			long tempsDeReflexion=0; // normalement ici ca devrait etre this mais comme jouer est static on peut pas...		
+			tempsAvt = System.currentTimeMillis();
+			scoreActuel = negamax(temporaire, this.profondeur, -this.valeurMAX, this.valeurMAX, mouvementsValides.get(i));
+			tempsApres = System.currentTimeMillis();
+			
+			tempsDeReflexion = tempsApres-tempsAvt;			
 			System.out.println("scoreActuel"+scoreActuel);
-			
-			
-			if(scoreActuel > meilleurScore) {
+/*			try {
+				ecrivain =  new PrintWriter(new BufferedWriter
+			   (new FileWriter("ia.txt", true)));
+				if(profondeur%2 == 1) ecrivain.print("					");
+				ecrivain.println("temps de reflexion:"+tempsDeReflexion+" scoreActuel:"+scoreActuel);
+				ecrivain.close();
+			} catch(IOException e) {
+		
+			}
+*/			
+			if(scoreActuel < meilleurScore) {
 				meilleurScore = scoreActuel;
 				meilleur = mouvementsValides.get(i);
 				meilleurPlateau = new Plateau(temporaire);
 			}
 			else if(scoreActuel == meilleurScore) { // permet de prendre la bonne decision au niveau 0 ?
-				float score1 	= fonctionEvaluation(meilleurPlateau, this.numJoueur);
-				float score2 	= fonctionEvaluation(temporaire, this.numJoueur);
-				if(score2 > score1) {
-					System.out.println("mieux"+score1+">"+score2);
+				float score1 	= fonctionEvaluation(meilleurPlateau, this.numJoueur, mouvementsValides.get(i));
+				float score2 	= fonctionEvaluation(temporaire, this.numJoueur, mouvementsValides.get(i));
+				if(score2 < score1) {
+					System.out.println("mieux"+score1+"<"+score2);
 					meilleur = mouvementsValides.get(i);
 				}
 				else {
-					System.out.println("pas mieux"+score1+"<="+score2);
+					System.out.println("pas mieux"+score1+">="+score2);
 				}
 			}
 		}
-	
-		System.out.println("meilleur:"+meilleurScore);
+/*	
+		try {
+			Thread.currentThread().sleep(1000);
+		} catch (InterruptedException e) {
+			
+		}
+*/		System.out.println("meilleur:"+meilleurScore);
 		System.out.println(meilleur);
+		
+/*		
+try {
+				ecrivain =  new PrintWriter(new BufferedWriter
+			   (new FileWriter("ia.txt", true)));
+				if(profondeur%2 == 1) ecrivain.print("					");
+				ecrivain.println("meilleur score:"+meilleurScore);
+				ecrivain.close();
+			} catch(IOException e) {
+		
+			}		
+*/		
+		
 		return meilleur;		
 		
 		
 	}
 
-	private float negamax(Plateau p, int profondeur, float alpha, float beta) {
+	private float negamax(Plateau p, int profondeur, float alpha, float beta, Mouvement m) {
 		float valeur, best;
 		Vector<Mouvement> mouvementsValides = new Vector<Mouvement>();
 		PrintWriter ecrivain;	
 		
-		valeur = this.valeurMAX;
+		valeur = -this.valeurMAX;
 		
 		int JoueurCourant;
-		if(profondeur%2==1) { // c'est a l'autre de jouer
+		if(profondeur%2==0) { // c'est a l'autre de jouer
 			JoueurCourant = (this.numJoueur==1?2:1);
 
 			
 			
-			try {
+/*			try {
 				ecrivain =  new PrintWriter(new BufferedWriter
 			   (new FileWriter("ia.txt", true)));
 			   for(int i = 0 ; i < profondeur ; i++)
@@ -190,11 +225,11 @@ public class IA {
 			} catch(IOException e) {
 				
 			}		
-		}
+*/		}
 		else { // c'est a nous de jouer
 			JoueurCourant = this.numJoueur;
 			
-			try {
+/*			try {
 				ecrivain =  new PrintWriter(new BufferedWriter
 			   (new FileWriter("ia.txt", true)));
 			   for(int i = 0 ; i < profondeur ; i++)
@@ -204,32 +239,32 @@ public class IA {
 			} catch(IOException e) {
 				
 			}
-		}
+*/		}
 		
 		
 		
 		
 		
 		
-		
+
 		
 		if(profondeur == 0) {
-			return fonctionEvaluation(p, JoueurCourant);
+			return fonctionEvaluation(p, JoueurCourant, m);
 		}
 		
 
 		mouvementsValides = p.mouvementsValides(JoueurCourant);
+		System.out.println("mouvements valides:"+mouvementsValides.size());				
 		if(mouvementsValides.size()==0) {
 			if(JoueurCourant == this.numJoueur)
 				return this.valeurMAX; // il a ete sorti ou bloque.
 			else
 				return -this.valeurMAX;
-		
 		}
 		
 			//return 0;
 			
-			try {
+/*			try {
 				ecrivain =  new PrintWriter(new BufferedWriter
 			   (new FileWriter("ia.txt", true)));
 			   for(int i = 0 ; i < profondeur ; i++)
@@ -238,7 +273,7 @@ public class IA {
 			} catch(IOException e) {
 				
 			}
-		for(int i = 0 ; i < mouvementsValides.size() ; i++) {
+*/		for(int i = 0 ; i < mouvementsValides.size() ; i++) {
 /*			try {
 				ecrivain =  new PrintWriter(new BufferedWriter
 			   (new FileWriter("ia.txt", true)));
@@ -250,16 +285,20 @@ public class IA {
 			} catch(IOException e) {
 				
 			}
-*/			Plateau temporaire = new Plateau(p);
+*/
+			Plateau temporaire = new Plateau(p);
 			temporaire.effectuer(mouvementsValides.get(i));
-/*			temporaire.setJoueur();
+			temporaire.setJoueur();
 			temporaire.setNumCoup();
-*/			temporaire.setScore();
-			if(temporaire.getScore(JoueurCourant)==1)
+
+			temporaire.setScore();
+/*			if(temporaire.getScore(JoueurCourant)==2)
 				return fonctionEvaluation(p, JoueurCourant);
-				
-			valeur = max(valeur, -negamax(temporaire, profondeur-1, alpha, beta));	
-			try {
+*/				
+			valeur = max(valeur, -negamax(temporaire, profondeur-1, alpha, beta, mouvementsValides.get(i)));	
+//			if(valeur > )
+			
+/*			try {
 				ecrivain =  new PrintWriter(new BufferedWriter
 			   (new FileWriter("ia.txt", true)));
 			   for(int j = 0 ; j < profondeur ; j++)
@@ -269,146 +308,13 @@ public class IA {
 			} catch(IOException e) {
 				
 			}
+*/		}		
 
-		}		
-/*			try {
-				ecrivain =  new PrintWriter(new BufferedWriter
-			   (new FileWriter("ia.txt", true)));
-				if(profondeur%2 == 1) ecrivain.print("					");
-				ecrivain.println("VALEUR:"+valeur);
-				ecrivain.close();
-			} catch(IOException e) {
-		
-			}
-*/		return -valeur;
+		return valeur;
 	}
 
-	
-	private double negamaxTest(Plateau p, int profondeur, double alpha, double beta) {
-		double valeur, best;
-		Vector<Mouvement> mouvementsValides = new Vector<Mouvement>();
-		this.iterator++;
-		valeur = this.valeurMAX;
-		
-		PrintWriter ecrivain;
-		try {
-			ecrivain =  new PrintWriter(new BufferedWriter
-		   (new FileWriter("ia.txt", true)));
-			if(profondeur%2 == 1) ecrivain.print("					");
-			ecrivain.println(this.iterator+"minimax("+profondeur+", "+alpha+", "+beta+")");
-			ecrivain.close();
-		} catch(IOException e) {
-			
-		}
-		
-
-		if(profondeur == 0) {
-			return fonctionEvaluation(p, 1);
-		}
-		
-		Plateau temporaire = new Plateau(p);
-		mouvementsValides = temporaire.mouvementsValides(1/*p.getJoueurActuel()*/);
-		try {
-			ecrivain =  new PrintWriter(new BufferedWriter
-		   (new FileWriter("ia.txt", true)));
-		   	if(profondeur%2 == 1) ecrivain.print("					");
-			ecrivain.println(this.iterator+"mouvements valides : "+mouvementsValides.size());
-			ecrivain.close();
-		} catch(IOException e) {
-	
-		}			
-		
-		if(/*temporaire.getJoueurActuel() != this.numJoueur*/profondeur%2 == 1)
-			best = Double.MAX_VALUE;
-		else
-			best = Double.MIN_VALUE;
-		
-		for(int i = 0 ; i < mouvementsValides.size() ; i++) {
-			try {
-				ecrivain =  new PrintWriter(new BufferedWriter
-			   (new FileWriter("ia.txt", true)));
-				if(profondeur%2 == 1) ecrivain.print("					");
-				ecrivain.println(this.iterator+"mouvement : "+i);
-				if(profondeur%2 == 1) ecrivain.print("					");
-				ecrivain.println(mouvementsValides.get(i));
-				ecrivain.close();
-			} catch(IOException e) {
-		
-			}
-			
-			temporaire.effectuer(mouvementsValides.get(i));
-/*			temporaire.setJoueur();
-			temporaire.setNumCoup();
-*/			temporaire.setScore();
-			valeur = negamaxTest(temporaire, profondeur-1, alpha, beta);
-			
-			try {
-				ecrivain =  new PrintWriter(new BufferedWriter
-			   (new FileWriter("ia.txt", true)));
-			   if(profondeur%2 == 1) ecrivain.print("					");
-				ecrivain.println(this.iterator+"	valeur:"+valeur+" alpha:"+alpha+" beta:"+beta);
-				ecrivain.close();
-			} catch(IOException e) {
-		
-			}	
-//			valeur = max(best, -negamax(temporaire, profondeur-1, -alpha, -beta)); // min() = max()
-			
-			
-			if(/*temporaire.getJoueurActuel() != this.numJoueur*/  profondeur%2 == 1) { 
-				if(valeur < best) { // on minimise
-					try {
-						ecrivain =  new PrintWriter(new BufferedWriter
-					   (new FileWriter("ia.txt", true)));
-					   if(profondeur%2 == 1) ecrivain.print("					");
-						ecrivain.println(this.iterator+"on minimise : valeur < best -> best:"+best+" alpha:"+alpha+" beta:"+beta+" valeur:"+valeur);
-						ecrivain.close();
-					} catch(IOException e) {
-						
-					}
-					best = valeur;			
-					if(best<beta) {
-						beta=best;
-						if(alpha>beta) {					
-							return best; // coupure alpha
-						}
-					}
-				}							
-			}
-			else if (valeur > best) { // on maximise
-				try {
-					ecrivain =  new PrintWriter(new BufferedWriter
-				   (new FileWriter("ia.txt", true)));
-				   if(profondeur%2 == 1) ecrivain.print("					");
-					ecrivain.println(this.iterator+"on maximise : valeur > best -> best:"+best+" alpha:"+alpha+" beta:"+beta+" valeur:"+valeur);
-					ecrivain.close();
-				} catch(IOException e) {
-			
-				}		
-				best = valeur;
-				if(best>alpha) {
-					alpha=best;
-					if(alpha>beta) {						
-						return best; // coupure beta
-					}
-				}
-			}			
-		}
-
-		
-		try {
-			ecrivain =  new PrintWriter(new BufferedWriter
-		   (new FileWriter("ia.txt", true)));
-			ecrivain.println("		best:"+best);
-			ecrivain.close();
-		} catch(IOException e) {
-		
-		}			
-
-		return best;
-	}
-	
 	private float max(float d1, float d2) {
-		PrintWriter ecrivain;
+/*		PrintWriter ecrivain;
 		
 		try {
 			ecrivain =  new PrintWriter(new BufferedWriter
@@ -418,7 +324,7 @@ public class IA {
 		} catch(IOException e) {
 		
 		}				
-		return d1>d2?d1:d2;
+*/		return d1>d2?d1:d2;
 	}
 	
 	
@@ -511,8 +417,8 @@ public class IA {
 		return score; // on doit retourner le pire score puisqu'on commence avec les coups adverses ?
 	}
 */	
-	// LE NUMJOUEUR EST TOTALEMENT INUTILE CAR ON EVALUERA LES PLATEAUX QU'ON PEUT CHOISIR A LA FIN ET PAS CEUX DE L'ADVERSAIRE !!!
-	private float fonctionEvaluation(Plateau p, int numJoueur/*, Mouvement m*/) {	 // sera private et pas static : elle evalue un plateau
+	// LE NUMJOUEUR EST TOTALEMENT INUTILE CAR ON EVALUERA LES PLATEAUX QU'ON PEUT CHOISIR A LA FIN ET PAS CEUX DE L'ADVERSAIRE ?
+	private float fonctionEvaluation(Plateau p, int numJoueur, Mouvement m) {	 // sera private et pas static : elle evalue un plateau
 
 		float 	position	= 1;
 		
@@ -530,23 +436,54 @@ public class IA {
 */
 		Plateau temporaire = new Plateau(p);
 		
-/*		temporaire.effectuer(m);
+		temporaire.effectuer(m);
 		temporaire.setJoueur();
 		temporaire.setNumCoup();
 		temporaire.setScore();
-*/		float valeurPlateau = 1;
+		float valeurPlateau = 1;
 		
 		this.valeurEjection = 0;
-		if(temporaire.getScore(this.numJoueur)!=0)
-			this.valeurEjection = 55*this.coeffEjection;
-			
+/*		if(temporaire.getScore(this.numJoueur)!=0) // attention c'est faux d'ecrire cela : des la premiere bille ejectee tous les coups suivants sont sans valeur...
+			this.valeurEjection = 100*this.coeffEjection;
+*/			
 /*		if(temporaire.getScore(1)!=0)
 			valeurPlateau = 55;
 		if(temporaire.getScore(2)!=0)
 			valeurPlateau = 55;
 */		
 		
-		PrintWriter ecrivain;
+
+
+		
+		this.valeurPosition =  /*1;//*/evaluerPosition(temporaire);
+		this.valeurPosition*=this.coeffPosition;
+		
+		
+		valeurPlateau=this.valeurPosition+this.valeurEjection;
+	
+		
+		if(temporaire.getScore(this.numJoueur) > p.getScore(this.numJoueur)) { // ne fonctionne pas car le coup est joué avant meme d'entrer dans la fonction : il faudrait appeler la fonction avec une profondeur -1 et récupérer tous les mouvements possibles dans la fonction d'évaluation ?
+			valeurPlateau = 990000;
+
+/*				PrintWriter ecrivain;
+
+					try {
+						ecrivain =  new PrintWriter(new BufferedWriter
+					   (new FileWriter("ia.txt", true)));
+						ecrivain.println(p.getScore(this.numJoueur));
+						ecrivain.close();
+					} catch(IOException e) {
+				
+					}	
+*/					
+		}
+		else if( p.getScore(this.numJoueur) > temporaire.getScore(this.numJoueur))
+			valeurPlateau = 990000;
+
+//		System.out.println("fonctionEvaluation()->"+valeurPlateau);	
+		System.out.println(this.iterator++);
+		
+/*		PrintWriter ecrivain;
 		try {
 			ecrivain =  new PrintWriter(new BufferedWriter
 		   (new FileWriter("ia.txt", true)));
@@ -554,23 +491,10 @@ public class IA {
 			ecrivain.close();
 		} catch(IOException e) {
 	
-		}		
-
-		
-		this.valeurPosition = evaluerPosition(temporaire);
-		this.valeurPosition*=this.coeffPosition;
-		
-		
-		valeurPlateau=this.valeurPosition+this.valeurEjection;
-		
-		
-/*		
-		if(temporaire.score[temporaire.getJoueurActuel()] != p.score[temporaire.getJoueurActuel()]) // sortie d'une bille 
-			valeurPlateau*=this.ejection;
+		}				
 */		
-
-//		System.out.println("fonctionEvaluation()->"+valeurPlateau);	
-		return valeurPlateau;
+		
+		return -valeurPlateau;
 		
 	}
 
@@ -608,7 +532,7 @@ public class IA {
 		
 		}
 		System.out.println("scorePositionnel"+(scorePositionnel));
-*/		return 9-scorePositionnel;
+*/		return (9*4)-scorePositionnel;
 	}
 	
 	private double evaluerSumito(Plateau p) {
