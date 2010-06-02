@@ -193,6 +193,7 @@ public class FenetreJeu extends JFrame{
 	* methode pour rafrachir plateau avec le nouveau tableau
 	*/
 	public void rafraichir(Plateau plateau){
+		pan.removeAll();
 		pan.rafraichir(plateau);
 		joueurActuel = plateau.getJoueurActuel();
 
