@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.*;
 
 
 
@@ -11,9 +12,11 @@ class ChoixRegles extends JDialog{
 	/** Savoir si l'utilisateur a annuler ou a valider*/
 	private boolean sendData;
 	/** L'icone de la fenetre*/
-	JLabel icon;
+	JLabel icon, posLabel;
 	/** Bouton de choix du type de partie*/
 	private JRadioButton type1, type2, type3, type4;
+	/** Liste*/
+	private JComboBox pos;
 	
 	
 	public ChoixRegles(JFrame parent, String title, boolean modal){
@@ -58,7 +61,7 @@ class ChoixRegles extends JDialog{
 				JPanel panType = new JPanel();
 				panType.setBackground(Color.white);
 				panType.setBorder(BorderFactory.createTitledBorder("Type de partie"));
-				panType.setPreferredSize(new Dimension(558, 692));
+				panType.setPreferredSize(new Dimension(200, 100));
 				type1 = new JRadioButton("Humain vs Humain");
 				type1.setSelected(true);
 				type2 = new JRadioButton("Humain vs IA");
@@ -74,11 +77,30 @@ class ChoixRegles extends JDialog{
 				panType.add(type3);
 				panType.add(type4);
 				
+		//La position de depart
+				JPanel panPos = new JPanel();
+				panPos.setBackground(Color.white);
+				panPos.setPreferredSize(new Dimension(220, 60));
+				panPos.setBorder(BorderFactory.createTitledBorder("Position de depart de la partie"));
+				pos = new JComboBox();
+				//Liste des fichiers de positions disponibles
+					File repertoire = new File("./positions");
+					String [] listefichiers;
+
+					listefichiers=repertoire.list();
+					for(int i=0;i<listefichiers.length;i++){
+						if(listefichiers[i].endsWith(".pos")==true){
+							pos.addItem(listefichiers[i].substring(0,listefichiers[i].length()-4));
+						}
+					} 
+				posLabel = new JLabel("Position");
+				panPos.add(posLabel);
+				panPos.add(pos);
 		
-				
 				JPanel content = new JPanel();
 				content.setBackground(Color.white);
 				content.add(panType);
+				content.add(panPos);
 
 				JPanel control = new JPanel();
 				JButton okBouton = new JButton("Valider");
