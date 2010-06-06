@@ -106,7 +106,10 @@ class ChoixRegles extends JDialog{
 					listefichiers=repertoire.list();
 					for(int i=0;i<listefichiers.length;i++){
 						if(listefichiers[i].endsWith(".pos")==true){
-							pos.addItem(listefichiers[i].substring(0,listefichiers[i].length()-4));
+							String item = listefichiers[i].substring(0,listefichiers[i].length()-4);
+							pos.addItem(item);
+							if(item.equals("defaut"))
+							  pos.setSelectedItem(item); 
 						}
 					} 
 				posLabel = new JLabel("Position");
