@@ -11,12 +11,35 @@ public class Regles implements Serializable{
 		private boolean isEdition;
 		/** Le type de partie*/
 		private int typeJoueur;
+		/** La position de depart*/
+		private Case[] position;
 		
 		
 		//---------------------------Constructeurs-----
 		public Regles(){}
-		public Regles(int type){
+		public Regles(int type, String pos){
 			this.typeJoueur = type;
+			//On charge le fichier choisit
+			File fichierPosition = new File("./positions/"+pos);
+			//On charge les donnees du fichier
+			try{
+				ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fichierPosition));
+				position = ((Case[])ois.readObject());
+				ois.close();
+				//On affiche pour voir si on ne  s'est pas trompe
+				for(int i=0; i<62; i++){
+					System.out.println(i+" :: "+position[i]);
+				}
+			}catch (FileNotFoundException e1) {
+				e1.printStackTrace();
+			} catch (IOException e1) {
+				e1.printStackTrace();
+			} catch (ClassNotFoundException e2) {
+				e2.printStackTrace();
+			}
+			
+			
+			
 		}
 		
 		//---------------------------ToString---------

@@ -107,7 +107,7 @@ class ChoixRegles extends JDialog{
 
 				okBouton.addActionListener(new ActionListener(){
 					public void actionPerformed(ActionEvent arg0) {				
-						regles = new Regles(getType());
+						regles = new Regles(getType(), (String)pos.getSelectedItem()+".pos");
 						sendData = true;
 						setVisible(false);
 					}
