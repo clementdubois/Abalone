@@ -27,9 +27,6 @@ public class Regles implements Serializable{
 				position = ((Case[])ois.readObject());
 				ois.close();
 				//On affiche pour voir si on ne  s'est pas trompe
-				for(int i=0; i<62; i++){
-					System.out.println(i+" :: "+position[i]);
-				}
 			}catch (FileNotFoundException e1) {
 				e1.printStackTrace();
 			} catch (IOException e1) {
@@ -73,11 +70,15 @@ public class Regles implements Serializable{
 				isEdition = b;
 			}
 			
-				public int getTypeJoueur(){
-					return typeJoueur;
-				}
-				public void setTypeJoueur(int b){
-					typeJoueur = b;
-				}
+			public int getTypeJoueur(){
+				return typeJoueur;
+			}
+			public void setTypeJoueur(int b){
+				typeJoueur = b;
+			}
+			
+			public Case[] getPosition(){
+				return position;
+			}
 		//-------------------------FIN ACCESSEUR------
 }

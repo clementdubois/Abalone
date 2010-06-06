@@ -50,7 +50,7 @@ public class Partie implements Serializable{
 		creerIA(r.getTypeJoueur());
 		//La partie ne fait que commence voyons!
 		terminee = false;
-		plateau = new Plateau(); 
+		plateau = new Plateau(r.getPosition()); 
 		//On initialise l'arbre de coups avec le premier plateau (ca sera la racine)
 		dernierCoup = new DefaultMutableTreeNode(new Codage(plateau));
 		coups = new DefaultTreeModel(dernierCoup);
