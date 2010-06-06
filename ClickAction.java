@@ -107,26 +107,26 @@ public class ClickAction extends MouseAdapter {
 	 			nbClick = 1;
 				fenetre.rafraichir(fenetre.partie.plateau);
 			}//Supprimer bille
-			else if ((event.getModifiersEx())  == 128 && event.getButton() == MouseEvent.BUTTON1) {
+			else if ((event.getModifiersEx())  == 128 && event.getButton() == MouseEvent.BUTTON1 && fenetre.partie.regles.getEdition()) {
 						//On efface la bille du plateau
 			       fenetre.partie.plateau.supprimerBille(numCaseSelectionner);
 						//On gere les modifications
 						modifications();
 							
 			}//Ajouter bille noire
-			else if ((event.getModifiersEx())  == 512 && event.getButton() == MouseEvent.BUTTON1) {
+			else if ((event.getModifiersEx())  == 512 && event.getButton() == MouseEvent.BUTTON1 && fenetre.partie.regles.getEdition()) {
 			        //On remplace la case selectionnee par une bille noire
 				       fenetre.partie.plateau.cases[numCaseSelectionner].setContenu(Case.NOIR);
 							//On gere les modifications
 							modifications();
 			}//Ajouter bille blanche
-			else if ((event.getModifiersEx())  == 512 && event.getButton() == MouseEvent.BUTTON3) {
+			else if ((event.getModifiersEx())  == 512 && event.getButton() == MouseEvent.BUTTON3 && fenetre.partie.regles.getEdition()) {
 			        //On remplace la case selectionnee par une bille noire
 				       fenetre.partie.plateau.cases[numCaseSelectionner].setContenu(Case.BLANC);
 						  //On gere les modifications
 							modifications();
 			}//Ajouter marquage
-			else if ((event.getModifiersEx())  == 640 && event.getButton() == MouseEvent.BUTTON1) {
+			else if ((event.getModifiersEx())  == 640 && event.getButton() == MouseEvent.BUTTON1 && fenetre.partie.regles.getEdition()) {
 			        System.out.println("marquer");
 			}
 		}else if(!fenetre.partie.estHumain() && fenetre.partie.plateau.getNumCoup() == 0){

@@ -37,7 +37,7 @@ public class Regles implements Serializable{
 					e2.printStackTrace();
 				}
 			//La partie est elle editable
-				if (editable == 1)
+				if (editable == 0)
 					this.isEdition = true;
 				else
 					this.isEdition = false;
@@ -70,7 +70,7 @@ public class Regles implements Serializable{
 				nbBilleAEjecter = b;
 			}
 			
-			public boolean getIsEdition(){
+			public boolean getEdition(){
 				return isEdition;
 			}
 			public void setIsEdition(boolean b){

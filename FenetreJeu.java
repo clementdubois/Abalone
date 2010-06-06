@@ -405,87 +405,96 @@ public class FenetreJeu extends JFrame{
 						}
 					}
 				});
-				//Charger une position
-				chargerPosition.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, KeyEvent.CTRL_DOWN_MASK));
-				chargerPosition.addActionListener(new ActionListener(){
-					public void actionPerformed(ActionEvent e){
-						if(fileChooserPos.showOpenDialog(null) ==JFileChooser.APPROVE_OPTION){
-							file = fileChooserPos.getSelectedFile();
-							if(fileChooserPos.getFileFilter().accept(file))
-							{
-								try {
+				if(partie.regles.getEdition()){
+					//Charger une position
+					chargerPosition.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_L, KeyEvent.CTRL_DOWN_MASK));
+					chargerPosition.addActionListener(new ActionListener(){
+						public void actionPerformed(ActionEvent e){
+							if(fileChooserPos.showOpenDialog(null) ==JFileChooser.APPROVE_OPTION){
+								file = fileChooserPos.getSelectedFile();
+								if(fileChooserPos.getFileFilter().accept(file))
+								{
+									try {
 
-									ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
-									//On charge les nouvelles cases (une position ne change pas l'etat de la partie)
-									partie.plateau.cases = ((Case[])ois.readObject());
-									ois.close();
-									//On rafraichit pour voir la partie chargee
-									rafraichir(partie.plateau);
-									//On remplace le dernier coups par le coups charger
-									partie.dernierCoup.setUserObject(new Codage(partie.plateau));
-									partie.coups.reload();
-					
+										ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
+										//On charge les nouvelles cases (une position ne change pas l'etat de la partie)
+										partie.plateau.cases = ((Case[])ois.readObject());
+										ois.close();
+										//On rafraichit pour voir la partie chargee
+										rafraichir(partie.plateau);
+										//On remplace le dernier coups par le coups charger
+										partie.dernierCoup.setUserObject(new Codage(partie.plateau));
+										partie.coups.reload();
+						
 
-								} catch (FileNotFoundException e1) {
-									e1.printStackTrace();
-								} catch (IOException e1) {
-									e1.printStackTrace();
-								} catch (ClassNotFoundException e2) {
-									e2.printStackTrace();
+									} catch (FileNotFoundException e1) {
+										e1.printStackTrace();
+									} catch (IOException e1) {
+										e1.printStackTrace();
+									} catch (ClassNotFoundException e2) {
+										e2.printStackTrace();
+									}
+								}
+								else{
+									JOptionPane alert = new JOptionPane();
+									alert.showMessageDialog(null, "Erreur d'extension de fichier ! \nVotre chargement a echoue !", "Erreur", JOptionPane.ERROR_MESSAGE);
 								}
 							}
-							else{
-								JOptionPane alert = new JOptionPane();
-								alert.showMessageDialog(null, "Erreur d'extension de fichier ! \nVotre chargement a echoue !", "Erreur", JOptionPane.ERROR_MESSAGE);
-							}
 						}
-					}
-				});
-				
+					});
+				}
 				//On ajoute les sous menu au menu partie
 				m_partie.add(enregistrer);
 				m_partie.add(enregistrerSous);
 				m_partie.add(enregistrerPosition);
 				m_partie.add(charger);
-				m_partie.add(chargerPosition);
+				if(partie.regles.getEdition())
+					m_partie.add(chargerPosition);
 				
 				
 			//--------------FIN Menu Partie-----------------
 			//--------------Menu Edition--------------------
-				//Vider le plateau de jeu
-				viderPlateau.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.CTRL_DOWN_MASK));
-				viderPlateau.addActionListener(new ActionListener(){
-					public void actionPerformed(ActionEvent arg0){
-						//On vide le plateau de jeu
-						partie.plateau.viderPlateau();
-						//On rafraichit les donnees de l'arbre
-						partie.changementPlateau();
-						//On rafraichit graphiquement
-						rafraichir(partie.plateau);
-						
-					}
-				});
-				//Mode suppression de billes
-				ajouterBille.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.CTRL_DOWN_MASK));
-				ajouterBille.addActionListener(new ActionListener(){
-					public void actionPerformed(ActionEvent arg0){}
-				});
-				//Mode ajout de billes
-				supprimerBille.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, KeyEvent.CTRL_DOWN_MASK));
-				supprimerBille.addActionListener(new ActionListener(){
-					public void actionPerformed(ActionEvent arg0){}
-				});
-				//Mode marquage de billes
-				marquerBille.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, KeyEvent.CTRL_DOWN_MASK));
-				marquerBille.addActionListener(new ActionListener(){
-					public void actionPerformed(ActionEvent arg0){}
-				});
 				
-				//On ajoute les sous menu au menu edition
-				edition.add(viderPlateau);
-				edition.add(ajouterBille);
-				edition.add(supprimerBille);
-				edition.add(marquerBille);
+				if(partie.regles.getEdition()){
+					//Vider le plateau de jeu
+					viderPlateau.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_V, KeyEvent.CTRL_DOWN_MASK));
+					viderPlateau.addActionListener(new ActionListener(){
+						public void actionPerformed(ActionEvent arg0){
+							//On vide le plateau de jeu
+							partie.plateau.viderPlateau();
+							//On rafraichit les donnees de l'arbre
+							partie.changementPlateau();
+							//On rafraichit graphiquement
+							rafraichir(partie.plateau);
+							
+						}
+					});
+					
+					//Mode suppression de billes
+					ajouterBille.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_A, KeyEvent.CTRL_DOWN_MASK));
+					ajouterBille.addActionListener(new ActionListener(){
+						public void actionPerformed(ActionEvent arg0){}
+					});
+					//Mode ajout de billes
+					supprimerBille.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_D, KeyEvent.CTRL_DOWN_MASK));
+					supprimerBille.addActionListener(new ActionListener(){
+						public void actionPerformed(ActionEvent arg0){}
+					});
+					//Mode marquage de billes
+					marquerBille.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_M, KeyEvent.CTRL_DOWN_MASK));
+					marquerBille.addActionListener(new ActionListener(){
+						public void actionPerformed(ActionEvent arg0){}
+					});
+					
+					//On ajoute les sous menu au menu edition
+					edition.add(viderPlateau);
+					edition.add(ajouterBille);
+					edition.add(supprimerBille);
+					edition.add(marquerBille);
+				
+				}
+			
+				
 				
 			//--------------FIN Menu Edition----------------
 			//Menu Lancement
@@ -571,8 +580,11 @@ public class FenetreJeu extends JFrame{
 			m_partie.setMnemonic('S');
 			menuBar.add(m_partie);
 			
-			edition.setMnemonic('E');
-			menuBar.add(edition);
+			if(partie.regles.getEdition()){
+				edition.setMnemonic('E');
+				menuBar.add(edition);
+			}
+			
 			
     	lancement.setMnemonic('L');
     	menuBar.add(lancement);
