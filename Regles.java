@@ -7,7 +7,7 @@ public class Regles implements Serializable{
 		private boolean isNavigable;
 		/** Combien de billes faut-il ejecter pour remporter la partie*/
 		private byte nbBilleAEjecter;
-		/**  S'agit t'il d'un mode d'edition (menu supplementaire d'edition et possibilite d'avoir un plateau de depart vide)*/
+		/**  S'agit t'il d'un mode d'edition */
 		private boolean isEdition;
 		/** Le type de partie*/
 		private int typeJoueur;
@@ -17,24 +17,31 @@ public class Regles implements Serializable{
 		
 		//---------------------------Constructeurs-----
 		public Regles(){}
-		public Regles(int type, String pos){
-			this.typeJoueur = type;
-			//On charge le fichier choisit
-			File fichierPosition = new File("./positions/"+pos);
-			//On charge les donnees du fichier
-			try{
-				ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fichierPosition));
-				position = ((Case[])ois.readObject());
-				ois.close();
-				//On affiche pour voir si on ne  s'est pas trompe
-			}catch (FileNotFoundException e1) {
-				e1.printStackTrace();
-			} catch (IOException e1) {
-				e1.printStackTrace();
-			} catch (ClassNotFoundException e2) {
-				e2.printStackTrace();
-			}
-			
+		public Regles(int type, String pos, int editable){
+			//Le type de joueurs de la partie
+				this.typeJoueur = type;
+			//La position de depart
+				//On charge le fichier choisit
+				File fichierPosition = new File("./positions/"+pos);
+				//On charge les donnees du fichier
+				try{
+					ObjectInputStream ois = new ObjectInputStream(new FileInputStream(fichierPosition));
+					position = ((Case[])ois.readObject());
+					ois.close();
+					//On affiche pour voir si on ne  s'est pas trompe
+				}catch (FileNotFoundException e1) {
+					e1.printStackTrace();
+				} catch (IOException e1) {
+					e1.printStackTrace();
+				} catch (ClassNotFoundException e2) {
+					e2.printStackTrace();
+				}
+			//La partie est elle editable
+				if (editable == 1)
+					this.isEdition = true;
+				else
+					this.isEdition = false;
+				
 			
 			
 		}

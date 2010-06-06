@@ -15,6 +15,8 @@ class ChoixRegles extends JDialog{
 	JLabel icon, posLabel;
 	/** Bouton de choix du type de partie*/
 	private JRadioButton type1, type2, type3, type4;
+	/** Bouton de choix de mode d'édition*/
+	private JRadioButton edition1, edition2;
 	/** Liste*/
 	private JComboBox pos;
 	
@@ -76,7 +78,21 @@ class ChoixRegles extends JDialog{
 				panType.add(type2);
 				panType.add(type3);
 				panType.add(type4);
-				
+		
+		//La partie est elle editable?
+				JPanel panEdition = new JPanel();
+				panEdition.setBackground(Color.white);
+				panEdition.setBorder(BorderFactory.createTitledBorder("Edition de partie"));
+				panEdition.setPreferredSize(new Dimension(200, 100));
+				edition1 = new JRadioButton("Partie editable");
+				edition1.setSelected(true);
+				edition2 = new JRadioButton("Partie non editable");
+				ButtonGroup gb = new ButtonGroup();
+				gb.add(edition1);
+				gb.add(edition2);
+				panEdition.add(edition1);
+				panEdition.add(edition2);
+		
 		//La position de depart
 				JPanel panPos = new JPanel();
 				panPos.setBackground(Color.white);
@@ -101,20 +117,24 @@ class ChoixRegles extends JDialog{
 				content.setBackground(Color.white);
 				content.add(panType);
 				content.add(panPos);
+				content.add(panEdition);
 
 				JPanel control = new JPanel();
 				JButton okBouton = new JButton("Valider");
 
 				okBouton.addActionListener(new ActionListener(){
 					public void actionPerformed(ActionEvent arg0) {				
-						regles = new Regles(getType(), (String)pos.getSelectedItem()+".pos");
+						regles = new Regles(getType(), (String)pos.getSelectedItem()+".pos", getEdition());
 						sendData = true;
 						setVisible(false);
 					}
 
 					public int getType(){
 						return  (type1.isSelected()) ? 0 : (type2.isSelected()) ? 1 : (type3.isSelected()) ? 2 : (type4.isSelected()) ? 3 : 0;
+					}
 					
+					public int getEdition(){
+						return (edition1.isSelected()) ? 0 : (edition2.isSelected()) ? 1 : 0;
 					}
 
 				});
