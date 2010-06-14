@@ -184,7 +184,7 @@ public class FenetreJeu extends JFrame{
 			this.getContentPane().add(container);
             this.setContentPane(container);
             this.initMenu();
-            this.initToolBar();
+            // this.initToolBar();
             this.setVisible(true);            
 
     }

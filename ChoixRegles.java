@@ -25,7 +25,7 @@ class ChoixRegles extends JDialog{
 			//On appelle le construteur de JDialog correspondant
 			super(parent, title, modal);
 			//On specifie une taille
-			this.setSize(550, 270);
+			this.setSize(550, 350);
 			//La position
 			this.setLocationRelativeTo(null);
 			//La boîte ne devra pas être redimensionnable
@@ -63,7 +63,7 @@ class ChoixRegles extends JDialog{
 				JPanel panType = new JPanel();
 				panType.setBackground(Color.white);
 				panType.setBorder(BorderFactory.createTitledBorder("Type de partie"));
-				panType.setPreferredSize(new Dimension(200, 100));
+				panType.setPreferredSize(new Dimension(200, 150));
 				type1 = new JRadioButton("Humain vs Humain");
 				type1.setSelected(true);
 				type2 = new JRadioButton("Humain vs IA");
