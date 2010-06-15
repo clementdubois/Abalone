@@ -12,13 +12,13 @@ class ChoixRegles extends JDialog{
 	/** Savoir si l'utilisateur a annuler ou a valider*/
 	private boolean sendData;
 	/** L'icone de la fenetre*/
-	JLabel icon, posLabel;
+	JLabel icon, posLabel, ejectLabel;
 	/** Bouton de choix du type de partie*/
 	private JRadioButton type1, type2, type3, type4;
 	/** Bouton de choix de mode d'édition*/
 	private JRadioButton edition1, edition2;
 	/** Liste*/
-	private JComboBox pos;
+	private JComboBox pos, eject;
 	
 	
 	public ChoixRegles(JFrame parent, String title, boolean modal){
@@ -115,19 +115,39 @@ class ChoixRegles extends JDialog{
 				posLabel = new JLabel("Position");
 				panPos.add(posLabel);
 				panPos.add(pos);
+				
+				
+			//Le nombre de bille à ejecter
+				JPanel panEject = new JPanel();
+				panEject.setBackground(Color.white);
+				panEject.setPreferredSize(new Dimension(220, 60));
+				panEject.setBorder(BorderFactory.createTitledBorder("Nombre de bille a ejecter"));
+				eject = new JComboBox();
+				
+				for(int i= 1; i<= 10; i++){
+					eject.addItem(i+"");
+				}
+				
+				eject.setSelectedItem("6"); 
+				
+				
+				ejectLabel = new JLabel("Position");
+				panEject.add(ejectLabel);
+				panEject.add(eject);
 		
 				JPanel content = new JPanel();
 				content.setBackground(Color.white);
 				content.add(panType);
 				content.add(panPos);
 				content.add(panEdition);
+				content.add(panEject);
 
 				JPanel control = new JPanel();
 				JButton okBouton = new JButton("Valider");
 
 				okBouton.addActionListener(new ActionListener(){
 					public void actionPerformed(ActionEvent arg0) {				
-						regles = new Regles(getType(), (String)pos.getSelectedItem()+".pos", getEdition());
+						regles = new Regles(getType(), (String)pos.getSelectedItem()+".pos", getEdition(), (String)eject.getSelectedItem());
 						sendData = true;
 						setVisible(false);
 					}

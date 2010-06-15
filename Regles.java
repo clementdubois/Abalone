@@ -17,9 +17,11 @@ public class Regles implements Serializable{
 		
 		//---------------------------Constructeurs-----
 		public Regles(){}
-		public Regles(int type, String pos, int editable){
+		public Regles(int type, String pos, int editable, String eject){
 			//Le type de joueurs de la partie
 				this.typeJoueur = type;
+			//Le nombre de billes à ejecter
+				this.nbBilleAEjecter = Byte.parseByte(eject);
 			//La position de depart
 				//On charge le fichier choisit
 				File fichierPosition = new File("./positions/"+pos);

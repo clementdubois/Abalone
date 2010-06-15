@@ -21,7 +21,6 @@ public class Partie implements Serializable{
  */
 	protected boolean terminee;
 	
-	protected final byte NB_BILLES_EJECTER = 2; 
 	
 	/** La fenetre de la partie*/
 	public transient FenetreJeu f;
@@ -115,11 +114,11 @@ public class Partie implements Serializable{
 	* @return 0 si la partie n'est pas fini, NOIR si le joueur 1 gagne, BLANC si le joueur deux gagne
 	*/	
 	public int vainqueur(){
-		if(plateau.getScore(NOIR) >= NB_BILLES_EJECTER){
+		if(plateau.getScore(NOIR) >= regles.getNbBilleAEjecter()){
 			terminee = true;
 			gagnant = NOIR;
 		}
-		else if(plateau.getScore(BLANC) >= NB_BILLES_EJECTER){
+		else if(plateau.getScore(BLANC) >= regles.getNbBilleAEjecter()){
 			terminee = true;
 			gagnant = BLANC;
 		}
@@ -149,7 +148,7 @@ public class Partie implements Serializable{
 		}
 	
 	public byte getNbBillesAEjecter() {
-		return this.NB_BILLES_EJECTER;
+		return this.regles.getNbBilleAEjecter();
 	}
 	
 	/** Gere le deroulement d'un mouvement a  partir des coordonnees envoyees par l'interface
