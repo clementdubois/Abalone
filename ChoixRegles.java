@@ -112,8 +112,8 @@ class ChoixRegles extends JDialog{
 							  pos.setSelectedItem(item); 
 						}
 					} 
-				posLabel = new JLabel("Position");
-				panPos.add(posLabel);
+				// posLabel = new JLabel("Position");
+				// 				panPos.add(posLabel);
 				panPos.add(pos);
 				
 				
@@ -130,9 +130,9 @@ class ChoixRegles extends JDialog{
 				
 				eject.setSelectedItem("6"); 
 				
-				
-				ejectLabel = new JLabel("Position");
-				panEject.add(ejectLabel);
+							// 	
+							// ejectLabel = new JLabel("Position");
+							// panEject.add(ejectLabel);
 				panEject.add(eject);
 		
 				JPanel content = new JPanel();

@@ -67,8 +67,10 @@ public class IA {
 	private float meilleurScore;
 	
 
-	private Vector<Mouvement> combinaisonGagnante;
+	private Mouvement[] combinaisonGagnante;
 
+
+	private Plateau plateauInitial;
 	
 /*
 				METHODES
@@ -82,7 +84,7 @@ public class IA {
 				constructeurs
 */	
 	public IA(int numJoueur) {
-		this.profondeur 	= 4;
+		this.profondeur 	= 2;
 
 		this.coeffEjection	= 3;
 		this.valeurMAX 		= 100;
@@ -90,7 +92,7 @@ public class IA {
 		
 		this.numJoueur = numJoueur;
 		this.iterator = 0;
-		this.combinaisonGagnante = new Vector<Mouvement>();
+		this.combinaisonGagnante = new Mouvement[this.profondeur+1];
 //		this.tempsDeReflexion=0;		
 	}
 	
@@ -105,11 +107,12 @@ public class IA {
 */
 
     public Mouvement jouer(Plateau p) {
-		this.meilleurScore = this.maximiser(p, this.profondeur, -this.valeurMAX, this.valeurMAX);
+		this.plateauInitial = new Plateau(p);
+		Plateau copie = new Plateau(p);
+		this.meilleurScore = this.maximiser(copie, this.profondeur, -this.valeurMAX, this.valeurMAX);
 		System.out.println(this.meilleurScore);
-		System.out.println(this.combinaisonGagnante.size());
-		// for(int i = 0; i < this.combinaisonGagnante.size() ; i++)
-			// System.out.println(this.combinaisonGagnante.get(i));
+		for(int i = 0; i < this.combinaisonGagnante.length-1 ; i++)			
+			System.out.println(this.combinaisonGagnante[i]);
 		return this.meilleurMouvement;
     }
 
@@ -145,11 +148,13 @@ public class IA {
 			temporaire.setScore();
 			float valeur = maximiser(temporaire, profondeur-1, alpha, beta);	
 			System.out.println("mini"+profondeur+" valeur="+valeur+" alpha="+alpha+" beta="+beta);
-			if(valeur <= alpha) {
+			if(valeur == alpha) {
 				// this.meilleurMouvement = mouvementsValides.get(i);
+				
 				return alpha;
 			}
 			if(valeur < beta && valeur > alpha) {
+				this.combinaisonGagnante[this.profondeur-profondeur] = mouvementsValides.get(i);
 				// this.meilleurMouvement = mouvementsValides.get(i);
 				beta = valeur;
 			}
@@ -188,11 +193,17 @@ public class IA {
 			// alpha = alpha<valeur?alpha:valeur;
 			if (valeur == beta) { // on ne peut trouver mieux que beta
 				System.out.println("on a trouve une expulsion");
-				this.combinaisonGagnante.add(mouvementsValides.get(i));
+				// try {
+					// Thread.currentThread().sleep(2000);
+				// } catch(InterruptedException e) {
+				
+				// }
+				this.combinaisonGagnante[this.profondeur-profondeur] = mouvementsValides.get(i);
 				this.meilleurMouvement = mouvementsValides.get(i);
 				return beta;
 			}
 			if(valeur > alpha) { // il faut mettre la borne alpha a jour.
+				this.combinaisonGagnante[this.profondeur-profondeur] = mouvementsValides.get(i);
 				this.meilleurMouvement = mouvementsValides.get(i);
 				alpha = valeur;
 			}
@@ -201,10 +212,48 @@ public class IA {
 	}
 
 	private float eval(Plateau p) {
-		if(p.getScore(this.numJoueur) != 0)
+		if(p.getScore(this.numJoueur) != this.plateauInitial.getScore(this.numJoueur))
 			return this.valeurMAX;
-		else
-			return 0;
+		if(p.getScore(this.numJoueur==1?2:1) != this.plateauInitial.getScore(this.numJoueur==1?2:1))
+			return -this.valeurMAX;
+		
+		return 0;//evaluerPosition(p);
 	}
+	
+	private float evaluerPosition(Plateau p) {
+		Plateau temporaire = new Plateau(p);
+		float scorePositionnel 	= 0;
+		float eloignementMAX 	= 0;
+		float[] eloignement = new float[6];
+		for(int i = 1 ; i <= temporaire.cases.length-1 ; i++) {
+			if(temporaire.cases[i].getContenu() == this.numJoueur) {
+				int k = i;
+				while(temporaire.cases[k].getAdjacent((byte)0) != 0) {
+						++eloignement[0];
+						k = temporaire.cases[k].getAdjacent((byte)0);
+				}
+				eloignementMAX = eloignement[0];
+//				System.out.println("eloignement[0]"+eloignement[0]);				
+				for(int j = 1 ; j < 6 ; j++) {
+					k = i;
+					while(temporaire.cases[k].getAdjacent((byte)j) != 0) {
+						++eloignement[j];
+						k = temporaire.cases[k].getAdjacent((byte)j);
+					}
+					if(eloignement[j] > eloignementMAX)
+						eloignementMAX = eloignement[j];
+//					System.out.println("eloignement["+j+"]"+eloignement[j]);
+				}
+				scorePositionnel = eloignementMAX;
+			}
+		}
+/*		try {
+			Thread.currentThread().sleep(2000);
+		} catch(InterruptedException e) {
+		
+		}
+		System.out.println("scorePositionnel"+(scorePositionnel));
+*/		return scorePositionnel;
+	}	
 
 }
